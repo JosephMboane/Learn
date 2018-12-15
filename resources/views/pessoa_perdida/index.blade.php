@@ -159,7 +159,8 @@
         </div>
     @endforeach
         <br>
-        <div style=" margin-left: 500px">
+        <div style=" margin-left: 600px">
+            {{$pessoa_perdida->links()}}
         </div>
 
 </div>
