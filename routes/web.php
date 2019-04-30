@@ -91,3 +91,19 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/*Permission and Roles */
+Route::get('/painel', 'PainelController@index');
+
+
+//VUE.JS Route
+//Route::get('/teste', function () {
+//    return view('teste');
+//});
+Route::get('/pagina-inicial', function () {
+    return view('pessoa_perdida.index2');
+});
+Route::get('pessoa_perdidas','pessoaPerdidaController@index_vue');
+Route::post('pessoa_perdidas','pessoaPerdidaController@store');
+Route::get('pessoa_idade','Pessoa_perdida@calcularIdade');
+Route::get('pessoa_tempo','Pessoa_perdida@calcularDias');

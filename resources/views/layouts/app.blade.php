@@ -40,9 +40,12 @@
     <!-- endinject -->
  <!-- Bootstrap core CSS     -->
  <link rel="stylesheet" href="<?php echo asset('css/bootstrapp.min.css')?>" type="text/css" rel="stylesheet">
+    <link href="bootstrap/myedit.css" rel="stylesheet">
 </head>
 <body>
+<div id="app">
      @yield('content')
+</div>
 </body>
 
   <!--   Core JS Files   -->

@@ -1,10 +1,6 @@
 
 @extends('layouts.app')
 @section('title','Pagina Inicial')
-<link rel="stylesheet" href="<?php echo asset('css/bootstrap.min.css')?>" type="text/css">
-<link rel="stylesheet" href="<?php echo asset('css/font-awesome.min.css')?>" type="text/css" rel="stylesheet">
-<script src="public/jquery-3.3.1.min.js"></script>
-
 @section('content')
 
 <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2);">
@@ -38,12 +34,12 @@
             </li>
         </ul>
 
-       
+
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item">
             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
           </li>
-          
+
         </ul>
       </div>
     </nav>
@@ -62,7 +58,7 @@
                                 <!-- Wrapper for slides -->
                                 <div class="carousel-inner" role="listbox">
                                     <div class="item active">
-                                        
+
                                         <img src="/images/14.jpg" style="width: 100%; height: 250px; filter:blur(1px)" />
                                         <div class="carousel-caption">
                                             <h3>Registar pessoa perdida</h3>
@@ -141,7 +137,7 @@
                         <h4>
                                 {{ \Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->created_at) }}
                             </h4>
-                        
+
 
                     </div>
                     <div class="modal-footer">

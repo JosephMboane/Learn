@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'id_usuario','name', 'email', 'password',
     ];
 
     /**
@@ -29,6 +29,30 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+    public function roles(){
+        return $this->belongsToMany(Role::class);
+    }
+    public function hasPermission(Permission $permission){
+
+        return $this ->hasAnyRoles($permission->roles);
+
+    }
+    public function hasAnyRoles($roles){
+        if(is_array($roles)||is_object($roles)){
+//            foreach ($roles as $role){
+//                var_dump($role->name);
+//                return $this->roles->contains('name',$role->name);
+//            }
+            return !! $roles->intersect($this->roles)->count();
+        }
+
+        return $this->roles->contains('name',$roles);
+
+    }
 
     public function guardar_user($request){
         $usr = new user();
