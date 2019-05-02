@@ -38,8 +38,16 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item">
             <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-          </li>
+              {{--@if (session('status'))--}}
+                  {{--<div class="alert alert-success" role="alert">--}}
+                      {{--{{ session('status') }}--}}
+                  {{--</div>--}}
+              {{--@endif--}}
 
+          </li>
+            {{--<small style="color: red">--}}
+            {{--<p style="color: red"><a style="color:inherit;" href="/login"><b>Autentique-se</b></a> Ou clique <a style="color:inherit;" href="/register"><b>aqui</b></a> para criar a sua conta </p>--}}
+            {{--<</small>--}}
         </ul>
       </div>
     </nav>

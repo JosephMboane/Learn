@@ -4,6 +4,7 @@ namespace Laravel_Learn;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User;
 
 //use Illuminate\Database\
 
@@ -25,7 +26,9 @@ class Pessoa_perdida extends Model
 //        $this->age =$this->data_nasc;
 //    }
 
-
+    public function user(){
+        return $this ->belongsTo(User::class);
+    }
 
 
     public function age()
@@ -64,10 +67,11 @@ class Pessoa_perdida extends Model
         if($date->diffInHours()<24)
             return $date->diffInHours().' horas atrás';
         if($date->diffInDays()<2)
-            return $date->diffInHours().' horas atrás';
+            return $date->diffInDays().' dias ';
         
 
         return $date;
 
     }
+
 }

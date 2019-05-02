@@ -30,7 +30,7 @@ const routes = [
             pessoaPerdidaComponent: PessoaPerdidaComponent
         }
     },
-    {path: '/pessoaPerdida/create', components: PessoaPerdidaCreateComponent, name: 'createPessoaPerdida'},
+    {path: '/pessoaPerdida/create', component: PessoaPerdidaCreateComponent, name: 'createPessoaPerdida'},
     // {path: '/pessoaPerdida/index', component: PessoaPerdida, name: 'editCompany'},
 ]
 

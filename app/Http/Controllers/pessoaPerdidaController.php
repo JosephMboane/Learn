@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Laravel_Learn\Caso;
 use Laravel_Learn\foto;
 use Illuminate\Support\Facades\DB;
+use Laravel_Learn\User;
 
 class pessoaPerdidaController extends Controller
 {
@@ -23,28 +24,32 @@ class pessoaPerdidaController extends Controller
             ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
             ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
             ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
+//            ->join('users', 'users.id_usuario', '=', 'pessoa_perdida.user_id')
             ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
             ->orderBy('id_p_perdida','desc')
-            ->paginate(3);
+            ->paginate(6);
 
-
+//            dd($pessoa_perdida);
         return view('pessoa_perdida.index', compact('pessoa_perdida'));
     }
 
     /* VUE.JS Method */
     public function index_vue()
     {
-        $pessoa_perdida = DB::table('pessoa_perdida')
-            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
-            ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
-            ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
-            ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
-            ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
-            ->where('pessoa_perdida.estado', '=',1)
+//        $pessoa_perdida = DB::table('pessoa_perdida')
+//            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
+//            ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
+//            ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
+//            ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
+//            ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
+//            ->where('pessoa_perdida.estado', '=',1)
+//            ->orderBy('id_p_perdida','desc')
+//            ->paginate(6);
+        $pessoa_perdida = DB::table('pessoa_perdida')->where('pessoa_perdida.estado', '=',1)
             ->orderBy('id_p_perdida','desc')
-            ->paginate(3);
+            ->paginate(6);
 //        $pessoa_perdida = Pessoa_perdida::all();
         return $pessoa_perdida;
     }
@@ -68,6 +73,7 @@ class pessoaPerdidaController extends Controller
      */
     public function store(StorePessoaPerdida $request)
     {
+
         $p_perdida = new Pessoa_perdida();
         $foto = new foto();
 
@@ -84,9 +90,10 @@ class pessoaPerdidaController extends Controller
         if(!($id==null)){ 
             $caso = new Caso();
             $caso->guardar_caso($id);
+
             return redirect()->route('pessoa_perdida.index')->with('sucess', ' created successfully!');
         }else
-            return redirect()->route('pessoa_perdida.index')->with('message', 'Ocorreu um erro ao gravar');
+        return redirect()->route('pessoa_perdida.index')->with('message', 'Ocorreu um erro ao gravar');
     }
 
 

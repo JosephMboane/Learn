@@ -5,6 +5,8 @@ namespace Laravel_Learn;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel_Learn\Permission;
+use Laravel_Learn\Role;
 
 class User extends Authenticatable
 {

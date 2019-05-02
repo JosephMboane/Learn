@@ -67,7 +67,7 @@
                 </div>
                 <div class="text-block text-center my-3">
                   <span class="text-small font-weight-semibold">Ainda não está registado ?</span>
-                  <a href="register.html" class="text-black text-small">Crie uma conta</a>
+                  <a href="/register" class="text-black text-small">Crie uma conta</a>
                 </div>
               </form>
             </div>
@@ -82,7 +82,7 @@
                 <a href="#">Termos</a>
               </li>
             </ul>
-            <p class="footer-text text-center">copyright © 2018 Procura-se. All rights reserved.</p>
+            <p class="footer-text text-center">copyright © 2019 Procura-se. All rights reserved.</p>
           </div>
         </div>
       </div>

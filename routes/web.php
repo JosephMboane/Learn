@@ -39,7 +39,7 @@ Route::get('/create_centro', function () {
 //Route::get('/localizacao',function (){
 //    return \Laravel_Learn\Localizacao::all();
 //});
-Route::resource('pessoa_perdida','pessoaPerdidaController');
+Route::resource('pessoa_perdida','pessoaPerdidaController')->middleware('auth');
 
 Route::resource('pessoa_ajuda','pessoaAjudaController');
 
@@ -70,9 +70,9 @@ Route::get('locations/{id_localizacao}',function ($id_localizacao) {
      });
 Route::post('/search1', 'pessoaPerdidaController@pesquisar2');
 
-Route::resource('centro','centroAcolhimentoController');
+Route::resource('centro','centroAcolhimentoController')->middleware('auth');
 
-Route::resource('responsavel','responsavelCentroController');
+Route::resource('responsavel','responsavelCentroController')->middleware('auth');
 
 
 
