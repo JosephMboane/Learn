@@ -26,6 +26,6 @@ class PessoaPerdidaPolicy
     }
     public  function before(){
 
-        return $user-> name =='Malema';
+        return $user-> name =='admin';
     }
 }
