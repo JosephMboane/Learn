@@ -6,15 +6,16 @@
  */
 
 require('./bootstrap');
+import Router from './router/basic'
 
 window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 
 window.Vue.use(VueRouter);
-
-import PessoaPerdidaComponent from './components/pessoaPerdida/PessoaPerdidaComponent.vue';
-import PessoaPerdidaCreateComponent from './components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
+//
+// import PessoaPerdidaComponent from './components/pessoaPerdida/PessoaPerdidaComponent.vue';
+// import PessoaPerdidaCreateComponent from './components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
 // import HeaderComponent from './components/nav/HeaderComponent.vue';
 
 
@@ -23,16 +24,16 @@ import PessoaPerdidaCreateComponent from './components/pessoaPerdida/PessoaPerdi
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-const routes = [
-    {
-        path: '/',
-        components: {
-            pessoaPerdidaComponent: PessoaPerdidaComponent
-        }
-    },
-    {path: '/pessoaPerdida/create', component: PessoaPerdidaCreateComponent, name: 'createPessoaPerdida'},
-    // {path: '/pessoaPerdida/index', component: PessoaPerdida, name: 'editCompany'},
-]
+// const routes = [
+//     {
+//         path: '/',
+//         components: {
+//             pessoaPerdidaComponent: PessoaPerdidaComponent
+//         }
+//     },
+//     {path: '/pessoaPerdida/create', components: PessoaPerdidaCreateComponent, name: 'createPessoaPerdida'},
+//     // {path: '/pessoaPerdida/index', component: PessoaPerdida, name: 'editCompany'},
+// ]
 
 /* Importação de rotas*/
 
@@ -47,6 +48,10 @@ const routes = [
 // const app = new Vue({
 //     el: '#app'
 // });
-const router = new VueRouter({ routes })
+const router = new VueRouter({
+    routes:Router
+})
 
-const app = new Vue({ router }).$mount('#app')
+const app = new Vue({
+    router:router
+}).$mount('#app')

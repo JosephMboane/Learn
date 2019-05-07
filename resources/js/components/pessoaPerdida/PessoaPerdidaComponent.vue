@@ -17,7 +17,7 @@
                          <router-link to="/" class="btn btn-default"><i class="pe-7s-home"></i>Pagina Inicial</router-link>
                      </li>
                      <li class="nav-item">
-                         <router-link to="{name: 'createPessoaPerdida'}" class="btn btn-default"><i class="pe-7s-add-user"></i>Pessoa Perdida</router-link>
+                         <router-link to="/create" class="btn btn-default"><i class="pe-7s-add-user"></i>Pessoa Perdida</router-link>
                      </li>
                      <li>
                          <a><form>

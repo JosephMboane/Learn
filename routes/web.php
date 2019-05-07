@@ -100,7 +100,7 @@ Route::get('/painel', 'PainelController@index');
 //Route::get('/teste', function () {
 //    return view('teste');
 //});
-Route::get('/pagina-inicial', function () {
+Route::get('/', function () {
     return view('pessoa_perdida.index2');
 });
 Route::get('pessoa_perdidas','pessoaPerdidaController@index_vue');

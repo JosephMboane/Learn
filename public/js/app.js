@@ -13999,11 +13999,8 @@ module.exports = __webpack_require__(47);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_router__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaComponent_vue__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaComponent_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__router_basic__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(40);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -14013,14 +14010,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 __webpack_require__(14);
 
+
 window.Vue = __webpack_require__(37);
 
 
 
-window.Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
-
-
-
+window.Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
+//
+// import PessoaPerdidaComponent from './components/pessoaPerdida/PessoaPerdidaComponent.vue';
+// import PessoaPerdidaCreateComponent from './components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
 // import HeaderComponent from './components/nav/HeaderComponent.vue';
 
 
@@ -14029,12 +14027,16 @@ window.Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]);
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-var routes = [{
-    path: '/',
-    components: {
-        pessoaPerdidaComponent: __WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaComponent_vue___default.a
-    }
-}, { path: '/pessoaPerdida/create', component: __WEBPACK_IMPORTED_MODULE_2__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue___default.a, name: 'createPessoaPerdida' }];
+// const routes = [
+//     {
+//         path: '/',
+//         components: {
+//             pessoaPerdidaComponent: PessoaPerdidaComponent
+//         }
+//     },
+//     {path: '/pessoaPerdida/create', components: PessoaPerdidaCreateComponent, name: 'createPessoaPerdida'},
+//     // {path: '/pessoaPerdida/index', component: PessoaPerdida, name: 'editCompany'},
+// ]
 
 /* Importação de rotas*/
 
@@ -14049,9 +14051,13 @@ var routes = [{
 // const app = new Vue({
 //     el: '#app'
 // });
-var router = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({ routes: routes });
+var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
+  routes: __WEBPACK_IMPORTED_MODULE_0__router_basic__["a" /* default */]
+});
 
-var app = new Vue({ router: router }).$mount('#app');
+var app = new Vue({
+  router: router
+}).$mount('#app');
 
 /***/ }),
 /* 14 */
@@ -50190,7 +50196,7 @@ var render = function() {
                         "router-link",
                         {
                           staticClass: "btn btn-default",
-                          attrs: { to: "{name: 'createPessoaPerdida'}" }
+                          attrs: { to: "/create" }
                         },
                         [
                           _c("i", { staticClass: "pe-7s-add-user" }),
@@ -51001,6 +51007,35 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_pessoaPerdida_PessoaPerdidaComponent_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_pessoaPerdida_PessoaPerdidaComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_pessoaPerdida_PessoaPerdidaComponent_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue__);
+
+
+/* harmony default export */ __webpack_exports__["a"] = ([{
+
+        path: '/',
+        component: __WEBPACK_IMPORTED_MODULE_0__components_pessoaPerdida_PessoaPerdidaComponent_vue___default.a,
+        name: 'pessoaPerdidaComponent'
+
+}, {
+
+        path: '/create',
+        component: __WEBPACK_IMPORTED_MODULE_1__components_pessoaPerdida_PessoaPerdidaCreateComponent_vue___default.a,
+        name: 'pessoaPerdidaCreateComponent'
+
+}]);
 
 /***/ })
 /******/ ]);

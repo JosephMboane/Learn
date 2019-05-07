@@ -1,14 +1,19 @@
-export default new Router({
-    routes: [
+import PessoaPerdidaComponent from '../components/pessoaPerdida/PessoaPerdidaComponent.vue';
+import PessoaPerdidaCreateComponent from '../components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
+export default [
         {
+
             path: '/',
-            name: 'pessoaPerdidaComponent',
-            component: PessoaPerdidaComponent
+            component: PessoaPerdidaComponent,
+            name: 'pessoaPerdidaComponent'
+
         },
         {
+
             path: '/create',
-            name: 'pessoaPerdidaCreateComponent',
-            component: PessoaPerdidaCreateComponent
+            component: PessoaPerdidaCreateComponent,
+            name: 'pessoaPerdidaCreateComponent'
+
         },
         // {
         //     path: '/services',
@@ -21,4 +26,4 @@ export default new Router({
         //     component: contact
         // }
     ]
-})
+

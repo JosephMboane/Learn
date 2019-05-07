@@ -9,6 +9,6 @@
     {{--<header-component></header-component>--}}
     {{--<pessoa-perdida></pessoa-perdida>--}}
     {{--<pessoa-perdida-create></pessoa-perdida-create>--}}
-    <router-view name="pessoaPerdidaComponent"></router-view>
+    <router-view></router-view>
 
 @endsection

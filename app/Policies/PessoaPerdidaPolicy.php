@@ -24,6 +24,10 @@ class PessoaPerdidaPolicy
         return $user->id_usuario == $pessoa_perdida->user_id;
 
     }
+
+    /**
+     * @return bool
+     */
     public  function before(){
 
         return $user-> name =='admin';
