@@ -66,12 +66,14 @@
 
                         <div class="box wow fadeInLeft" data-wow-delay="0.2s">
                             <div class="icon"><i class="fa fa-shopping-bag"></i></div>
-                            <img class="img-thumbnail" src="" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">
+                            {{pessoa_perdida.nome_foto}}
+                            <img class="img-thumbnail" src="/imgs_p_perdidas/logo.png" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">
                             <!--{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}-->
                             <h4 class="title" style="margin-top: -0px; padding-bottom: 25px" id="titulo">{{ pessoa_perdida.nome }}</h4>
                             <p class="description" style="margin-left: -35px" id="testo_historia">{{ pessoa_perdida.sexo }}</p>
                             <p>
-                                <a class="btn btn-default" href="" role="button">Ver Mais</a>
+<!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
+                                 <router-link to="/modal" class="btn btn-default">Ver Mais</router-link>
                             </p>
                         </div>
                     </div>

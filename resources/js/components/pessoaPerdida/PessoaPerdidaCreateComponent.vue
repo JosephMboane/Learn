@@ -62,7 +62,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Sexo</label>
-                                        <select class="form-control" name="sexo" v-model="pessoaPerdida.sexo"> style="height: 34px">
+                                        <select class="form-control" name="sexo" v-model="pessoaPerdida.sexo" style="height: 34px">
                                             <option value="M">Masculino</option>
                                             <option value="F">Feminino</option>
                                         </select>
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-info btn-fill pull-right" id="destaque">Gravar</button>
+                                <button type="submit" class="btn btn-info btn-fill pull-right" >Gravar</button>
 
                                 <div class="clearfix"></div>
                             </form>

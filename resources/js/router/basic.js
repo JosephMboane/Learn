@@ -1,5 +1,6 @@
 import PessoaPerdidaComponent from '../components/pessoaPerdida/PessoaPerdidaComponent.vue';
 import PessoaPerdidaCreateComponent from '../components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
+import ModalPessoaPerdidaComponent from "../components/pessoaPerdida/ModalPessoaPerdidaComponent";
 export default [
         {
 
@@ -15,15 +16,13 @@ export default [
             name: 'pessoaPerdidaCreateComponent'
 
         },
-        // {
-        //     path: '/services',
-        //     name: 'services',
-        //     component: services
-        // },
-        // {
-        //     path: '/contact',
-        //     name: 'contact',
-        //     component: contact
-        // }
+        {
+
+            path: '/modal',
+            component: ModalPessoaPerdidaComponent,
+            name: 'ModalPessoaPerdidaComponent'
+
+        },
+
     ]
 
