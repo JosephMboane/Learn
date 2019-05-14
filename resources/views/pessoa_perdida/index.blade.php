@@ -129,7 +129,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div>
+                        <div>imgs_p_perdidas
                             <img class="card-img-top" src="/imgs_p_perdidas/{{$p_perdida->nome_foto}}"
                                  style=" width: 200px; height: 200px;">
                         </div>

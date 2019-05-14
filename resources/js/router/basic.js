@@ -1,6 +1,7 @@
 import PessoaPerdidaComponent from '../components/pessoaPerdida/PessoaPerdidaComponent.vue';
 import PessoaPerdidaCreateComponent from '../components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
 import ModalPessoaPerdidaComponent from "../components/pessoaPerdida/ModalPessoaPerdidaComponent";
+import ImageComponent from "../components/pessoaPerdida/ImageComponent";
 export default [
         {
 
@@ -20,8 +21,14 @@ export default [
 
             path: '/modal',
             component: ModalPessoaPerdidaComponent,
-            name: 'ModalPessoaPerdidaComponent'
+            name: 'modalPessoaPerdidaComponent'
 
+        },
+        {
+
+        path: '/image',
+        component:ImageComponent,
+        name:   'imageComponent'
         },
 
     ]

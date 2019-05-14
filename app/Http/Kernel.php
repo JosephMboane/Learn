@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \Laravel_Learn\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Laravel_Learn\Http\Middleware\TrustProxies::class,
+        \Laravel_Learn\Http\Middleware\IsAdmin::class,
     ];
 
     /**

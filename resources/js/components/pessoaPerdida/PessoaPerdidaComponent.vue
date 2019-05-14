@@ -19,6 +19,9 @@
                      <li class="nav-item">
                          <router-link to="/create" class="btn btn-default"><i class="pe-7s-add-user"></i>Pessoa Perdida</router-link>
                      </li>
+                     <li class="nav-item">
+                         <router-link to="/image" class="btn btn-default"><i class="pe-7s-add-user"></i>Teste Image</router-link>
+                     </li>
                      <li>
                          <a><form>
                              <div class="col-md-auto" >
@@ -62,15 +65,19 @@
                 <!--</div>-->
 
                 <div class="row">
-                    <div class="col-lg-4" v-for="pessoa_perdida, index in pessoa_perdidas">
+                    <div class="col-lg-4" v-for="pessoa_perdida, index in pessoasPerdidas">
 
                         <div class="box wow fadeInLeft" data-wow-delay="0.2s">
                             <div class="icon"><i class="fa fa-shopping-bag"></i></div>
-                            {{pessoa_perdida.nome_foto}}
-                            <img class="img-thumbnail" src="/imgs_p_perdidas/logo.png" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">
+
+                            <p > idade : {{ teste()}}</p>
+                            <p > idade : {{ pessoa_perdida.data_nasc}}</p>
+
+                            <img class="img-thumbnail" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">
                             <!--{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}-->
                             <h4 class="title" style="margin-top: -0px; padding-bottom: 25px" id="titulo">{{ pessoa_perdida.nome }}</h4>
                             <p class="description" style="margin-left: -35px" id="testo_historia">{{ pessoa_perdida.sexo }}</p>
+                            <p class="description" style="margin-right: -35px" id="testo_historia">{{ pessoa_perdida.designacao }}</p>
                             <p>
 <!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
                                  <router-link to="/modal" class="btn btn-default">Ver Mais</router-link>
@@ -90,37 +97,89 @@
 <script>
     export default {
         data: function () {
+
             return {
-                pessoa_perdidas:[]
+                pessoa_perdidas: ({
+                    adress: '',
+            contacto_responsavel: '',
+            created_at: '',
+            data_nasc: '04/04/2019',
+            designacao: '',
+            estado: '',
+            foto: '',
+            id_foto: '',
+            id_localizacao: '',
+            id_p_perdida: '',
+            lat: '',
+            lng: '',
+            nacionalidade: '',
+            naturalidade: '',
+            nome: '',
+            nome_foto: '',
+            nome_localizacao: '',
+            nome_responsavel: '',
+            sexo: '',
+            type: '',
+            updated_at: '',
+            user_id: '',
+                }),
+                pessoasPerdidas:[],
             }
+            // return {
+            //     pessoa_perdidas:[]
+            // }
         },
         mounted() {
             var app = this;
             axios.get('/pessoa_perdidas')
                 .then(function (resp) {
-                    app.pessoa_perdidas = resp.data.data;
-                    console.log(resp.data.data)
+                    app.pessoasPerdidas = resp.data.data;
+                    console.log(app.pessoasPerdidas );
+                    console.log(app.pessoa_perdidas.data_nasc );
+                    console.log(app.pessoa_perdidas.nome_foto );
                 })
                 .catch(function (resp) {
                     console.log(resp);
                     alert("Upsi não foi possivel carregar os dados!");
                 });
-        }
-//        methods: {
-//            deleteEntry(id, index) {
-//                if (confirm("Do you really want to delete it?")) {
-//                    var app = this;
-//                    var app = this;
-//                    axios.delete('/api/v1/companies/' + id)
-//                        .then(function (resp) {
-//                            app.companies.splice(index, 1);
-//                        })
-//                        .catch(function (resp) {
-//                            alert("Could not delete company");
-//                        });
-//                }
-//            }
-//        }
+        },
+       methods: {
+           // deleteEntry(id, index) {
+           //     if (confirm("Do you really want to delete it?")) {
+           //         var app = this;
+           //         var app = this;
+           //         axios.delete('/api/v1/companies/' + id)
+           //             .then(function (resp) {
+           //                 app.companies.splice(index, 1);
+           //             })
+           //             .catch(function (resp) {
+           //                 alert("Could not delete company");
+           //             });
+           //     }
+           // }
+
+           getProfilePhoto(){
+
+               let f = "/imgs_p_perdidas/"+ this.pessoa_perdidas.nome_foto ;
+               return f;
+               // return "{{ asset('imgs_p_perdidas/') "+ this.nome_foto ;
+
+           },
+           getAge( dateString) {
+               // var b = this.pessoa_perdidas.data_nasc;
+               var b = this.data_nasc;
+
+
+                   b = +new Date(dateString);
+                   return ~~((Date.now() - b) / (31557600000));
+               // return b ;
+           },
+           teste(){
+               var n = this.pessoa_perdidas.data_nasc;
+               return n;
+
+           }
+       }
     }
 </script>
 

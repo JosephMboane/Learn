@@ -96,7 +96,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h4><i class="pe-7s-cloud-upload"></i> <label>Foto</label></h4>
-                                        <input type="file"  name="foto" class="form-control" style="height: 43px">
+                                        <input type="file" @change="imageChanged" name="foto"  class="form-control" style="height: 43px">
                                     </div>
                                 </div>
 
@@ -112,6 +112,22 @@
                                 <div class="clearfix"></div>
                             </form>
                         </div>
+<!--                        <div class="content">-->
+<!--                            <form  v-on:submit="saveForm()">-->
+
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="form-group">-->
+<!--                                        <h4><i class="pe-7s-cloud-upload"></i> <label>Foto</label></h4>-->
+<!--                                        <input type="file" @change="imageChanged"  name="foto"  class="form-control" style="height: 43px">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+
+<!--                                <button type="submit" class="btn btn-info btn-fill pull-right" >Gravar</button>-->
+
+<!--                                <div class="clearfix"></div>-->
+<!--                            </form>-->
+<!--                        </div>-->
+
                     </div>
                 </div>
             </div>
@@ -130,7 +146,7 @@
                     id_p_perdida: '',
                     nome: '',
                     sexo: '',
-                    d_nasc: '',
+                    data_nasc: '',
                     naturalidade: '',
                     nacionalidade: '',
                     foto: '',
@@ -138,6 +154,15 @@
             }
         },
         methods: {
+            imageChanged(e){
+                console.log(e.target.files[0]);
+              var fileReader = new FileReader()
+                fileReader.readAsDataURL(e.target.files[0])
+                fileReader.onload = (e)=>{
+                  this.pessoaPerdida.foto = e.target.result
+                }
+                console.log(this.pessoaPerdida)
+            },
             saveForm() {
 //                console.log('Não é possivel.')
                 var app = this;

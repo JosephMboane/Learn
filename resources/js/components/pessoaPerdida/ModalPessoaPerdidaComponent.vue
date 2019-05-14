@@ -1,74 +1,61 @@
 <template>
-<div>
-    <transition name="modal">
-        <div v-if="isOpen">
-            <div class="overlay" @click.self="isOpen = false;">
-                <div class="modal">
-                    <h1>Modal heading</h1>
-                    <p>This my first modal using vue.js</p>
-                </div>
-            </div>
-        </div>
-    </transition>
-    <button @click="isOpen = !isOpen;">
-        {{ isOpen ? "Close" : "Open" }} modal
-    </button>
-</div>
+
+    <!-- Modal -->
+<!--            <div class="modal" id="exampleModalCenter" tabindex="-1" role="dialog"-->
+<!--                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">-->
+<!--                <div class="modal-dialog modal-dialog-centered" role="document" >-->
+<!--                    <div class="modal-content">-->
+<!--                        <div class="modal-header">-->
+<!--                            <h5 class="modal-title" id="exampleModalLongTitle">Informação detalhada da pessoa-->
+<!--                                perdida</h5>-->
+<!--                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                                <span aria-hidden="true">&times;</span>-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                        <div class="modal-body">-->
+<!--                            <div>-->
+<!--                                <img class="card-img-top" src="/imgs_p_perdidas/1556822999misty.png"-->
+<!--                                     style=" width: 200px; height: 200px;">-->
+<!--                            </div>-->
+<!--                            <div class=""><CODE><h1>Nome:Joseph</h1></CODE>-->
+<!--                            </div>-->
+<!--                            <div class=""><h4>-->
+<!--                                <i class="pe-7s-id"></i>-->
+
+<!--                            </h4>-->
+<!--                            </div>-->
+<!--                            <h5 class=""><a href="">designacao</a></h5>-->
+
+<!--                            <h4>-->
+<!--                                &lt;!&ndash;                        {{ \Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->created_at) }}&ndash;&gt;-->
+<!--                            </h4>-->
+
+
+<!--                        </div>-->
+<!--                        <div class="modal-footer">-->
+<!--                            <a href="" class="nav-link">-->
+<!--                                <button type="button" class="btn btn-primary">Comentar</button>-->
+<!--                            </a>-->
+<!--                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>-->
+<!--                            <a href="/locations/" class="nav-link">-->
+<!--                                <button type="button" class="btn btn-primary">Ver no Mapa</button>-->
+<!--                            </a>-->
+
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+    <h1>Nova Salavação</h1>
+
 </template>
 
 <script>
     export default {
+        mounted() {
+            console.log('Não é possivel.')
+        },
         data: function() {
-            return {
-                isOpen: false
-            };
-        }
-    };
+            }
+
+    }
 </script>
-
-<style scoped>
-    .modal {
-        width: 500px;
-        margin: 0px auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px 3px;
-        transition: all 0.2s ease-in;
-        font-family: Helvetica, Arial, sans-serif;
-    }
-    .fadeIn-enter {
-        opacity: 0;
-    }
-
-    .fadeIn-leave-active {
-        opacity: 0;
-        transition: all 0.2s step-end;
-    }
-
-    .fadeIn-enter .modal,
-    .fadeIn-leave-active.modal {
-        transform: scale(1.1);
-    }
-    button {
-        padding: 7px;
-        margin-top: 10px;
-        background-color: green;
-        color: white;
-        font-size: 1.1rem;
-    }
-
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 100%;
-        background: #00000094;
-        z-index: 999;
-        transition: opacity 0.2s ease;
-    }
-</style>

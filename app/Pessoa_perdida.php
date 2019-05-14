@@ -23,7 +23,7 @@ class Pessoa_perdida extends Model
 //    public function __construct(array $attributes = [])
 //    {
 //        parent::__construct($attributes);
-//        $this->age =$this->data_nasc;
+//        $this->getAge =$this->data_nasc;
 //    }
 
     public function user(){
