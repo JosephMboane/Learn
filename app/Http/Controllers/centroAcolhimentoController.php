@@ -58,7 +58,7 @@ class centroAcolhimentoController extends Controller
         $centro->provincia = $request->input('provincia');
         $centro->avenida = $request->input('avenida');
         $centro->numero = $request->input('nr');
-        $centro->foto = $name;
+        $centro->foto_centro = $name;
         $centro->obs = $request->input('obs');
         $centro->id_localizacao = 1;
         $centro->save();

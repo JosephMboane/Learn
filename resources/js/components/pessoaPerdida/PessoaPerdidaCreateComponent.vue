@@ -51,7 +51,7 @@
                         </div>
 
                         <div class="content">
-                            <form  v-on:submit="saveForm()">
+                            <form  >
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Nome</label>
@@ -72,14 +72,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Data de Nascimento</label>
-                                        <input type="date" v-model="pessoaPerdida.d_nasc" class="form-control" placeholder="DD/MM/AAAA" name="d_nasc">
+                                        <input type="date" v-model="pessoaPerdida.data_nasc" class="form-control" placeholder="DD/MM/AAAA" >
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Nacionalidade</label>
-                                        <input type="text" class="form-control" placeholder="Nacionalidade" v-model="pessoaPerdida.nacionalidade"  name="nacionalidade">
+                                        <input type="text" class="form-control" placeholder="Nacionalidade" v-model="pessoaPerdida.nacionalidade"  >
 
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                                     <div class="form-group">
                                         <label>naturalidade</label>
 
-                                        <input type="text" class="form-control" placeholder="naturalidade" v-model="pessoaPerdida.naturalidade"  name="naturalidade">
+                                        <input type="text" class="form-control" placeholder="naturalidade" v-model="pessoaPerdida.naturalidade"  >
 
                                     </div>
                                 </div>
@@ -107,7 +107,7 @@
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-info btn-fill pull-right" >Gravar</button>
+                                <button type="button" @click="saveForm()" class="btn btn-info btn-fill pull-right" >Gravar</button>
 
                                 <div class="clearfix"></div>
                             </form>
@@ -143,7 +143,6 @@
         data: function () {
             return {
                 pessoaPerdida: {
-                    id_p_perdida: '',
                     nome: '',
                     sexo: '',
                     data_nasc: '',
@@ -166,14 +165,16 @@
             saveForm() {
 //                console.log('Não é possivel.')
                 var app = this;
-                var newPessoaPerdida = app.pessoaPerdida;
-                axios.post('/pessoa_perdidas', newPessoaPerdida)
+                axios.post('/pessoa_perdidas', {'nome': app.pessoaPerdida.nome, 'sexo': app.pessoaPerdida.sexo, 'd_nasc': app.pessoaPerdida.data_nasc, 'naturalidade': app.pessoaPerdida.naturalidade, 'nacionalidade': app.pessoaPerdida.nacionalidade, 'foto': app.pessoaPerdida.foto})
                     .then(function (resp) {
+
+                        // window.location.href = '/'
                         app.$router.push({patch: '/'});
+                        // app.router.push({ name: 'pessoaPerdidaComponent' })
                     })
                     .catch(function (resp) {
                         console.log(resp);
-                        alert("Não criou a Pessoa Perdida");
+                        alert("Não criou a Pessoa Perdida", resp);
                     });
             }
         },

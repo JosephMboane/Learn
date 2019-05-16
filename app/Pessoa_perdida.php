@@ -14,7 +14,7 @@ class Pessoa_perdida extends Model
     public $table = 'pessoa_perdida';
     public $timestamp = 'false';
 
-    public $age ;
+    protected $appends = ['age'];
 
     /**
      * @return mixed
@@ -31,11 +31,12 @@ class Pessoa_perdida extends Model
     }
 
 
-    public function age()
+    public function getAgeAttribute()
     {
-//        return strtotime(Pessoa_perdida::first()->data_nasc);=
-        $date = new Carbon($this->data_nasc);
-        return $date->diffInYears();
+        $age = "20";
+//        $date = new Carbon($this->data_nasc);
+//        $age = $date->diffInYears();
+        return ''.$age;
     }
 
     public function dias()

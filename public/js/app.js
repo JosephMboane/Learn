@@ -36292,6 +36292,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -36301,7 +36310,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 adress: '',
                 contacto_responsavel: '',
                 created_at: '',
-                data_nasc: '04/04/2019',
+                data_nasc: '',
                 designacao: '',
                 estado: '',
                 foto: '',
@@ -36321,23 +36330,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 updated_at: '',
                 user_id: ''
             },
-            pessoasPerdidas: []
+            pessoasPerdidas: [],
+            next_page: null
             // return {
             //     pessoa_perdidas:[]
             // }
         };
     },
     mounted: function mounted() {
-        var app = this;
-        axios.get('/pessoa_perdidas').then(function (resp) {
-            app.pessoasPerdidas = resp.data.data;
-            console.log(app.pessoasPerdidas);
-            console.log(app.pessoa_perdidas.data_nasc);
-            console.log(app.pessoa_perdidas.nome_foto);
-        }).catch(function (resp) {
-            console.log(resp);
-            alert("Upsi não foi possivel carregar os dados!");
-        });
+        var l = this;
+        l.getPessoasPerdidas();
     },
 
     methods: {
@@ -36354,7 +36356,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //             });
         //     }
         // }
-
+        getPessoasPerdidas: function getPessoasPerdidas() {
+            var app = this;
+            axios.get('/pessoa_perdidas').then(function (resp) {
+                app.pessoasPerdidas = resp.data.data;
+                console.log(app.pessoasPerdidas);
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
+        },
         getProfilePhoto: function getProfilePhoto() {
 
             var f = "/imgs_p_perdidas/" + this.pessoa_perdidas.nome_foto;
@@ -36362,16 +36374,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             // return "{{ asset('imgs_p_perdidas/') "+ this.nome_foto ;
         },
         getAge: function getAge(dateString) {
-            // var b = this.pessoa_perdidas.data_nasc;
-            var b = this.data_nasc;
-
-            b = +new Date(dateString);
-            return ~~((Date.now() - b) / 31557600000);
-            // return b ;
+            var b = new Date();
+            var a = new Date(dateString);
+            return b.getFullYear() - a.getFullYear();
         },
-        teste: function teste() {
-            var n = this.pessoa_perdidas.data_nasc;
-            return n;
+        getMore: function getMore() {
+            var app = this;
+            axios.get(app.next_page).then(function (resp) {
+                app.pessoasPerdidas = app.pessoasPerdidas.concat(resp.data.data);
+                // console.log(resp )
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
         }
     }
 });
@@ -36441,26 +36457,7 @@ var render = function() {
                     ],
                     1
                   ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { staticClass: "nav-item" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn btn-default",
-                          attrs: { to: "/image" }
-                        },
-                        [
-                          _c("i", { staticClass: "pe-7s-add-user" }),
-                          _vm._v("Teste Image")
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
+                  _vm._v("      \n                     "),
                   _vm._m(1)
                 ]
               )
@@ -36474,88 +36471,94 @@ var render = function() {
       _c(
         "div",
         { staticClass: "row" },
-        _vm._l(_vm.pessoasPerdidas, function(pessoa_perdida, index) {
-          return _c("div", { staticClass: "col-lg-4" }, [
-            _c(
-              "div",
-              {
-                staticClass: "box wow fadeInLeft",
-                attrs: { "data-wow-delay": "0.2s" }
-              },
-              [
-                _vm._m(2, true),
-                _vm._v(" "),
-                _c("p", [_vm._v(" idade : " + _vm._s(_vm.teste()))]),
-                _vm._v(" "),
-                _c("p", [
-                  _vm._v(" idade : " + _vm._s(pessoa_perdida.data_nasc))
-                ]),
-                _vm._v(" "),
-                _c("img", {
-                  staticClass: "img-thumbnail",
-                  staticStyle: {
-                    "margin-left": "-40px",
-                    "margin-top": "-40px"
-                  },
-                  attrs: {
-                    src: "/imgs_p_perdidas/" + pessoa_perdida.nome_foto,
-                    alt: "Generic placeholder image",
-                    width: "100",
-                    height: "100"
-                  }
-                }),
-                _vm._v(" "),
-                _c(
-                  "h4",
-                  {
-                    staticClass: "title",
+        [
+          _vm._l(_vm.pessoasPerdidas, function(pessoa_perdida, index) {
+            return _c("div", { staticClass: "col-lg-3" }, [
+              _c(
+                "div",
+                {
+                  staticClass: "box wow fadeInLeft",
+                  attrs: { "data-wow-delay": "0.2s" }
+                },
+                [
+                  _vm._m(2, true),
+                  _vm._v(" "),
+                  _c("img", {
+                    staticClass: "card-img-top rounded-circle",
                     staticStyle: {
-                      "margin-top": "-0px",
-                      "padding-bottom": "25px"
+                      width: "80px",
+                      height: "80px",
+                      position: "relative"
                     },
-                    attrs: { id: "titulo" }
-                  },
-                  [_vm._v(_vm._s(pessoa_perdida.nome))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  {
-                    staticClass: "description",
-                    staticStyle: { "margin-left": "-35px" },
-                    attrs: { id: "testo_historia" }
-                  },
-                  [_vm._v(_vm._s(pessoa_perdida.sexo))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  {
-                    staticClass: "description",
-                    staticStyle: { "margin-right": "-35px" },
-                    attrs: { id: "testo_historia" }
-                  },
-                  [_vm._v(_vm._s(pessoa_perdida.designacao))]
-                ),
-                _vm._v(" "),
-                _c(
-                  "p",
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "btn btn-default",
-                        attrs: { to: "/modal" }
+                    attrs: {
+                      src: "/imgs_p_perdidas/" + pessoa_perdida.nome_foto,
+                      alt: "Generic placeholder image"
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "h4",
+                    {
+                      staticClass: "title",
+                      staticStyle: {
+                        "margin-top": "-50px",
+                        "padding-bottom": "20px"
                       },
-                      [_vm._v("Ver Mais")]
+                      attrs: { id: "titulo" }
+                    },
+                    [_vm._v(_vm._s(pessoa_perdida.nome))]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    {
+                      staticClass: "description",
+                      staticStyle: { "margin-right": "-35px" },
+                      attrs: {
+                        id: "testo_historia",
+                        title: "Centro Onde esta localizado"
+                      }
+                    },
+                    [_vm._v(_vm._s(pessoa_perdida.designacao))]
+                  ),
+                  _vm._v(" "),
+                  _c("p", [
+                    _vm._v(
+                      " idade : " + _vm._s(_vm.getAge(pessoa_perdida.data_nasc))
                     )
-                  ],
-                  1
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "router-link",
+                    { staticClass: "btn btn-default", attrs: { to: "/modal" } },
+                    [_vm._v("Ver Mais")]
+                  ),
+                  _vm._v(" "),
+                  _c("p")
+                ],
+                1
+              )
+            ])
+          }),
+          _vm._v(" "),
+          _vm.next_page
+            ? _c("div", [
+                _c(
+                  "button",
+                  {
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.getMore()
+                      }
+                    }
+                  },
+                  [_vm._v(" Carregar mais")]
                 )
-              ]
-            )
-          ])
-        })
+              ])
+            : _vm._e()
+        ],
+        2
       )
     ])
   ])
@@ -36585,25 +36588,17 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", [
-      _c("a", [
-        _c("form", [
-          _c("div", { staticClass: "col-md-auto" }, [
-            _c("div", { staticClass: "form-group" }, [
-              _c("input", {
-                staticClass: "form-control",
-                staticStyle: { "text-align": "center" },
-                attrs: {
-                  type: "text",
-                  id: "entrada",
-                  name: "pesquisar",
-                  placeholder: "pesquisar pelo nome"
-                }
-              })
-            ])
-          ])
-        ])
-      ])
+    return _c("li", { staticClass: "nav-item" }, [
+      _c("input", {
+        staticClass: "form-control search-field placeholder-shown",
+        attrs: {
+          type: "text",
+          "aria-label": "Search",
+          placeholder: "Procure ...",
+          maxlength: "20",
+          size: "50"
+        }
+      })
     ])
   },
   function() {
@@ -36823,7 +36818,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             pessoaPerdida: {
-                id_p_perdida: '',
                 nome: '',
                 sexo: '',
                 data_nasc: '',
@@ -36848,12 +36842,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         saveForm: function saveForm() {
             //                console.log('Não é possivel.')
             var app = this;
-            var newPessoaPerdida = app.pessoaPerdida;
-            axios.post('/pessoa_perdidas', newPessoaPerdida).then(function (resp) {
+            axios.post('/pessoa_perdidas', { 'nome': app.pessoaPerdida.nome, 'sexo': app.pessoaPerdida.sexo, 'd_nasc': app.pessoaPerdida.data_nasc, 'naturalidade': app.pessoaPerdida.naturalidade, 'nacionalidade': app.pessoaPerdida.nacionalidade, 'foto': app.pessoaPerdida.foto }).then(function (resp) {
+
+                // window.location.href = '/'
                 app.$router.push({ patch: '/' });
+                // app.router.push({ name: 'pessoaPerdidaComponent' })
             }).catch(function (resp) {
                 console.log(resp);
-                alert("Não criou a Pessoa Perdida");
+                alert("Não criou a Pessoa Perdida", resp);
             });
         }
     },
@@ -36968,236 +36964,219 @@ var render = function() {
               _vm._m(2),
               _vm._v(" "),
               _c("div", { staticClass: "content" }, [
-                _c(
-                  "form",
-                  {
-                    on: {
-                      submit: function($event) {
-                        _vm.saveForm()
-                      }
-                    }
-                  },
-                  [
-                    _c("div", { staticClass: "col-md-8" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Nome")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.pessoaPerdida.nome,
-                              expression: "pessoaPerdida.nome"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: { type: "text", placeholder: "nome completo" },
-                          domProps: { value: _vm.pessoaPerdida.nome },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.pessoaPerdida,
-                                "nome",
-                                $event.target.value
-                              )
-                            }
-                          }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Sexo")]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
+                _c("form", [
+                  _c("div", { staticClass: "col-md-8" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Nome")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
                           {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.pessoaPerdida.sexo,
-                                expression: "pessoaPerdida.sexo"
-                              }
-                            ],
-                            staticClass: "form-control",
-                            staticStyle: { height: "34px" },
-                            attrs: { name: "sexo" },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.pessoaPerdida,
-                                  "sexo",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.pessoaPerdida.nome,
+                            expression: "pessoaPerdida.nome"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "nome completo" },
+                        domProps: { value: _vm.pessoaPerdida.nome },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          },
-                          [
-                            _c("option", { attrs: { value: "M" } }, [
-                              _vm._v("Masculino")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "F" } }, [
-                              _vm._v("Feminino")
-                            ])
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                          _vm._v("Data de Nascimento")
-                        ]),
-                        _vm._v(" "),
-                        _c("input", {
+                            _vm.$set(
+                              _vm.pessoaPerdida,
+                              "nome",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-4" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Sexo")]),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
                           directives: [
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.pessoaPerdida.d_nasc,
-                              expression: "pessoaPerdida.d_nasc"
+                              value: _vm.pessoaPerdida.sexo,
+                              expression: "pessoaPerdida.sexo"
                             }
                           ],
                           staticClass: "form-control",
-                          attrs: {
-                            type: "date",
-                            placeholder: "DD/MM/AAAA",
-                            name: "d_nasc"
-                          },
-                          domProps: { value: _vm.pessoaPerdida.d_nasc },
+                          staticStyle: { height: "34px" },
+                          attrs: { name: "sexo" },
                           on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
                               _vm.$set(
                                 _vm.pessoaPerdida,
-                                "d_nasc",
-                                $event.target.value
+                                "sexo",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
                               )
                             }
                           }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("Nacionalidade")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.pessoaPerdida.nacionalidade,
-                              expression: "pessoaPerdida.nacionalidade"
-                            }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            placeholder: "Nacionalidade",
-                            name: "nacionalidade"
-                          },
-                          domProps: { value: _vm.pessoaPerdida.nacionalidade },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.pessoaPerdida,
-                                "nacionalidade",
-                                $event.target.value
-                              )
-                            }
+                        },
+                        [
+                          _c("option", { attrs: { value: "M" } }, [
+                            _vm._v("Masculino")
+                          ]),
+                          _vm._v(" "),
+                          _c("option", { attrs: { value: "F" } }, [
+                            _vm._v("Feminino")
+                          ])
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-4" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", { attrs: { for: "exampleInputEmail1" } }, [
+                        _vm._v("Data de Nascimento")
+                      ]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.pessoaPerdida.data_nasc,
+                            expression: "pessoaPerdida.data_nasc"
                           }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-4" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", [_vm._v("naturalidade")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model",
-                              value: _vm.pessoaPerdida.naturalidade,
-                              expression: "pessoaPerdida.naturalidade"
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "date", placeholder: "DD/MM/AAAA" },
+                        domProps: { value: _vm.pessoaPerdida.data_nasc },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
                             }
-                          ],
-                          staticClass: "form-control",
-                          attrs: {
-                            type: "text",
-                            placeholder: "naturalidade",
-                            name: "naturalidade"
-                          },
-                          domProps: { value: _vm.pessoaPerdida.naturalidade },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.pessoaPerdida,
-                                "naturalidade",
-                                $event.target.value
-                              )
-                            }
+                            _vm.$set(
+                              _vm.pessoaPerdida,
+                              "data_nasc",
+                              $event.target.value
+                            )
                           }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-md-12" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _vm._m(3),
-                        _vm._v(" "),
-                        _c("input", {
-                          staticClass: "form-control",
-                          staticStyle: { height: "43px" },
-                          attrs: { type: "file", name: "foto" },
-                          on: { change: _vm.imageChanged }
-                        })
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _vm._m(4),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "btn btn-info btn-fill pull-right",
-                        attrs: { type: "submit" }
-                      },
-                      [_vm._v("Gravar")]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "clearfix" })
-                  ]
-                )
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-4" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("Nacionalidade")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.pessoaPerdida.nacionalidade,
+                            expression: "pessoaPerdida.nacionalidade"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "Nacionalidade" },
+                        domProps: { value: _vm.pessoaPerdida.nacionalidade },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.pessoaPerdida,
+                              "nacionalidade",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-4" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("label", [_vm._v("naturalidade")]),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.pessoaPerdida.naturalidade,
+                            expression: "pessoaPerdida.naturalidade"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { type: "text", placeholder: "naturalidade" },
+                        domProps: { value: _vm.pessoaPerdida.naturalidade },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.pessoaPerdida,
+                              "naturalidade",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-12" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _vm._m(3),
+                      _vm._v(" "),
+                      _c("input", {
+                        staticClass: "form-control",
+                        staticStyle: { height: "43px" },
+                        attrs: { type: "file", name: "foto" },
+                        on: { change: _vm.imageChanged }
+                      })
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm._m(4),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-info btn-fill pull-right",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.saveForm()
+                        }
+                      }
+                    },
+                    [_vm._v("Gravar")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "clearfix" })
+                ])
               ])
             ])
           ]

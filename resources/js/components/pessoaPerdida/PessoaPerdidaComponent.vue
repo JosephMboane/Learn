@@ -18,24 +18,28 @@
                      </li>
                      <li class="nav-item">
                          <router-link to="/create" class="btn btn-default"><i class="pe-7s-add-user"></i>Pessoa Perdida</router-link>
-                     </li>
+                     </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                      <li class="nav-item">
-                         <router-link to="/image" class="btn btn-default"><i class="pe-7s-add-user"></i>Teste Image</router-link>
+<!--                         <input type="text" id="entrada" arial-label="Search" name="pesquisar" class="form-control"  placeholder="procure..." style="text-align: left" >-->
+                         <input type="text" aria-label="Search" placeholder="Procure ..." class="form-control search-field placeholder-shown" maxlength="20" size="50">
                      </li>
-                     <li>
-                         <a><form>
-                             <div class="col-md-auto" >
-                                 <div class="form-group">
-                                     <!--<label>Pesquisar</label>-->
-                                     <input type="text" id="entrada"  name="pesquisar" class="form-control"  placeholder="pesquisar pelo nome" style="text-align: center">
-                                     <!--{{--<button type="submit" class="btn btn-fill">pesquisar</button>--}}-->
+<!--                     <li class="nav-item">-->
+<!--&lt;!&ndash;                         <input type="text" id="entrada"  name="pesquisar" class="form-control"  placeholder="pesquisar pelo nome" style="text-align: center">&ndash;&gt;-->
+<!--                     </li>-->
+<!--                     <li>-->
+<!--                         <a><form>-->
+<!--                             <div class="col-md-auto" >-->
+<!--                                 <div class="form-group">-->
+<!--                                     &lt;!&ndash;<label>Pesquisar</label>&ndash;&gt;-->
+<!--                                     <input type="text" id="entrada"  name="pesquisar" class="form-control"  placeholder="pesquisar pelo nome" style="text-align: center">-->
+<!--                                     &lt;!&ndash;{{&#45;&#45;<button type="submit" class="btn btn-fill">pesquisar</button>&#45;&#45;}}&ndash;&gt;-->
 
-                                 </div>
+<!--                                 </div>-->
 
-                             </div>
-                         </form>
-                         </a>
-                     </li>
+<!--                             </div>-->
+<!--                         </form>-->
+<!--                         </a>-->
+<!--                     </li>-->
                  </ul>
 
 
@@ -65,24 +69,29 @@
                 <!--</div>-->
 
                 <div class="row">
-                    <div class="col-lg-4" v-for="pessoa_perdida, index in pessoasPerdidas">
+                    <div class="col-lg-3" v-for="pessoa_perdida, index in pessoasPerdidas">
 
                         <div class="box wow fadeInLeft" data-wow-delay="0.2s">
                             <div class="icon"><i class="fa fa-shopping-bag"></i></div>
 
-                            <p > idade : {{ teste()}}</p>
-                            <p > idade : {{ pessoa_perdida.data_nasc}}</p>
+<!--                            <p > idade : {{ teste()}}</p>-->
 
-                            <img class="img-thumbnail" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">
-                            <!--{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}-->
-                            <h4 class="title" style="margin-top: -0px; padding-bottom: 25px" id="titulo">{{ pessoa_perdida.nome }}</h4>
-                            <p class="description" style="margin-left: -35px" id="testo_historia">{{ pessoa_perdida.sexo }}</p>
-                            <p class="description" style="margin-right: -35px" id="testo_historia">{{ pessoa_perdida.designacao }}</p>
-                            <p>
+
+<!--                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px ">-->
+                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" style=" width: 80px; height: 80px; position: relative;">
+                           <!--{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}-->
+                            <h4 class="title" style="margin-top: -50px;padding-bottom: 20px" id="titulo">{{ pessoa_perdida.nome }}</h4>
+<!--                            <p class="description" style="margin-left: -40px" id="testo_historia">Sexo:{{ pessoa_perdida.sexo }}</p>-->
+                            <p class="description" style="margin-right: -35px" id="testo_historia" title="Centro Onde esta localizado">{{ pessoa_perdida.designacao }}</p>
+                              <p > idade : {{ getAge(pessoa_perdida.data_nasc) }}</p>
+<!--                              <p > idade : {{ // pessoa_perdida.age }}</p>-->
 <!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
                                  <router-link to="/modal" class="btn btn-default">Ver Mais</router-link>
                             </p>
                         </div>
+                    </div>
+                    <div v-if="next_page">
+                        <button type="button" @click="getMore()"> Carregar mais</button>
                     </div>
 
 
@@ -103,7 +112,7 @@
                     adress: '',
             contacto_responsavel: '',
             created_at: '',
-            data_nasc: '04/04/2019',
+            data_nasc: '',
             designacao: '',
             estado: '',
             foto: '',
@@ -124,24 +133,16 @@
             user_id: '',
                 }),
                 pessoasPerdidas:[],
+                next_page: null,
             }
             // return {
             //     pessoa_perdidas:[]
             // }
         },
         mounted() {
-            var app = this;
-            axios.get('/pessoa_perdidas')
-                .then(function (resp) {
-                    app.pessoasPerdidas = resp.data.data;
-                    console.log(app.pessoasPerdidas );
-                    console.log(app.pessoa_perdidas.data_nasc );
-                    console.log(app.pessoa_perdidas.nome_foto );
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Upsi não foi possivel carregar os dados!");
-                });
+            var l = this;
+            l.getPessoasPerdidas();
+
         },
        methods: {
            // deleteEntry(id, index) {
@@ -157,7 +158,20 @@
            //             });
            //     }
            // }
+            getPessoasPerdidas(){
+                var app = this;
+                axios.get('/pessoa_perdidas')
+                    .then(function (resp) {
+                        app.pessoasPerdidas = resp.data.data;
+                        console.log(app.pessoasPerdidas );
+                        app.next_page = resp.data.next_page_url
 
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Upsi não foi possivel carregar os dados!");
+                    });
+            },
            getProfilePhoto(){
 
                let f = "/imgs_p_perdidas/"+ this.pessoa_perdidas.nome_foto ;
@@ -166,18 +180,23 @@
 
            },
            getAge( dateString) {
-               // var b = this.pessoa_perdidas.data_nasc;
-               var b = this.data_nasc;
-
-
-                   b = +new Date(dateString);
-                   return ~~((Date.now() - b) / (31557600000));
-               // return b ;
+               var b = new Date();
+               let a = new Date(dateString)
+               return b.getFullYear() - a.getFullYear()
            },
-           teste(){
-               var n = this.pessoa_perdidas.data_nasc;
-               return n;
+           getMore(){
+               var app = this
+               axios.get(app.next_page)
+                   .then(function (resp) {
+                       app.pessoasPerdidas = app.pessoasPerdidas.concat(resp.data.data)
+                       // console.log(resp )
+                       app.next_page = resp.data.next_page_url
 
+                   })
+                   .catch(function (resp) {
+                       console.log(resp);
+                       alert("Upsi não foi possivel carregar os dados!");
+                   });
            }
        }
     }

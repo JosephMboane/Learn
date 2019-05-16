@@ -80,7 +80,7 @@
     @foreach($centro_acolhimento as $centro)
     <div class="col-sm-4">
         <div class="card" style="width: 15rem; border-radius: 15px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);margin-left: 20px">
-        <img class="card-img-top rounded-circle" src="/imgs_p_perdidas/{{$centro->foto}}" style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
+        <img class="card-img-top rounded-circle" src="/imgs_p_perdidas/{{$centro->foto_centro}}" style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
             <div class="card-body" id="pesquisar">
                 <h2 class="">{{$centro->designacao}}</h2>
                 

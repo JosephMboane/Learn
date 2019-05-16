@@ -71,9 +71,8 @@ class pessoaPerdidaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePessoaPerdida $request)
+    public function store(Request $request)
     {
-
         $p_perdida = new Pessoa_perdida();
         $foto = new foto();
 
@@ -82,8 +81,14 @@ class pessoaPerdidaController extends Controller
         $p_perdida->data_nasc = $request->input('d_nasc');
         $p_perdida->nacionalidade = $request->input('nacionalidade');
         $p_perdida->naturalidade = $request->input('naturalidade');
-        $p_perdida->id_foto = $foto->guardar_foto($request);
+//        $file = $request->file('foto');
+//        $name = time().$file->getClientOriginalName();
+//        $file->move(public_path().'/imgs_p_perdidas/',$name);
+//        $foto->nome_foto=$name;
+//        $foto->save();
+//        $p_perdida->id_foto = $foto->id_foto;
         $p_perdida->estado = 1;
+        $p_perdida->id_foto = 1;
         $p_perdida->save();
         $id=$p_perdida->id_p_perdida;
 
