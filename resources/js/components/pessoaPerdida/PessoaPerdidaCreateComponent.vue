@@ -51,11 +51,11 @@
                         </div>
 
                         <div class="content">
-                            <form  >
+                            <form class="pessoa-perdida" >
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <label>Nome</label>
-                                        <input type="text" class="form-control"  v-model="pessoaPerdida.nome" placeholder="nome completo">
+                                        <input name="nome" type="text" class="form-control"  v-model="pessoaPerdida.nome" placeholder="nome completo">
                                     </div>
                                 </div>
 
@@ -72,14 +72,14 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Data de Nascimento</label>
-                                        <input type="date" v-model="pessoaPerdida.data_nasc" class="form-control" placeholder="DD/MM/AAAA" >
+                                        <input name="data_nasc" type="date" v-model="pessoaPerdida.data_nasc" class="form-control" placeholder="DD/MM/AAAA" >
                                     </div>
                                 </div>
 
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Nacionalidade</label>
-                                        <input type="text" class="form-control" placeholder="Nacionalidade" v-model="pessoaPerdida.nacionalidade"  >
+                                        <input name="nacionalidade" type="text" class="form-control" placeholder="Nacionalidade" v-model="pessoaPerdida.nacionalidade"  >
 
                                     </div>
                                 </div>
@@ -88,7 +88,7 @@
                                     <div class="form-group">
                                         <label>naturalidade</label>
 
-                                        <input type="text" class="form-control" placeholder="naturalidade" v-model="pessoaPerdida.naturalidade"  >
+                                        <input type="text" name="naturalidade" class="form-control" placeholder="naturalidade" v-model="pessoaPerdida.naturalidade"  >
 
                                     </div>
                                 </div>
@@ -96,7 +96,8 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h4><i class="pe-7s-cloud-upload"></i> <label>Foto</label></h4>
-                                        <input type="file" @change="imageChanged" name="foto"  class="form-control" style="height: 43px">
+                                        <input type="file" name="foto"  class="form-control" style="height: 43px">
+<!--                                        <input type="file" @change="imageChanged" name="foto"  class="form-control" style="height: 43px">-->
                                     </div>
                                 </div>
 
@@ -136,6 +137,7 @@
 </template>
 
 <script>
+
     export default {
         mounted() {
             console.log('Não é possivel.')
@@ -164,12 +166,15 @@
             },
             saveForm() {
 //                console.log('Não é possivel.')
+                let form = document.querySelector('.pessoa-perdida');
+                let formData = new FormData(form);
                 var app = this;
-                axios.post('/pessoa_perdidas', {'nome': app.pessoaPerdida.nome, 'sexo': app.pessoaPerdida.sexo, 'd_nasc': app.pessoaPerdida.data_nasc, 'naturalidade': app.pessoaPerdida.naturalidade, 'nacionalidade': app.pessoaPerdida.nacionalidade, 'foto': app.pessoaPerdida.foto})
+                // var tmp = {'nome': app.pessoaPerdida.nome, 'sexo': app.pessoaPerdida.sexo, 'd_nasc': app.pessoaPerdida.data_nasc, 'naturalidade': app.pessoaPerdida.naturalidade, 'nacionalidade': app.pessoaPerdida.nacionalidade, 'foto': app.pessoaPerdida.foto};
+                axios.post('/pessoa_perdidas', formData)
                     .then(function (resp) {
 
                         // window.location.href = '/'
-                        app.$router.push({patch: '/'});
+                        app.$router.push('/');
                         // app.router.push({ name: 'pessoaPerdidaComponent' })
                     })
                     .catch(function (resp) {

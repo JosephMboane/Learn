@@ -2,6 +2,7 @@ import PessoaPerdidaComponent from '../components/pessoaPerdida/PessoaPerdidaCom
 import PessoaPerdidaCreateComponent from '../components/pessoaPerdida/PessoaPerdidaCreateComponent.vue';
 import ModalPessoaPerdidaComponent from "../components/pessoaPerdida/ModalPessoaPerdidaComponent";
 import ImageComponent from "../components/pessoaPerdida/ImageComponent";
+import PessoaPerdidaContributo from "../components/pessoaPerdida/PessoaPerdidaContributo";
 export default [
         {
 
@@ -29,6 +30,11 @@ export default [
         path: '/image',
         component:ImageComponent,
         name:   'imageComponent'
+        },
+        {
+        path: '/contribuir',
+        component:PessoaPerdidaContributo,
+        name:   'PessoaPerdidaContributo'
         },
 
     ]

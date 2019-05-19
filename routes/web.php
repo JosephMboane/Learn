@@ -105,5 +105,7 @@ Route::get('/', function () {
 });
 Route::get('pessoa_perdidas','pessoaPerdidaController@index_vue');
 Route::post('pessoa_perdidas','pessoaPerdidaController@store');
+Route::get('/contribuir','contributoController@store');
+Route::get('/contribuir','contributoController@edit');
 Route::get('pessoa_idade','Pessoa_perdida@calcularIdade');
 Route::get('pessoa_tempo','Pessoa_perdida@calcularDias');

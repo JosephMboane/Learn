@@ -20,7 +20,7 @@ class contributoController extends Controller
     }
     public function index()
     {
-        return "gfwefe";
+        return view('pessoa_perdida.contributos');
     }
 
     /**

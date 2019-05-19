@@ -7,7 +7,7 @@ use Laravel_Learn\Http\Requests\StorePessoaPerdida;
 use Laravel_Learn\pessoa_perdida;
 use Illuminate\Support\Facades\Storage;
 use Laravel_Learn\Caso;
-use Laravel_Learn\foto;
+use Laravel_Learn\Foto;
 use Illuminate\Support\Facades\DB;
 use Laravel_Learn\User;
 
@@ -45,8 +45,8 @@ class pessoaPerdidaController extends Controller
             ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
-            ->orderBy('id_p_perdida','desc')
-            ->paginate(12);
+            ->orderBy('id_p_perdida','asc')
+            ->paginate(8);
 //        $pessoa_perdida = DB::table('pessoa_perdida')->where('pessoa_perdida.estado', '=',1)
 //            ->orderBy('id_p_perdida','desc')
 //            ->paginate(6);
@@ -74,7 +74,6 @@ class pessoaPerdidaController extends Controller
     public function store(Request $request)
     {
         $p_perdida = new Pessoa_perdida();
-        $foto = new foto();
 
         $p_perdida->nome = $request->input('nome');
         $p_perdida->sexo = $request->input('sexo');
@@ -87,8 +86,9 @@ class pessoaPerdidaController extends Controller
 //        $foto->nome_foto=$name;
 //        $foto->save();
 //        $p_perdida->id_foto = $foto->id_foto;
+        $p_perdida->id_foto = $this->guardar_foto($request);
         $p_perdida->estado = 1;
-        $p_perdida->id_foto = 1;
+//        $p_perdida->id_foto = 1;
         $p_perdida->save();
         $id=$p_perdida->id_p_perdida;
 
@@ -193,6 +193,19 @@ class pessoaPerdidaController extends Controller
 
             echo json_encode($data);
         }
+    }
+
+    public function guardar_foto( $request){
+        $foto = new Foto();
+
+        $file = $request->file('foto');
+        $name = time() . $file->getClientOriginalName();
+        $file->move(public_path().'/imgs_p_perdidas/',$name);
+
+        $foto->nome_foto=$name;
+        $foto->save();
+
+        return $foto->id_foto;
     }
 
 
