@@ -29,7 +29,7 @@ class pessoaPerdidaController extends Controller
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
             ->orderBy('id_p_perdida','desc')
-            ->paginate(6);
+            ->paginate(8);
 
 //            dd($pessoa_perdida);
         return view('pessoa_perdida.index', compact('pessoa_perdida'));
@@ -172,27 +172,18 @@ class pessoaPerdidaController extends Controller
     }
     public function pesquisar2(Request $request)
     {
-        if ($request->ajax()) {
-            $output = '';
-            $query = $request->get('query');
-            if ($query != '') {
-                $data = DB::table('pessoa_perdida')
-                    ->where('nome', 'like', '%' . $query . '%')
-                    ->orWhere('sexo', 'like', '%' . $query . '%')
-                    ->orWhere('nacionalidade', 'like', '%' . $query . '%')
-                    ->orWhere('naturalidade', 'like', '%' . $query . '%')
-                    ->orderBy('id_p_perdida', 'desc')
-                    ->get();
+        $pesquisar = $request->input('pesquisar');
 
 
-            }
-//            $data = array(
-//                'table_data' => $output,
-//
-//            );
+        if($pesquisar){
+            $pessoa_perdida = Pessoa_perdida::where('nome','LIKE','%'. $pesquisar . '%')
+                ->orWhere('nacionalidade', 'LIKE', '%' . $pesquisar .'%')
+                ->orWhere('sexo', 'LIKE', '%' . $pesquisar .'%')
+                ->get();
 
-            echo json_encode($data);
         }
+        dd($pesquisar);
+        return $pesquisar;
     }
 
     public function guardar_foto( $request){

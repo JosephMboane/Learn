@@ -21,7 +21,8 @@
                         </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <li class="nav-item">
                             <!--                         <input type="text" id="entrada" arial-label="Search" name="pesquisar" class="form-control"  placeholder="procure..." style="text-align: left" >-->
-                            <input type="text" aria-label="Search" placeholder="Procure ..." class="form-control search-field placeholder-shown" maxlength="20" size="50">
+                            <input type="text" @keyup.enter="filtoPessoas" v-model="search" aria-label="Search" placeholder="Procure ..." class="form-control search-field placeholder-shown" maxlength="20" size="50">
+<!--                            <button @click.prevent="searchPessoaPesrdida()" class="btn btn-primary"><i class="fa fa-search"></i></button>-->
                         </li>
 
                     </ul>
@@ -33,9 +34,10 @@
         </div>
 
         <div class="container">
-
+<!--            <div v-if="showSearch==true">-->
             <div class="row">
-                <div class="col-lg-3" v-for="pessoa_perdida, index in pessoasPerdidas">
+<!--                <div class="col-lg-3" v-for="pessoa_perdida, index in pessoasPerdidas">-->
+                <div class="col-lg-3" v-for="pessoa_perdida in filtoPessoas">
 
                     <div class="box wow fadeInLeft" data-wow-delay="0.2s">
                         <div class="icon"><i class="fa fa-shopping-bag"></i></div>
@@ -60,12 +62,18 @@
 
                     </div>
                 </div>
-                <div v-if="next_page" >
-                    <button type="button" maxlength="20" size="50" class="btn btn-default" @click="getMore()"> Carregar mais</button>
-                </div>
 
 
+                <!--                <div v-if="next_page"  >-->
+                <!--                    <button type="button" maxlength="20" size="50" class="btn btn-default" @click="getMore()" > Carregar mais</button>-->
+                <!--                </div>-->
             </div>
+            <div id="about" class="row align-items-center  justify-content-center" style="margin-bottom: 10px;">
+            <div v-if="next_page"  class="col-12 col-sm-6"><button id="getMoreMbl" type="button" class="btn btn-block" @click="getMore()" >
+                Carregar mais
+            </button></div>
+            </div>
+
             <br><br>
 
         </div>
@@ -105,6 +113,7 @@
                 }),
                 pessoasPerdidas:[],
                 next_page: null,
+                search:''
             }
             // return {
             //     pessoa_perdidas:[]
@@ -113,6 +122,15 @@
         mounted() {
             var l = this;
             l.getPessoasPerdidas();
+
+        },
+        computed:{
+            filtoPessoas:function(){
+                return this.pessoasPerdidas.filter((p)=>{
+                   return p.nome.match(this.search);
+
+                });
+            }
 
         },
         methods: {
@@ -129,6 +147,21 @@
             //             });
             //     }
             // }
+            searchit(){
+                // console.log("Pesquisando ...");
+                Fire.$on('searching',() =>{
+                    // let query = this.$parent.search;
+                    let query = '';
+                    axios.get('pessoa_perdidas/search?pesquisar='+ query)
+                        .then((data) => {
+                            this.pessoasPerdidas = data.data;
+                        })
+                        .catch((err) =>{
+                            console.log(err)
+                        })
+                });
+                console.log("Pesquisando ...");
+            },
             getPessoasPerdidas(){
                 var app = this;
                 axios.get('/pessoa_perdidas')

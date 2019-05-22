@@ -9,6 +9,8 @@ require('./bootstrap');
 import Router from './router/basic'
 
 window.Vue = require('vue');
+window.Fire = new Vue();
+
 
 import VueRouter from 'vue-router';
 
@@ -53,5 +55,13 @@ const router = new VueRouter({
 })
 
 const app = new Vue({
-    router:router
+    router:router,
+    data:{
+        search:''
+    },
+    methods:{
+        searchit(){
+            Fire.$emit('seaching');
+        }
+    }
 }).$mount('#app')

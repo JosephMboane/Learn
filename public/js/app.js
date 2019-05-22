@@ -14322,6 +14322,7 @@ __webpack_require__(16);
 
 
 window.Vue = __webpack_require__(60);
+window.Fire = new Vue();
 
 
 
@@ -14362,11 +14363,19 @@ window.Vue.use(__WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]);
 //     el: '#app'
 // });
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
-  routes: __WEBPACK_IMPORTED_MODULE_0__router_basic__["a" /* default */]
+    routes: __WEBPACK_IMPORTED_MODULE_0__router_basic__["a" /* default */]
 });
 
 var app = new Vue({
-  router: router
+    router: router,
+    data: {
+        search: ''
+    },
+    methods: {
+        searchit: function searchit() {
+            Fire.$emit('seaching');
+        }
+    }
 }).$mount('#app');
 
 /***/ }),
@@ -36589,6 +36598,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -36619,7 +36636,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 user_id: ''
             },
             pessoasPerdidas: [],
-            next_page: null
+            next_page: null,
+            search: ''
             // return {
             //     pessoa_perdidas:[]
             // }
@@ -36630,6 +36648,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         l.getPessoasPerdidas();
     },
 
+    computed: {
+        filtoPessoas: function filtoPessoas() {
+            var _this = this;
+
+            return this.pessoasPerdidas.filter(function (p) {
+                return p.nome.match(_this.search);
+            });
+        }
+
+    },
     methods: {
         // deleteEntry(id, index) {
         //     if (confirm("Do you really want to delete it?")) {
@@ -36644,6 +36672,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //             });
         //     }
         // }
+        searchit: function searchit() {
+            var _this2 = this;
+
+            // console.log("Pesquisando ...");
+            Fire.$on('searching', function () {
+                // let query = this.$parent.search;
+                var query = '';
+                axios.get('pessoa_perdidas/search?pesquisar=' + query).then(function (data) {
+                    _this2.pessoasPerdidas = data.data;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            });
+            console.log("Pesquisando ...");
+        },
         getPessoasPerdidas: function getPessoasPerdidas() {
             var app = this;
             axios.get('/pessoa_perdidas').then(function (resp) {
@@ -36752,7 +36795,51 @@ var render = function() {
                     1
                   ),
                   _vm._v("      \n                        "),
-                  _vm._m(1)
+                  _c("li", { staticClass: "nav-item" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.search,
+                          expression: "search"
+                        }
+                      ],
+                      staticClass:
+                        "form-control search-field placeholder-shown",
+                      attrs: {
+                        type: "text",
+                        "aria-label": "Search",
+                        placeholder: "Procure ...",
+                        maxlength: "20",
+                        size: "50"
+                      },
+                      domProps: { value: _vm.search },
+                      on: {
+                        keyup: function($event) {
+                          if (
+                            !("button" in $event) &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.filtoPessoas($event)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.search = $event.target.value
+                        }
+                      }
+                    })
+                  ])
                 ]
               )
             ]
@@ -36765,114 +36852,116 @@ var render = function() {
       _c(
         "div",
         { staticClass: "row" },
-        [
-          _vm._l(_vm.pessoasPerdidas, function(pessoa_perdida, index) {
-            return _c("div", { staticClass: "col-lg-3" }, [
-              _c(
-                "div",
-                {
-                  staticClass: "box wow fadeInLeft",
-                  attrs: { "data-wow-delay": "0.2s" }
-                },
-                [
-                  _vm._m(2, true),
-                  _vm._v(" "),
-                  _c("img", {
-                    staticClass: "card-img-top rounded-circle ml-5",
-                    staticStyle: {
-                      width: "80px",
-                      height: "80px",
-                      TOP: "10PX",
-                      position: "relative",
-                      "margin-top": "-20px",
-                      "margin-bottom": "20px"
-                    },
+        _vm._l(_vm.filtoPessoas, function(pessoa_perdida) {
+          return _c("div", { staticClass: "col-lg-3" }, [
+            _c(
+              "div",
+              {
+                staticClass: "box wow fadeInLeft",
+                attrs: { "data-wow-delay": "0.2s" }
+              },
+              [
+                _vm._m(1, true),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "card-img-top rounded-circle ml-5",
+                  staticStyle: {
+                    width: "80px",
+                    height: "80px",
+                    TOP: "10PX",
+                    position: "relative",
+                    "margin-top": "-20px",
+                    "margin-bottom": "20px"
+                  },
+                  attrs: {
+                    src: "/imgs_p_perdidas/" + pessoa_perdida.nome_foto,
+                    alt: "Generic placeholder image"
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    staticClass: "description",
+                    staticStyle: { "text-align": "center" }
+                  },
+                  [_vm._v(_vm._s(pessoa_perdida.nome))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    staticClass: "description",
+                    staticStyle: { "text-align": "center" },
                     attrs: {
-                      src: "/imgs_p_perdidas/" + pessoa_perdida.nome_foto,
-                      alt: "Generic placeholder image"
+                      id: "testo_historia",
+                      title: "Centro Onde esta localizado"
                     }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "h5",
-                    {
-                      staticClass: "description",
-                      staticStyle: { "text-align": "center" }
-                    },
-                    [_vm._v(_vm._s(pessoa_perdida.nome))]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "h5",
-                    {
-                      staticClass: "description",
-                      staticStyle: { "text-align": "center" },
-                      attrs: {
-                        id: "testo_historia",
-                        title: "Centro Onde esta localizado"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "Localiza-se: " + _vm._s(pessoa_perdida.designacao)
-                      )
-                    ]
-                  ),
-                  _vm._v(" "),
-                  _c("h5", { staticStyle: { "text-align": "center" } }, [
-                    _vm._v(
-                      " idade : " + _vm._s(_vm.getAge(pessoa_perdida.data_nasc))
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("h5", { staticStyle: { "text-align": "center" } }, [
-                    _vm._v(
-                      " Dias : " +
-                        _vm._s(_vm.getTime(pessoa_perdida.created_at))
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("hr"),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    { staticClass: "btn btn-default", attrs: { to: "/modal" } },
-                    [_vm._v("Localizaçao")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "btn btn-default",
-                      attrs: { to: "/contribuir" }
-                    },
-                    [_vm._v("Contribuir")]
+                  },
+                  [_vm._v("Localiza-se: " + _vm._s(pessoa_perdida.designacao))]
+                ),
+                _vm._v(" "),
+                _c("h5", { staticStyle: { "text-align": "center" } }, [
+                  _vm._v(
+                    " idade : " + _vm._s(_vm.getAge(pessoa_perdida.data_nasc))
                   )
-                ],
-                1
-              )
-            ])
-          }),
-          _vm._v(" "),
+                ]),
+                _vm._v(" "),
+                _c("h5", { staticStyle: { "text-align": "center" } }, [
+                  _vm._v(
+                    " Dias : " + _vm._s(_vm.getTime(pessoa_perdida.created_at))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  { staticClass: "btn btn-default", attrs: { to: "/modal" } },
+                  [_vm._v("Localizaçao")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { to: "/contribuir" }
+                  },
+                  [_vm._v("Contribuir")]
+                )
+              ],
+              1
+            )
+          ])
+        })
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "row align-items-center  justify-content-center",
+          staticStyle: { "margin-bottom": "10px" },
+          attrs: { id: "about" }
+        },
+        [
           _vm.next_page
-            ? _c("div", [
+            ? _c("div", { staticClass: "col-12 col-sm-6" }, [
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-default",
-                    attrs: { type: "button", maxlength: "20", size: "50" },
+                    staticClass: "btn btn-block",
+                    attrs: { id: "getMoreMbl", type: "button" },
                     on: {
                       click: function($event) {
                         _vm.getMore()
                       }
                     }
                   },
-                  [_vm._v(" Carregar mais")]
+                  [_vm._v("\n                Carregar mais\n            ")]
                 )
               ])
             : _vm._e()
-        ],
-        2
+        ]
       ),
       _vm._v(" "),
       _c("br"),
@@ -36900,23 +36989,6 @@ var staticRenderFns = [
         )
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("input", {
-        staticClass: "form-control search-field placeholder-shown",
-        attrs: {
-          type: "text",
-          "aria-label": "Search",
-          placeholder: "Procure ...",
-          maxlength: "20",
-          size: "50"
-        }
-      })
-    ])
   },
   function() {
     var _vm = this

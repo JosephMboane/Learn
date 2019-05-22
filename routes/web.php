@@ -109,3 +109,4 @@ Route::get('/contribuir','contributoController@store');
 Route::get('/contribuir','contributoController@edit');
 Route::get('pessoa_idade','Pessoa_perdida@calcularIdade');
 Route::get('pessoa_tempo','Pessoa_perdida@calcularDias');
+Route::get('pessoa_perdidas/search', 'pessoaPerdidaController@pesquisar2');
