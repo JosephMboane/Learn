@@ -3,6 +3,7 @@ import PessoaPerdidaCreateComponent from '../components/pessoaPerdida/PessoaPerd
 import ModalPessoaPerdidaComponent from "../components/pessoaPerdida/ModalPessoaPerdidaComponent";
 import ImageComponent from "../components/pessoaPerdida/ImageComponent";
 import PessoaPerdidaContributo from "../components/pessoaPerdida/PessoaPerdidaContributo";
+import PessoaPerdidaAchadaComponent from "../components/pessoaPerdida/PessoaPerdidaAchadaComponent";
 export default [
         {
 
@@ -35,6 +36,12 @@ export default [
         path: '/contribuir',
         component:PessoaPerdidaContributo,
         name:   'PessoaPerdidaContributo'
+        },
+        {
+        path: '/pessoas-achadas',
+        component:PessoaPerdidaAchadaComponent,
+        name     :'pessoaPerdidaAchadaComponent'
+
         },
 
     ]

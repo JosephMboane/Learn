@@ -377,33 +377,6 @@ module.exports = {
 /* 1 */
 /***/ (function(module, exports) {
 
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports) {
-
 /* globals __VUE_SSR_CONTEXT__ */
 
 // IMPORTANT: Do NOT use ES2015 features in this file.
@@ -507,6 +480,33 @@ module.exports = function normalizeComponent (
     options: options
   }
 }
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
 
 
 /***/ }),
@@ -3154,7 +3154,7 @@ Popper.Defaults = Defaults;
 /* harmony default export */ __webpack_exports__["default"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 5 */
@@ -14300,7 +14300,7 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(64);
+module.exports = __webpack_require__(67);
 
 
 /***/ }),
@@ -14310,7 +14310,7 @@ module.exports = __webpack_require__(64);
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__router_basic__ = __webpack_require__(39);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(66);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -14321,7 +14321,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __webpack_require__(16);
 
 
-window.Vue = __webpack_require__(60);
+window.Vue = __webpack_require__(63);
 window.Fire = new Vue();
 
 
@@ -31552,7 +31552,7 @@ if (token) {
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(18)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(18)(module)))
 
 /***/ }),
 /* 18 */
@@ -36435,6 +36435,9 @@ module.exports = function spread(callback) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_pessoaPerdida_ImageComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_pessoaPerdida_ImageComponent__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_pessoaPerdida_PessoaPerdidaContributo__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_pessoaPerdida_PessoaPerdidaContributo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_pessoaPerdida_PessoaPerdidaContributo__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_pessoaPerdida_PessoaPerdidaAchadaComponent__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_pessoaPerdida_PessoaPerdidaAchadaComponent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_pessoaPerdida_PessoaPerdidaAchadaComponent__);
+
 
 
 
@@ -36467,6 +36470,11 @@ module.exports = function spread(callback) {
         path: '/contribuir',
         component: __WEBPACK_IMPORTED_MODULE_4__components_pessoaPerdida_PessoaPerdidaContributo___default.a,
         name: 'PessoaPerdidaContributo'
+}, {
+        path: '/pessoas-achadas',
+        component: __WEBPACK_IMPORTED_MODULE_5__components_pessoaPerdida_PessoaPerdidaAchadaComponent___default.a,
+        name: 'pessoaPerdidaAchadaComponent'
+
 }]);
 
 /***/ }),
@@ -36474,7 +36482,7 @@ module.exports = function spread(callback) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(41)
 /* template */
@@ -36522,6 +36530,15 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -36698,6 +36715,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 alert("Upsi não foi possivel carregar os dados!");
             });
         },
+        getContribuir: function getContribuir(id_p_perdida, index) {
+            var app = this;
+            axios.patch('/pessoa_perdidas' + id_p_perdida).then(function (resp) {
+                app.pessoasPerdidas = resp.data.data;
+                console.log(app.pessoasPerdidas);
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
+        },
         getProfilePhoto: function getProfilePhoto() {
 
             var f = "/imgs_p_perdidas/" + this.pessoa_perdidas.nome_foto;
@@ -36770,6 +36798,25 @@ var render = function() {
                         [
                           _c("i", { staticClass: "pe-7s-home" }),
                           _vm._v("Pagina Inicial")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item active" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-default",
+                          attrs: { to: "/pessoas-achadas" }
+                        },
+                        [
+                          _c("i", { staticClass: "pe-7s-home" }),
+                          _vm._v("Pessoas Achadas")
                         ]
                       )
                     ],
@@ -36928,6 +36975,27 @@ var render = function() {
                     attrs: { to: "/contribuir" }
                   },
                   [_vm._v("Contribuir")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-xs btn-danger",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        _vm.getContribuir(
+                          _vm.pessoa_perdidas.id_p_perdida,
+                          _vm.index
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Contribuir\n                        "
+                    )
+                  ]
                 )
               ],
               1
@@ -37013,7 +37081,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(44)
 /* template */
@@ -37199,6 +37267,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -37239,7 +37310,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/pessoa_perdidas', formData).then(function (resp) {
 
                 // window.location.href = '/'
-                app.$router.push('/');
+                app.$router.push({ name: 'pessoaPerdidaComponent' });
+                // app.$router.push('/');
                 // app.router.push({ name: 'pessoaPerdidaComponent' })
             }).catch(function (resp) {
                 console.log(resp);
@@ -37297,6 +37369,25 @@ var render = function() {
                           [
                             _c("i", { staticClass: "pe-7s-home" }),
                             _vm._v("Pagina Inicial")
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "li",
+                      { staticClass: "nav-item active" },
+                      [
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "btn btn-default",
+                            attrs: { to: "/pessoas-achadas" }
+                          },
+                          [
+                            _c("i", { staticClass: "pe-7s-home" }),
+                            _vm._v("Pessoas Achadas")
                           ]
                         )
                       ],
@@ -37463,7 +37554,7 @@ var render = function() {
                         ],
                         staticClass: "form-control",
                         attrs: {
-                          name: "data_nasc",
+                          name: "d_nasc",
                           type: "date",
                           placeholder: "DD/MM/AAAA"
                         },
@@ -37692,7 +37783,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(47)
 /* template */
@@ -37830,7 +37921,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(50)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(53)
 /* template */
@@ -38088,7 +38179,7 @@ function injectStyle (ssrContext) {
   if (disposed) return
   __webpack_require__(56)
 }
-var normalizeComponent = __webpack_require__(2)
+var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(58)
 /* template */
@@ -38165,7 +38256,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -38261,44 +38352,65 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            pessoa_perdidas: {
+                adress: '',
+                contacto_responsavel: '',
+                created_at: '',
+                data_nasc: '',
+                designacao: '',
+                estado: '',
+                foto: '',
+                id_foto: '',
+                id_localizacao: '',
+                id_p_perdida: '',
+                lat: '',
+                lng: '',
+                nacionalidade: '',
+                naturalidade: '',
+                nome: '',
+                nome_foto: '',
+                nome_localizacao: '',
+                nome_responsavel: '',
+                sexo: '',
+                type: '',
+                updated_at: '',
+                user_id: ''
+            },
+            pessoasPerdidas: [],
+            next_page: null
+        };
+    },
+    methods: {
+        getPessoasPerdidas: function getPessoasPerdidas(id_p_perdida, index) {
+            var app = this;
+            axios.patch('/pessoa_perdidas' + id_p_perdida).then(function (resp) {
+                app.pessoasPerdidas = resp.data.data;
+                console.log(app.pessoasPerdidas);
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
+        },
+        getAge: function getAge(dateString) {
+            var b = new Date();
+            var a = new Date(dateString);
+            return b.getFullYear() - a.getFullYear();
+        },
+        getTime: function getTime(dateString) {
+
+            var b = new Date();
+            var a = new Date(dateString);
+            return b.getMonth() - a.getMonth();
+        }
+    },
     mounted: function mounted() {
         console.log('Não é possivel.');
+        this.getPessoasPerdidas();
     }
 });
 
@@ -38401,75 +38513,100 @@ var render = function() {
                         staticStyle: { float: "right" }
                       },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card",
-                            staticStyle: {
-                              width: "25rem",
-                              "border-radius": "2px",
-                              "box-shadow": "0 4px 10px 0 rgba(0, 0, 0, 0)"
-                            }
-                          },
-                          [
-                            _c("center", [
-                              _c("img", {
-                                staticClass: "card-img-top rounded-circle",
-                                staticStyle: {
-                                  width: "180px",
-                                  height: "180px",
-                                  TOP: "10PX",
-                                  position: "relative"
-                                },
-                                attrs: { src: "/imgs_p_perdidas/" }
-                              }),
-                              _vm._v(" "),
-                              _c(
-                                "div",
-                                {
-                                  staticClass: "card-body",
-                                  attrs: { id: "pesquisar" }
-                                },
-                                [
-                                  _c("h2", { staticStyle: { color: "gray" } }, [
-                                    _vm._v("Nome")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("h5", { staticClass: "card-text" }, [
-                                    _vm._v(" anos de idade")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("h5", { staticClass: "card-text" }, [
-                                    _c("i", { staticClass: "pe-7s-date" }),
-                                    _vm._v(" Dias")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "h5",
-                                    {
-                                      staticClass: "card-text",
-                                      staticStyle: { color: "gray" }
-                                    },
-                                    [_vm._v("Nacionalide")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "h5",
-                                    {
-                                      staticClass: "card-text",
-                                      staticStyle: { color: "gray" }
-                                    },
-                                    [_vm._v("Naturalidade")]
-                                  )
-                                ]
-                              )
-                            ])
-                          ],
-                          1
-                        ),
+                        _vm._l(_vm.pessoasPerdidas, function(
+                          pessoa_perdida,
+                          index
+                        ) {
+                          return _c(
+                            "div",
+                            {
+                              staticClass: "card",
+                              staticStyle: {
+                                width: "25rem",
+                                "border-radius": "2px",
+                                "box-shadow": "0 4px 10px 0 rgba(0, 0, 0, 0)"
+                              }
+                            },
+                            [
+                              _c("center", [
+                                _c("img", {
+                                  staticClass: "card-img-top rounded-circle",
+                                  staticStyle: {
+                                    width: "180px",
+                                    height: "180px",
+                                    TOP: "10PX",
+                                    position: "relative"
+                                  },
+                                  attrs: {
+                                    src:
+                                      "/imgs_p_perdidas/" +
+                                      pessoa_perdida.nome_foto
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass: "card-body",
+                                    attrs: { id: "pesquisar" }
+                                  },
+                                  [
+                                    _c(
+                                      "h2",
+                                      { staticStyle: { color: "gray" } },
+                                      [_vm._v(_vm._s(pessoa_perdida.nome))]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("h5", { staticClass: "card-text" }, [
+                                      _vm._v(
+                                        " idade : " +
+                                          _vm._s(
+                                            _vm.getAge(pessoa_perdida.data_nasc)
+                                          )
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("h5", { staticClass: "card-text" }, [
+                                      _c("i", { staticClass: "pe-7s-date" }),
+                                      _vm._v(" Dias")
+                                    ]),
+                                    _vm._v(" "),
+                                    _c(
+                                      "h5",
+                                      {
+                                        staticClass: "card-text",
+                                        staticStyle: { color: "gray" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(pessoa_perdida.nacionalidade)
+                                        )
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "h5",
+                                      {
+                                        staticClass: "card-text",
+                                        staticStyle: { color: "gray" }
+                                      },
+                                      [
+                                        _vm._v(
+                                          _vm._s(pessoa_perdida.naturalidade)
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                )
+                              ])
+                            ],
+                            1
+                          )
+                        }),
                         _vm._v(" "),
                         _c("div", { staticClass: "clearfix" })
-                      ]
+                      ],
+                      2
                     )
                   ])
                 ])
@@ -38569,6 +38706,605 @@ if (false) {
 
 /***/ }),
 /* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(61)
+/* template */
+var __vue_template__ = __webpack_require__(62)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/pessoaPerdida/PessoaPerdidaAchadaComponent.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-afc39b62", Component.options)
+  } else {
+    hotAPI.reload("data-v-afc39b62", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 61 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+
+        return {
+            pessoa_perdidas: {
+                adress: '',
+                contacto_responsavel: '',
+                created_at: '',
+                data_nasc: '',
+                designacao: '',
+                estado: '',
+                foto: '',
+                id_foto: '',
+                id_localizacao: '',
+                id_p_perdida: '',
+                lat: '',
+                lng: '',
+                nacionalidade: '',
+                naturalidade: '',
+                nome: '',
+                nome_foto: '',
+                nome_localizacao: '',
+                nome_responsavel: '',
+                sexo: '',
+                type: '',
+                updated_at: '',
+                user_id: ''
+            },
+            pessoasPerdidas: [],
+            next_page: null,
+            search: ''
+            // return {
+            //     pessoa_perdidas:[]
+            // }
+        };
+    },
+    mounted: function mounted() {
+        var l = this;
+        l.getPessoasPerdidas();
+    },
+
+    computed: {
+        filtoPessoas: function filtoPessoas() {
+            var _this = this;
+
+            return this.pessoasPerdidas.filter(function (p) {
+                return p.nome.match(_this.search);
+            });
+        }
+
+    },
+    methods: {
+        // deleteEntry(id, index) {
+        //     if (confirm("Do you really want to delete it?")) {
+        //         var app = this;
+        //         var app = this;
+        //         axios.delete('/api/v1/companies/' + id)
+        //             .then(function (resp) {
+        //                 app.companies.splice(index, 1);
+        //             })
+        //             .catch(function (resp) {
+        //                 alert("Could not delete company");
+        //             });
+        //     }
+        // }
+        searchit: function searchit() {
+            var _this2 = this;
+
+            // console.log("Pesquisando ...");
+            Fire.$on('searching', function () {
+                // let query = this.$parent.search;
+                var query = '';
+                axios.get('pessoa_perdidas/search?pesquisar=' + query).then(function (data) {
+                    _this2.pessoasPerdidas = data.data;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            });
+            console.log("Pesquisando ...");
+        },
+        getPessoasPerdidas: function getPessoasPerdidas() {
+            var app = this;
+            axios.get('/pessoa_perdidasAchados').then(function (resp) {
+                app.pessoasPerdidas = resp.data.data;
+                console.log(app.pessoasPerdidas);
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
+        },
+        getContribuir: function getContribuir(id_p_perdida, index) {
+            var app = this;
+            axios.patch('/pessoa_perdidas' + id_p_perdida).then(function (resp) {
+                app.pessoasPerdidas = resp.data.data;
+                console.log(app.pessoasPerdidas);
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
+        },
+        getProfilePhoto: function getProfilePhoto() {
+
+            var f = "/imgs_p_perdidas/" + this.pessoa_perdidas.nome_foto;
+            return f;
+            // return "{{ asset('imgs_p_perdidas/') "+ this.nome_foto ;
+        },
+        getAge: function getAge(dateString) {
+            var b = new Date();
+            var a = new Date(dateString);
+            return b.getFullYear() - a.getFullYear();
+        },
+        getTime: function getTime(dateString) {
+
+            var b = new Date();
+            var a = new Date(dateString);
+            return b.getMonth() - a.getMonth();
+        },
+        getMore: function getMore() {
+            var app = this;
+            axios.get(app.next_page).then(function (resp) {
+                app.pessoasPerdidas = app.pessoasPerdidas.concat(resp.data.data);
+                // console.log(resp )
+                app.next_page = resp.data.next_page_url;
+            }).catch(function (resp) {
+                console.log(resp);
+                alert("Upsi não foi possivel carregar os dados!");
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("section", { attrs: { id: "services" } }, [
+    _c("div", [
+      _c(
+        "nav",
+        {
+          staticClass:
+            "navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row",
+          staticStyle: { "box-shadow": "0 4px 15px 0 rgba(0, 0, 0, 0.2)" }
+        },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "navbar-menu-wrapper d-flex align-items-center" },
+            [
+              _c(
+                "ul",
+                {
+                  staticClass:
+                    "navbar-nav navbar-nav-left header-links d-none d-md-flex"
+                },
+                [
+                  _c(
+                    "li",
+                    { staticClass: "nav-item active" },
+                    [
+                      _c(
+                        "router-link",
+                        { staticClass: "btn btn-default", attrs: { to: "/" } },
+                        [
+                          _c("i", { staticClass: "pe-7s-home" }),
+                          _vm._v("Pagina Inicial")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item active" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-default",
+                          attrs: { to: "/pessoas-achadas" }
+                        },
+                        [
+                          _c("i", { staticClass: "pe-7s-home" }),
+                          _vm._v("Pessoas Achadas")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "btn btn-default",
+                          attrs: { to: "/create" }
+                        },
+                        [
+                          _c("i", { staticClass: "pe-7s-add-user" }),
+                          _vm._v("Pessoa Perdida")
+                        ]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v("      \n                        "),
+                  _c("li", { staticClass: "nav-item" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.search,
+                          expression: "search"
+                        }
+                      ],
+                      staticClass:
+                        "form-control search-field placeholder-shown",
+                      attrs: {
+                        type: "text",
+                        "aria-label": "Search",
+                        placeholder: "Procure ...",
+                        maxlength: "20",
+                        size: "50"
+                      },
+                      domProps: { value: _vm.search },
+                      on: {
+                        keyup: function($event) {
+                          if (
+                            !("button" in $event) &&
+                            _vm._k(
+                              $event.keyCode,
+                              "enter",
+                              13,
+                              $event.key,
+                              "Enter"
+                            )
+                          ) {
+                            return null
+                          }
+                          return _vm.filtoPessoas($event)
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.search = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ]
+              )
+            ]
+          )
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c(
+        "div",
+        { staticClass: "row" },
+        _vm._l(_vm.filtoPessoas, function(pessoa_perdida) {
+          return _c("div", { staticClass: "col-lg-3" }, [
+            _c(
+              "div",
+              {
+                staticClass: "box wow fadeInLeft",
+                attrs: { "data-wow-delay": "0.2s" }
+              },
+              [
+                _vm._m(1, true),
+                _vm._v(" "),
+                _c("img", {
+                  staticClass: "card-img-top rounded-circle ml-5",
+                  staticStyle: {
+                    width: "80px",
+                    height: "80px",
+                    TOP: "10PX",
+                    position: "relative",
+                    "margin-top": "-20px",
+                    "margin-bottom": "20px"
+                  },
+                  attrs: {
+                    src: "/imgs_p_perdidas/" + pessoa_perdida.nome_foto,
+                    alt: "Generic placeholder image"
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    staticClass: "description",
+                    staticStyle: { "text-align": "center" }
+                  },
+                  [_vm._v(_vm._s(pessoa_perdida.nome))]
+                ),
+                _vm._v(" "),
+                _c(
+                  "h5",
+                  {
+                    staticClass: "description",
+                    staticStyle: { "text-align": "center" },
+                    attrs: {
+                      id: "testo_historia",
+                      title: "Centro Onde esta localizado"
+                    }
+                  },
+                  [_vm._v("Localiza-se: " + _vm._s(pessoa_perdida.designacao))]
+                ),
+                _vm._v(" "),
+                _c("h5", { staticStyle: { "text-align": "center" } }, [
+                  _vm._v(
+                    " idade : " + _vm._s(_vm.getAge(pessoa_perdida.data_nasc))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("h5", { staticStyle: { "text-align": "center" } }, [
+                  _vm._v(
+                    " Dias : " + _vm._s(_vm.getTime(pessoa_perdida.created_at))
+                  )
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  { staticClass: "btn btn-default", attrs: { to: "/modal" } },
+                  [_vm._v("Localizaçao")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    staticClass: "btn btn-default",
+                    attrs: { to: "/contribuir" }
+                  },
+                  [_vm._v("Contribuir")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass: "btn btn-xs btn-danger",
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        _vm.getContribuir(
+                          _vm.pessoa_perdidas.id_p_perdida,
+                          _vm.index
+                        )
+                      }
+                    }
+                  },
+                  [
+                    _vm._v(
+                      "\n                            Contribuir\n                        "
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          ])
+        })
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "row align-items-center  justify-content-center",
+          staticStyle: { "margin-bottom": "10px" },
+          attrs: { id: "about" }
+        },
+        [
+          _vm.next_page
+            ? _c("div", { staticClass: "col-12 col-sm-6" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-block",
+                    attrs: { id: "getMoreMbl", type: "button" },
+                    on: {
+                      click: function($event) {
+                        _vm.getMore()
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Carregar mais\n            ")]
+                )
+              ])
+            : _vm._e()
+        ]
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _c("br")
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "text-center d-flex justify-content-center" },
+      [
+        _c(
+          "a",
+          {
+            staticClass: "nav-link",
+            staticStyle: { color: "white" },
+            attrs: { href: "#" }
+          },
+          [_c("h4", [_vm._v("PROCURA-SE")])]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "fa fa-shopping-bag" })
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-afc39b62", module.exports)
+  }
+}
+
+/***/ }),
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49531,10 +50267,10 @@ Vue.compile = compileToFunctions;
 
 module.exports = Vue;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(61).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(64).setImmediate))
 
 /***/ }),
-/* 61 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -49590,7 +50326,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(62);
+__webpack_require__(65);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -49601,10 +50337,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
                          (typeof global !== "undefined" && global.clearImmediate) ||
                          (this && this.clearImmediate);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 62 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -49794,10 +50530,10 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2), __webpack_require__(7)))
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -52433,7 +53169,7 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

@@ -59,55 +59,21 @@
                                 <div class="col-sm-4" style="float: right;">
 
 
-                                    <div class="card" style="width: 25rem; border-radius: 2px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0);">
+                                    <div class="card" v-for="pessoa_perdida, index in pessoasPerdidas" style="width: 25rem; border-radius: 2px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0);">
                                         <center>
-                                            <img class="card-img-top rounded-circle" src="/imgs_p_perdidas/" style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
+                                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto"  style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
                                             <div class="card-body" id="pesquisar">
-                                                <h2 class="" style="color: gray">Nome</h2>
-                                                <h5 class="card-text"> anos de idade</h5>
+                                                <h2 class="" style="color: gray">{{ pessoa_perdida.nome }}</h2>
+                                                <h5 class="card-text"> idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
                                                 <h5 class="card-text"><i class="pe-7s-date"></i> Dias</h5>
-                                                <h5 class="card-text" style="color: gray">Nacionalide</h5>
-                                                <h5 class="card-text" style="color: gray">Naturalidade</h5>
+                                                <h5 class="card-text" style="color: gray">{{pessoa_perdida.nacionalidade}}</h5>
+                                                <h5 class="card-text" style="color: gray">{{pessoa_perdida.naturalidade}}</h5>
                                             </div>
                                         </center>
                                     </div>
 
                                     <div class="clearfix"></div>
                                 </div>
-<!--                                <div class="col-sm-8">-->
-
-
-
-<!--                                    <form method action="" enctype="multipart/form-data">-->
-<!--                                        <div class="col-md-12" style="top: -25px">-->
-<!--                                            <div class="form-group">-->
-
-<!--                                                <textarea rows="5" name="content" class="form-control" placeholder="adicione aqui qualquer informação que possa ajudar a localizar"></textarea>-->
-<!--                                                <input type="number" name="id" class="hidden" value="">-->
-
-<!--                                            </div>-->
-<!--                                            <button type="submit" class="btn btn-info btn-fill pull-right" style="top:10px; bottom: 10px; position: relative; ">Comentar</button>-->
-
-<!--                                        </div>-->
-<!--                                        <div class="col-md-12">-->
-<!--                                            <div class="well form-group">-->
-<!--                                                <h4></h4>-->
-<!--                                                <small style="color: gray"></small>-->
-<!--                                                <div class="card-body " >-->
-
-<!--                                                    <div class="alert alert-success" role="alert">-->
-
-<!--                                                    </div>-->
-
-
-
-<!--                                                </div>-->
-<!--                                            </div>-->
-
-<!--                                        </div>-->
-
-<!--                                    </form>-->
-<!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -119,8 +85,68 @@
 </template>
 <script>
     export default {
+        data: function (){
+            return {
+                pessoa_perdidas: ({
+                    adress: '',
+                    contacto_responsavel: '',
+                    created_at: '',
+                    data_nasc: '',
+                    designacao: '',
+                    estado: '',
+                    foto: '',
+                    id_foto: '',
+                    id_localizacao: '',
+                    id_p_perdida: '',
+                    lat: '',
+                    lng: '',
+                    nacionalidade: '',
+                    naturalidade: '',
+                    nome: '',
+                    nome_foto: '',
+                    nome_localizacao: '',
+                    nome_responsavel: '',
+                    sexo: '',
+                    type: '',
+                    updated_at: '',
+                    user_id: '',
+                }),
+                pessoasPerdidas:[],
+                next_page: null,
+                }
+        },
+        methods:{
+            getPessoasPerdidas(id_p_perdida,index){
+                var app = this;
+                axios.patch('/pessoa_perdidas' + id_p_perdida)
+                    .then(function (resp) {
+                        app.pessoasPerdidas = resp.data.data;
+                        console.log(app.pessoasPerdidas );
+                        app.next_page = resp.data.next_page_url
+
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Upsi não foi possivel carregar os dados!");
+                    });
+            },
+            getAge( dateString) {
+                var b = new Date();
+                let a = new Date(dateString)
+                return b.getFullYear() - a.getFullYear()
+
+            },
+            getTime( dateString) {
+
+                var b = new Date();
+                let a = new Date(dateString)
+                return b.getMonth()  - a.getMonth()
+
+            },
+        },
         mounted() {
             console.log('Não é possivel.')
+            this.getPessoasPerdidas();
         },
     }
 </script>

@@ -11,6 +11,9 @@
                             <li class="nav-item active">
                                 <router-link to="/" class="btn btn-default"><i class="pe-7s-home"></i>Pagina Inicial</router-link>
                             </li>
+                            <li class="nav-item active">
+                                <router-link to="/pessoas-achadas" class="btn btn-default"><i class="pe-7s-home"></i>Pessoas Achadas</router-link>
+                            </li>
                             <li class="nav-item">
                                 <router-link to="/create" class="btn btn-default"><i class="pe-7s-add-user"></i>Pessoa Perdida</router-link>
                             </li>
@@ -72,7 +75,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Data de Nascimento</label>
-                                        <input name="data_nasc" type="date" v-model="pessoaPerdida.data_nasc" class="form-control" placeholder="DD/MM/AAAA" >
+                                        <input name="d_nasc" type="date" v-model="pessoaPerdida.data_nasc" class="form-control" placeholder="DD/MM/AAAA" >
                                     </div>
                                 </div>
 
@@ -174,7 +177,8 @@
                     .then(function (resp) {
 
                         // window.location.href = '/'
-                        app.$router.push('/');
+                        app.$router.push({name: 'pessoaPerdidaComponent' });
+                        // app.$router.push('/');
                         // app.router.push({ name: 'pessoaPerdidaComponent' })
                     })
                     .catch(function (resp) {

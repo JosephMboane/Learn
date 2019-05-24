@@ -173,7 +173,7 @@
             },
             getPessoasPerdidas(){
                 var app = this;
-                axios.get('/pessoa_perdidas')
+                axios.get('/pessoa_perdidasAchados')
                     .then(function (resp) {
                         app.pessoasPerdidas = resp.data.data;
                         console.log(app.pessoasPerdidas );
