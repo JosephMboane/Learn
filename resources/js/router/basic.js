@@ -4,6 +4,8 @@ import ModalPessoaPerdidaComponent from "../components/pessoaPerdida/ModalPessoa
 import ImageComponent from "../components/pessoaPerdida/ImageComponent";
 import PessoaPerdidaContributo from "../components/pessoaPerdida/PessoaPerdidaContributo";
 import PessoaPerdidaAchadaComponent from "../components/pessoaPerdida/PessoaPerdidaAchadaComponent";
+import SideNavComponent from "../components/nav/SideNavComponent";
+import ExampleComponent from "../components/ExampleComponent";
 export default [
         {
 
@@ -43,6 +45,16 @@ export default [
         name     :'pessoaPerdidaAchadaComponent'
 
         },
+        {
+            path     : '/side-nav-component',
+            component:SideNavComponent,
+            name     :'sideNavComponent'
+        },
+        {
+            path     :'/teste-arrastar',
+            component:ExampleComponent,
+            name     :'exampleComponent'
+        }
 
     ]
 

@@ -29,7 +29,7 @@ class pessoaPerdidaController extends Controller
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
             ->orderBy('id_p_perdida','desc')
-            ->paginate(8);
+            ->paginate(9);
 
 //            dd($pessoa_perdida);
         return view('pessoa_perdida.index', compact('pessoa_perdida'));
@@ -131,11 +131,11 @@ class pessoaPerdidaController extends Controller
         //
     }
 
-    public function update1(Request $request, $id)
+    public function update1($id_p_perdida)
     {
-        dd($id);
-        $pessoaPerdida = pessoa_perdida::findOrFail($id);
-        $pessoaPerdida->update1($request->all());
+        dd($id_p_perdida);
+        $pessoaPerdida = pessoa_perdida::find($id_p_perdida);
+//        $pessoaPerdida->update1($request->all());
 
 
         return $pessoaPerdida;
@@ -166,6 +166,7 @@ class pessoaPerdidaController extends Controller
         $pessoa_perdida->data_nasc = $request->input('d_nasc');
         $pessoa_perdida->nacionalidade = $request->input('nacionalidade');
         $pessoa_perdida->naturalidade = $request->input('naturalidade');
+        $p_perdida->id_foto = $this->guardar_foto($request);
         $pessoa_perdida->save();
         return redirect('/editar')->with('sucess', 'created successfully!');
     }

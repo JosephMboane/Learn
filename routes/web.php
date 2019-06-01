@@ -106,9 +106,14 @@ Route::get('/', function () {
 Route::get('pessoa_perdidas','pessoaPerdidaController@index_vue');
 Route::get('pessoa_perdidasAchados','pessoaPerdidaController@index_vueAchados');
 Route::post('pessoa_perdidas','pessoaPerdidaController@store');
-Route::patch('pessoa_perdidas/{{id_p_perdida}}','pessoaPerdidaController@update1');
+Route::patch('pessoa_perdidas/{id_p_perdida}','pessoaPerdidaController@update1');
 Route::get('/contribuir','contributoController@store');
 Route::get('/contribuir/{{id_p_perdida}}','contributoController@edit');
 Route::get('pessoa_idade','Pessoa_perdida@calcularIdade');
 Route::get('pessoa_tempo','Pessoa_perdida@calcularDias');
 Route::get('pessoa_perdidas/search', 'pessoaPerdidaController@pesquisar2');
+//Route::get('pessoa_perdidas/mostrar/{id_p_perdida}',function ($id_p_perdida) {
+////    $location = \Laravel_Learn\Localizacao::find($id_localizacao);
+//    $pessoaPerdida = \Laravel_Learn\Pessoa_perdida::find($id_p_perdida)
+////    return view('localizacao.ver_pessoa_perdida')->with('location',$location);
+//});

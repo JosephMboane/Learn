@@ -74,11 +74,13 @@
                             position: point,
                             label: icon.label
                         });
+                        infoWindow.setContent('<span>Esta é a sua localização actual</span>');
+                        // infoWindow.open(map, marker);
                         calcularDistancia(point, function (resposta, estado) {
                             console.log(resposta);
                             var distancia = resposta.rows[0].elements[0].distance.text;
                             var tempo = resposta.rows[0].elements[0].duration.text;
-                            var nome = localDaBaseDeDados.nome;
+                            var nome = localDaBaseDeDados.nome_localizacao;
                             var template =`
                             <div>
                                 <strong> ${nome} </strong>

@@ -23,7 +23,7 @@ class userController extends Controller
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.nome_localizacao')
             ->where('pessoa_perdida.estado','=','1')
             ->orderBy('id_p_perdida','desc')
-            ->paginate(6);
+            ->paginate(36);
         
         return view('admin.user', compact('pessoa_perdida'))->with('pessoa_perdida',$pessoa_perdida);
     }

@@ -17,6 +17,9 @@
                             <router-link to="/" class="btn btn-default"><i class="pe-7s-home"></i>Pagina Inicial</router-link>
                         </li>
                         <li class="nav-item active">
+                            <router-link to="/teste-arrastar" class="btn btn-default"><i class="pe-7s-home"></i>Teste</router-link>
+                        </li>
+                        <li class="nav-item active">
                             <router-link to="/pessoas-achadas" class="btn btn-default"><i class="pe-7s-home"></i>Pessoas Achadas</router-link>
                         </li>
                         <li class="nav-item">

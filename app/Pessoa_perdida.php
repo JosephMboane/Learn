@@ -67,8 +67,10 @@ class Pessoa_perdida extends Model
             return $date->diffInMinutes().' minutos atrás';
         if($date->diffInHours()<24)
             return $date->diffInHours().' horas atrás';
-        if($date->diffInDays()<2)
+        if($date->diffInDays()<30)
             return $date->diffInDays().' dias ';
+        if($date->diffInMonths()<12)
+            return $date->diffInMonths().' meses ';
         
 
         return $date;

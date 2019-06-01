@@ -118,7 +118,7 @@
         methods:{
             getPessoasPerdidas(id_p_perdida,index){
                 var app = this;
-                axios.patch('/pessoa_perdidas' + id_p_perdida)
+                axios.patch('/pessoa_perdidas')
                     .then(function (resp) {
                         app.pessoasPerdidas = resp.data.data;
                         console.log(app.pessoasPerdidas );

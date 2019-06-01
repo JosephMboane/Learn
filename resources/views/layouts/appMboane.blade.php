@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
+{{--    Dependencia de arrastagem da imagem--}}
+{{--    <script src="https://unpkg.com/vue"></script>--}}
+{{--    <script src="https://unpkg.com/vue-picture-input"></script>--}}
     <!-- Animation library for notifications   -->
     <link rel="stylesheet" href="<?php echo asset('css/animate.min.css')?>" type="text/css" rel="stylesheet">
 
