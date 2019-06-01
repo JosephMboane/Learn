@@ -35,7 +35,7 @@ export default [
         name:   'imageComponent'
         },
         {
-        path: '/contribuir',
+        path: '/contribuir/:id_p_perdida',
         component:PessoaPerdidaContributo,
         name:   'PessoaPerdidaContributo'
         },

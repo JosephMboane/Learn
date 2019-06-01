@@ -59,7 +59,7 @@
                                 <div class="col-sm-4" style="float: right;">
 
 
-                                    <div class="card" v-for="pessoa_perdida, index in pessoasPerdidas" style="width: 25rem; border-radius: 2px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0);">
+                                    <div class="card" style="width: 25rem; border-radius: 2px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0);">
                                         <center>
                                             <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto"  style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
                                             <div class="card-body" id="pesquisar">
@@ -85,9 +85,10 @@
 </template>
 <script>
     export default {
+
         data: function (){
             return {
-                pessoa_perdidas: ({
+                pessoa_perdida: ({
                     adress: '',
                     contacto_responsavel: '',
                     created_at: '',
@@ -116,13 +117,13 @@
                 }
         },
         methods:{
-            getPessoasPerdidas(id_p_perdida,index){
+            getContribuir(id_p_perdida){
                 var app = this;
-                axios.patch('/pessoa_perdidas')
+                axios.get('/pessoa_perdidas/'+ id_p_perdida)
                     .then(function (resp) {
-                        app.pessoasPerdidas = resp.data.data;
-                        console.log(app.pessoasPerdidas );
-                        app.next_page = resp.data.next_page_url
+                        app.pessoa_perdida = resp.data;
+                        console.log(app.pessoa_perdida );
+                        //app.next_page = resp.data.next_page_url
 
                     })
                     .catch(function (resp) {
@@ -146,7 +147,7 @@
         },
         mounted() {
             console.log('Não é possivel.')
-            this.getPessoasPerdidas();
+            this.getContribuir(this.$route.params.id_p_perdida);
         },
     }
 </script>

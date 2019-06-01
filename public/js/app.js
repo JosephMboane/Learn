@@ -37249,7 +37249,7 @@ module.exports = function spread(callback) {
         component: __WEBPACK_IMPORTED_MODULE_3__components_pessoaPerdida_ImageComponent___default.a,
         name: 'imageComponent'
 }, {
-        path: '/contribuir',
+        path: '/contribuir/:id_p_perdida',
         component: __WEBPACK_IMPORTED_MODULE_4__components_pessoaPerdida_PessoaPerdidaContributo___default.a,
         name: 'PessoaPerdidaContributo'
 }, {
@@ -37320,10 +37320,6 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
 //
 //
 //
@@ -37508,9 +37504,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 alert("Upsi não foi possivel carregar os dados!");
             });
         },
-        getContribuir: function getContribuir(id_p_perdida, index) {
+        getContribuir: function getContribuir(id_p_perdida) {
             var app = this;
-            axios.patch('/pessoa_perdidas' + id_p_perdida).then(function (resp) {
+            axios.get('/pessoa_perdidas' + id_p_perdida).then(function (resp) {
                 app.pessoasPerdidas = resp.data.data;
                 console.log(app.pessoasPerdidas);
                 app.next_page = resp.data.next_page_url;
@@ -37530,11 +37526,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var a = new Date(dateString);
             return b.getFullYear() - a.getFullYear();
         },
-        getTime: function getTime(dateString) {
 
-            var b = new Date();
-            var a = new Date(dateString);
-            return b.getMonth() - a.getMonth();
+        // getTime( dateString) {
+        //    let data1 = new Date(dateString);
+        //    let  data2 = new Date();
+        //    let diferenca = Math.abs(date2.getData() - date1); //diferença em milésimos e positivo
+        //    let dia = 1000*60*60*24; // milésimos de segundo correspondente a um dia
+        //    let total = Math.round(diferenca/dia); //valor total de dias arredondado
+        //    return    Math.round(total*24); // valor total em Horas
+        //
+        // },
+        getDay: function getDay(dateString) {
+            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            var firstDate = new Date(dateString);
+            var secondDate = new Date();
+
+            return Math.round(Math.abs((secondDate.getTime() - firstDate.getTime()) / oneDay)) + " dias";
         },
         getMore: function getMore() {
             var app = this;
@@ -37762,15 +37769,18 @@ var render = function() {
                 _vm._v(" "),
                 _c("h5", { staticStyle: { "text-align": "center" } }, [
                   _vm._v(
-                    " idade : " + _vm._s(_vm.getAge(pessoa_perdida.data_nasc))
+                    " Idade : " + _vm._s(_vm.getAge(pessoa_perdida.data_nasc))
                   )
                 ]),
                 _vm._v(" "),
-                _c("h5", { staticStyle: { "text-align": "center" } }, [
-                  _vm._v(
-                    " Dias : " + _vm._s(_vm.getTime(pessoa_perdida.created_at))
-                  )
-                ]),
+                _c(
+                  "h5",
+                  {
+                    staticStyle: { "text-align": "center" },
+                    attrs: { title: "Esta no sistema ha :" }
+                  },
+                  [_vm._v(" " + _vm._s(_vm.getDay(pessoa_perdida.created_at)))]
+                ),
                 _vm._v(" "),
                 _c("hr"),
                 _vm._v(" "),
@@ -37784,30 +37794,9 @@ var render = function() {
                   "router-link",
                   {
                     staticClass: "btn btn-default",
-                    attrs: { to: "/contribuir" }
+                    attrs: { to: "/contribuir/" + pessoa_perdida.id_p_perdida }
                   },
                   [_vm._v("Contribuir")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-xs btn-danger",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.getContribuir(
-                          _vm.pessoa_perdidas.id_p_perdida,
-                          _vm.index
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            Contribuir\n                        "
-                    )
-                  ]
                 )
               ],
               1
@@ -38121,18 +38110,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             };
             console.log(this.pessoaPerdida);
         },
-
-        // onChanged() {
-        //     console.log("New picture loaded");
-        //     if (this.$refs.pictureInput.file) {
-        //         this.upload = this.$refs.pictureInput.file;
-        //     } else {
-        //         console.log("Old browser. No support for Filereader API");
-        //     }
-        // },
-        // onRemoved() {
-        //     this.upload = null;
-        // },
         onChange: function onChange(image) {
             console.log('New picture selected!');
             if (image) {
@@ -38152,8 +38129,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.post('/pessoa_perdidas', formData).then(function (resp) {
 
                 // window.location.href = '/'
-                app.$router.push({ name: 'pessoaPerdidaComponent' });
-                // app.$router.push('/');
+                // app.$router.push({name: 'pessoaPerdidaComponent' });
+                app.$router.push('/');
                 // app.router.push({ name: 'pessoaPerdidaComponent' })
             }).catch(function (resp) {
                 console.log(resp);
@@ -39879,7 +39856,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -39977,9 +39954,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
     data: function data() {
         return {
-            pessoa_perdidas: {
+            pessoa_perdida: {
                 adress: '',
                 contacto_responsavel: '',
                 created_at: '',
@@ -40008,12 +39986,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     methods: {
-        getPessoasPerdidas: function getPessoasPerdidas(id_p_perdida, index) {
+        getContribuir: function getContribuir(id_p_perdida) {
             var app = this;
-            axios.patch('/pessoa_perdidas').then(function (resp) {
-                app.pessoasPerdidas = resp.data.data;
-                console.log(app.pessoasPerdidas);
-                app.next_page = resp.data.next_page_url;
+            axios.get('/pessoa_perdidas/' + id_p_perdida).then(function (resp) {
+                app.pessoa_perdida = resp.data;
+                console.log(app.pessoa_perdida);
+                //app.next_page = resp.data.next_page_url
             }).catch(function (resp) {
                 console.log(resp);
                 alert("Upsi não foi possivel carregar os dados!");
@@ -40033,7 +40011,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     mounted: function mounted() {
         console.log('Não é possivel.');
-        this.getPessoasPerdidas();
+        this.getContribuir(this.$route.params.id_p_perdida);
     }
 });
 
@@ -40136,100 +40114,94 @@ var render = function() {
                         staticStyle: { float: "right" }
                       },
                       [
-                        _vm._l(_vm.pessoasPerdidas, function(
-                          pessoa_perdida,
-                          index
-                        ) {
-                          return _c(
-                            "div",
-                            {
-                              staticClass: "card",
-                              staticStyle: {
-                                width: "25rem",
-                                "border-radius": "2px",
-                                "box-shadow": "0 4px 10px 0 rgba(0, 0, 0, 0)"
-                              }
-                            },
-                            [
-                              _c("center", [
-                                _c("img", {
-                                  staticClass: "card-img-top rounded-circle",
-                                  staticStyle: {
-                                    width: "180px",
-                                    height: "180px",
-                                    TOP: "10PX",
-                                    position: "relative"
-                                  },
-                                  attrs: {
-                                    src:
-                                      "/imgs_p_perdidas/" +
-                                      pessoa_perdida.nome_foto
-                                  }
-                                }),
-                                _vm._v(" "),
-                                _c(
-                                  "div",
-                                  {
-                                    staticClass: "card-body",
-                                    attrs: { id: "pesquisar" }
-                                  },
-                                  [
-                                    _c(
-                                      "h2",
-                                      { staticStyle: { color: "gray" } },
-                                      [_vm._v(_vm._s(pessoa_perdida.nome))]
-                                    ),
-                                    _vm._v(" "),
-                                    _c("h5", { staticClass: "card-text" }, [
-                                      _vm._v(
-                                        " idade : " +
-                                          _vm._s(
-                                            _vm.getAge(pessoa_perdida.data_nasc)
+                        _c(
+                          "div",
+                          {
+                            staticClass: "card",
+                            staticStyle: {
+                              width: "25rem",
+                              "border-radius": "2px",
+                              "box-shadow": "0 4px 10px 0 rgba(0, 0, 0, 0)"
+                            }
+                          },
+                          [
+                            _c("center", [
+                              _c("img", {
+                                staticClass: "card-img-top rounded-circle",
+                                staticStyle: {
+                                  width: "180px",
+                                  height: "180px",
+                                  TOP: "10PX",
+                                  position: "relative"
+                                },
+                                attrs: {
+                                  src:
+                                    "/imgs_p_perdidas/" +
+                                    _vm.pessoa_perdida.nome_foto
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c(
+                                "div",
+                                {
+                                  staticClass: "card-body",
+                                  attrs: { id: "pesquisar" }
+                                },
+                                [
+                                  _c("h2", { staticStyle: { color: "gray" } }, [
+                                    _vm._v(_vm._s(_vm.pessoa_perdida.nome))
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("h5", { staticClass: "card-text" }, [
+                                    _vm._v(
+                                      " idade : " +
+                                        _vm._s(
+                                          _vm.getAge(
+                                            _vm.pessoa_perdida.data_nasc
                                           )
-                                      )
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("h5", { staticClass: "card-text" }, [
-                                      _c("i", { staticClass: "pe-7s-date" }),
-                                      _vm._v(" Dias")
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "h5",
-                                      {
-                                        staticClass: "card-text",
-                                        staticStyle: { color: "gray" }
-                                      },
-                                      [
-                                        _vm._v(
-                                          _vm._s(pessoa_perdida.nacionalidade)
                                         )
-                                      ]
-                                    ),
-                                    _vm._v(" "),
-                                    _c(
-                                      "h5",
-                                      {
-                                        staticClass: "card-text",
-                                        staticStyle: { color: "gray" }
-                                      },
-                                      [
-                                        _vm._v(
-                                          _vm._s(pessoa_perdida.naturalidade)
-                                        )
-                                      ]
                                     )
-                                  ]
-                                )
-                              ])
-                            ],
-                            1
-                          )
-                        }),
+                                  ]),
+                                  _vm._v(" "),
+                                  _c("h5", { staticClass: "card-text" }, [
+                                    _c("i", { staticClass: "pe-7s-date" }),
+                                    _vm._v(" Dias")
+                                  ]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h5",
+                                    {
+                                      staticClass: "card-text",
+                                      staticStyle: { color: "gray" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.pessoa_perdida.nacionalidade)
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "h5",
+                                    {
+                                      staticClass: "card-text",
+                                      staticStyle: { color: "gray" }
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(_vm.pessoa_perdida.naturalidade)
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ])
+                          ],
+                          1
+                        ),
                         _vm._v(" "),
                         _c("div", { staticClass: "clearfix" })
-                      ],
-                      2
+                      ]
                     )
                   ])
                 ])

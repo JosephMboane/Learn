@@ -173,17 +173,6 @@
                 }
                 console.log(this.pessoaPerdida)
             },
-            // onChanged() {
-            //     console.log("New picture loaded");
-            //     if (this.$refs.pictureInput.file) {
-            //         this.upload = this.$refs.pictureInput.file;
-            //     } else {
-            //         console.log("Old browser. No support for Filereader API");
-            //     }
-            // },
-            // onRemoved() {
-            //     this.upload = null;
-            // },
             onChange (image) {
                 console.log('New picture selected!')
                 if (image) {
@@ -205,8 +194,8 @@
                     .then(function (resp) {
 
                         // window.location.href = '/'
-                        app.$router.push({name: 'pessoaPerdidaComponent' });
-                        // app.$router.push('/');
+                        // app.$router.push({name: 'pessoaPerdidaComponent' });
+                        app.$router.push('/');
                         // app.router.push({ name: 'pessoaPerdidaComponent' })
                     })
                     .catch(function (resp) {

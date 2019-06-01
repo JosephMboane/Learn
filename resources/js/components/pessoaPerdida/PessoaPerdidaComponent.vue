@@ -57,19 +57,15 @@
                         <h5 class="description"  style="text-align: center" >{{ pessoa_perdida.nome }}</h5>
                         <!--                            <p class="description" style="margin-left: -40px" id="testo_historia">Sexo:{{ pessoa_perdida.sexo }}</p>-->
                         <h5 class="description"  style="text-align: center"  id="testo_historia" title="Centro Onde esta localizado">Localiza-se: {{ pessoa_perdida.designacao }}</h5>
-                        <h5 style="text-align: center"> idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
-                        <h5 style="text-align: center"> Dias : {{ getTime(pessoa_perdida.created_at) }}</h5>
+                        <h5 style="text-align: center"> Idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
+                        <h5 style="text-align: center" title="Esta no sistema ha :"> {{ getDay(pessoa_perdida.created_at) }}</h5>
                         <!--                              <p > idade : {{ // pessoa_perdida.age }}</p>-->
                         <!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
                         <hr>
                         <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>
-                        <router-link to="/contribuir" class="btn btn-default">Contribuir</router-link>
+                        <router-link  :to="`/contribuir/${pessoa_perdida.id_p_perdida}`" class="btn btn-default">Contribuir</router-link>
 
-                        <a href="#"
-                           class="btn btn-xs btn-danger"
-                           v-on:click="getContribuir(pessoa_perdidas.id_p_perdida, index)">
-                            Contribuir
-                        </a>
+
 
 
                     </div>
@@ -188,9 +184,9 @@
                         alert("Upsi não foi possivel carregar os dados!");
                     });
             },
-            getContribuir(id_p_perdida,index){
+            getContribuir(id_p_perdida){
                 var app = this;
-                axios.patch('/pessoa_perdidas' + id_p_perdida)
+                axios.get('/pessoa_perdidas' + id_p_perdida)
                     .then(function (resp) {
                         app.pessoasPerdidas = resp.data.data;
                         console.log(app.pessoasPerdidas );
@@ -215,12 +211,21 @@
                 return b.getFullYear() - a.getFullYear()
 
             },
-            getTime( dateString) {
+            // getTime( dateString) {
+            //    let data1 = new Date(dateString);
+            //    let  data2 = new Date();
+            //    let diferenca = Math.abs(date2.getData() - date1); //diferença em milésimos e positivo
+            //    let dia = 1000*60*60*24; // milésimos de segundo correspondente a um dia
+            //    let total = Math.round(diferenca/dia); //valor total de dias arredondado
+            //    return    Math.round(total*24); // valor total em Horas
+            //
+            // },
+            getDay(dateString){
+                let oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                let firstDate = new Date(dateString);
+                let secondDate = new Date();
 
-                var b = new Date();
-                let a = new Date(dateString)
-                return b.getMonth()  - a.getMonth()
-
+                return   Math.round(Math.abs((secondDate.getTime() - firstDate.getTime())/(oneDay))) + " dias" ;
             },
             getMore(){
                 var app = this

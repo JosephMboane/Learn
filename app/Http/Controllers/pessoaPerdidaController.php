@@ -45,7 +45,7 @@ class pessoaPerdidaController extends Controller
             ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
-            ->orderBy('id_p_perdida','asc')
+            ->orderBy('id_p_perdida','desc')
             ->paginate(8);
 //        $pessoa_perdida = DB::table('pessoa_perdida')->where('pessoa_perdida.estado', '=',1)
 //            ->orderBy('id_p_perdida','desc')
@@ -133,7 +133,7 @@ class pessoaPerdidaController extends Controller
 
     public function update1($id_p_perdida)
     {
-        dd($id_p_perdida);
+//        dd($id_p_perdida);
         $pessoaPerdida = pessoa_perdida::find($id_p_perdida);
 //        $pessoaPerdida->update1($request->all());
 
