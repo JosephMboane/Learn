@@ -18,6 +18,9 @@ class IsAdmin
         if(auth()->check()&&$request->user()->admin ==0){
             return redirect()->guest('pessoa_perdida.index');
         }
+        if(auth()->check()&&$request->user()->admin ==1){
+            return redirect()->guest('admin.front-office');
+        }
         return $next($request);
     }
 }

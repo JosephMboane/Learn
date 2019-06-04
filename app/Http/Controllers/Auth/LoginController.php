@@ -4,6 +4,8 @@ namespace Laravel_Learn\Http\Controllers\Auth;
 
 use Laravel_Learn\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/user';
+    protected $redirectTo = '/pessoa_perdida';
 
     protected $redirectAfterLogout = '/login';
 
@@ -34,8 +36,12 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
+//    public function __construct()
+//    {
+//        $this->middleware('guest')->except('logout');
+//    }
+    public function logout(Request $request) {
+        Auth::logout();
+        return redirect('/login');
     }
 }

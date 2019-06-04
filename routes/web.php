@@ -93,6 +93,23 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/chart-teste', 'HomeController@grafico')->name('grafico');
 
+Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+//Rotas para autenticacao de usuarios
+//Route::group(['middleware' =>['web','auth']],function(){
+//
+//    Route::get('/inico',function(){
+//        return view('welcome');
+//    });
+//    Route::get('/pessoa_perdida', function(){
+//        if(Auth::user()->admin == 0){
+//            return view ('pessoa_perdida.index');
+//        }else{
+//            return view('admin.fron-office');
+//        }
+//    });
+////    Route::get('/front-admin','userController@contador');
+//
+//});
 
 /*Permission and Roles */
 Route::get('/painel', 'PainelController@index');
