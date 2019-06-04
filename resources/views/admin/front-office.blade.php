@@ -34,9 +34,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/chart-teste">
                         <i class="pe-7s-users"></i>
-                        <p>Ususarios</p>
+                        <p>Estatistica</p>
                     </a>
                 </li>
                 <li>
@@ -46,9 +46,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/chart-teste">
                         <i class="pe-7s-science"></i>
-                        <p>Casos de sucesso</p>
+                        <p>Estatisticas</p>
                     </a>
                 </li>
             </ul>

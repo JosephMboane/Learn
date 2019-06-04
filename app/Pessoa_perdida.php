@@ -76,5 +76,14 @@ class Pessoa_perdida extends Model
         return $date;
 
     }
-
+    public function caso()
+    {
+        return $this->hasOne(Caso::class);
+    }
+    public function foto(){
+        return $this->belongsTo(Foto::class);
+    }
+    public function localizacao(){
+        return $this->belongsTo(Localizacao::class);
+    }
 }

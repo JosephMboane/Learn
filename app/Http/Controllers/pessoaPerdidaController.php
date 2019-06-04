@@ -126,18 +126,32 @@ class pessoaPerdidaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id_p_perdida)
     {
-        //
+
     }
 
     public function update1($id_p_perdida)
     {
 //        dd($id_p_perdida);
-        $pessoaPerdida = pessoa_perdida::find($id_p_perdida);
+        $pessoaPerdida1 = Pessoa_perdida::find($id_p_perdida);
+//        $pessoaPerdida = DB::table('pessoa_perdida')->find($id_p_perdida);
 //        $pessoaPerdida->update1($request->all());
 
+//        $pessoaPerdida = DB::table('pessoa_perdida')->find(97);
 
+        $pessoaPerdida = DB::table('pessoa_perdida')
+            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
+            ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
+            ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
+            ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
+            ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
+            ->where('pessoa_perdida.id_p_perdida', '=', $pessoaPerdida1->id_p_perdida)
+//            ->where('pessoa_perdida.id_p_perdida', '=', 95)
+//            ->find($id_p_perdida)
+            ->get();
+//        dd($pessoaPerdida);
+//        dd($pessoaPerdida1);
         return $pessoaPerdida;
     }
 

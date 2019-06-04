@@ -91,6 +91,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/chart-teste', 'HomeController@grafico')->name('grafico');
+
 
 /*Permission and Roles */
 Route::get('/painel', 'PainelController@index');
@@ -106,10 +108,8 @@ Route::get('/', function () {
 Route::get('pessoa_perdidas','pessoaPerdidaController@index_vue');
 Route::get('pessoa_perdidasAchados','pessoaPerdidaController@index_vueAchados');
 Route::post('pessoa_perdidas','pessoaPerdidaController@store');
-Route::get('pessoa_perdidas/{id_p_perdida}','pessoaPerdidaController@update1');
+Route::get('pessoa_perdidas/{id_p_perdida}','pessoaPerdidaController@update1')->name('actualizar');
 Route::get('/contribuir','contributoController@store');
 Route::get('/contribuir/{{id_p_perdida}}','contributoController@edit');
-Route::get('pessoa_idade','Pessoa_perdida@calcularIdade');
-Route::get('pessoa_tempo','Pessoa_perdida@calcularDias');
 Route::get('pessoa_perdidas/search', 'pessoaPerdidaController@pesquisar2');
-Route::get('pessoa_perdidas/mostrar/{id_p_perdida}','pessoaPerdidaController@update1')->name('actualizar');
+

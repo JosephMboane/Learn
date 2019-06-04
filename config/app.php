@@ -1,5 +1,7 @@
 <?php
 
+use ConsoleTVs\Charts\ChartsServiceProvider;
+
 return [
 
     /*
@@ -161,9 +163,11 @@ return [
         // Laravel_Learn\Providers\BroadcastServiceProvider::class,
         Laravel_Learn\Providers\EventServiceProvider::class,
         Laravel_Learn\Providers\RouteServiceProvider::class,
-/*
-        Way\Generators\GeneratorsServiceProvider::class,
-        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,*/
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
+
+        /*
+                Way\Generators\GeneratorsServiceProvider::class,
+                Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,*/
 
     ],
 
@@ -213,7 +217,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        Khill\Lavacharts\Laravel\LavachartsFacade::class,
+//         Khill\Lavacharts\Laravel\LavachartsFacade::class,
+        'Charts'=>ConsoleTVs\Charts\ChartsServiceProvider::class,
 
 
     ],

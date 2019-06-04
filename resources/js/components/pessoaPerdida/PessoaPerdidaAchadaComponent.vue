@@ -53,20 +53,20 @@
                         <!--{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}-->
                         <h5 class="description"  style="text-align: center" >{{ pessoa_perdida.nome }}</h5>
                         <!--                            <p class="description" style="margin-left: -40px" id="testo_historia">Sexo:{{ pessoa_perdida.sexo }}</p>-->
-                        <h5 class="description"  style="text-align: center"  id="testo_historia" title="Centro Onde esta localizado">Localiza-se: {{ pessoa_perdida.designacao }}</h5>
+                        <h5 class="description"  style="text-align: center"  id="testo_historia" title="Familiar que o encontrou">Achado por: {{ pessoa_perdida.nome_responsavel }}</h5>
                         <h5 style="text-align: center"> idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
-                        <h5 style="text-align: center"> Dias : {{ getTime(pessoa_perdida.created_at) }}</h5>
+                        <h5 style="text-align: center"> Encontrado ha : {{ getTime(pessoa_perdida.updated_at) }}</h5>
                         <!--                              <p > idade : {{ // pessoa_perdida.age }}</p>-->
                         <!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
                         <hr>
-                        <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>
-                        <router-link to="/contribuir" class="btn btn-default">Contribuir</router-link>
+<!--                        <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>-->
+<!--                        <router-link to="/contribuir" class="btn btn-default">Contribuir</router-link>-->
 
-                        <a href="#"
-                           class="btn btn-xs btn-danger"
-                           v-on:click="getContribuir(pessoa_perdidas.id_p_perdida, index)">
-                            Contribuir
-                        </a>
+<!--                        <a href="#"-->
+<!--                           class="btn btn-xs btn-danger"-->
+<!--                           v-on:click="getContribuir(pessoa_perdidas.id_p_perdida, index)">-->
+<!--                            Contribuir-->
+<!--                        </a>-->
 
 
                     </div>
@@ -199,13 +199,6 @@
                         alert("Upsi não foi possivel carregar os dados!");
                     });
             },
-            getProfilePhoto(){
-
-                let f = "/imgs_p_perdidas/"+ this.pessoa_perdidas.nome_foto ;
-                return f;
-                // return "{{ asset('imgs_p_perdidas/') "+ this.nome_foto ;
-
-            },
             getAge( dateString) {
                 var b = new Date();
                 let a = new Date(dateString)
@@ -214,9 +207,11 @@
             },
             getTime( dateString) {
 
-                var b = new Date();
-                let a = new Date(dateString)
-                return b.getMonth()  - a.getMonth()
+                let oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+                let firstDate = new Date(dateString);
+                let secondDate = new Date();
+
+                return   Math.round(Math.abs((secondDate.getTime() - firstDate.getTime())/(oneDay))) + " dias" ;
 
             },
             getMore(){

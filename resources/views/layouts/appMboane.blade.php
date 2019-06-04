@@ -4,6 +4,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+{{--    <meta name="csrf-token" content="{{ csrf_token() }}">--}}
+{{--    {!! Charts::assets() !!}--}}
+{{--    <script src=https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js charset=utf-8></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highcharts/6.0.6/highcharts.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.2/echarts-en.min.js" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.7.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.7/c3.min.js"></script>
 
 {{--    Dependencia de arrastagem da imagem--}}
 {{--    <script src="https://unpkg.com/vue"></script>--}}
@@ -128,7 +137,13 @@
 
 <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 <script src="<?php echo asset('js/light-bootstrap-dashboard.js?v=1.4.0')?>"></script>
+{{--<script src="https://unpkg.com/vue"></script>--}}
 
+<script>
+    window.Laravel = <?php echo json_encode([
+        'csrfToken' => csrf_token(),
+    ]); ?>
+</script>
 
 
 <script src="<?php echo asset('js/table/datatables.min.js')?>"></script>

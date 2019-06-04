@@ -14,4 +14,7 @@ class Localizacao extends Model
     public function caso(){
         return $this->hasOne(Caso::class);
     }
+    public function pessoaPerdida(){
+        return $this->hasOne(Pessoa_perdida::class);
+    }
 }

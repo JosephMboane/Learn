@@ -11,4 +11,8 @@ class Foto extends Model
     public $timestamp = false;
 
 
+    public function pessoaPerdida(){
+        return $this->hasOne(Pessoa_perdida::class);
+    }
+
 }

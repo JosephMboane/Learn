@@ -19,10 +19,10 @@
                         <li class="nav-item">
                             <router-link to="/create" class="btn btn-default"><i class="pe-7s-add-user"></i>Pessoa Perdida</router-link>
                         </li> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <li class="nav-item">
-                            <!--                         <input type="text" id="entrada" arial-label="Search" name="pesquisar" class="form-control"  placeholder="procure..." style="text-align: left" >-->
-                            <input type="text" aria-label="Search" placeholder="Procure ..." class="form-control search-field placeholder-shown" maxlength="20" size="50">
-                        </li>
+<!--                        <li class="nav-item">-->
+<!--                            &lt;!&ndash;                         <input type="text" id="entrada" arial-label="Search" name="pesquisar" class="form-control"  placeholder="procure..." style="text-align: left" >&ndash;&gt;-->
+<!--                            <input type="text" aria-label="Search" placeholder="Procure ..." class="form-control search-field placeholder-shown" maxlength="20" size="50">-->
+<!--                        </li>-->
 
                     </ul>
 
@@ -56,23 +56,55 @@
 
                         <div class="content">
                             <div class="row">
-                                <div class="col-sm-4" style="float: right;">
+                                <div class="col-sm-4" style="float: right;" >
 
 
                                     <div class="card" style="width: 25rem; border-radius: 2px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0);">
                                         <center>
-                                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto"  style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
+                                            <img class="card-img-top rounded-circle" v-if="pessoa_perdida" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto"  style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
                                             <div class="card-body" id="pesquisar">
-                                                <h2 class="" style="color: gray">{{ pessoa_perdida.nome }}</h2>
-                                                <h5 class="card-text"> idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
-                                                <h5 class="card-text"><i class="pe-7s-date"></i> Dias</h5>
-                                                <h5 class="card-text" style="color: gray">{{pessoa_perdida.nacionalidade}}</h5>
-                                                <h5 class="card-text" style="color: gray">{{pessoa_perdida.naturalidade}}</h5>
+                                                <h2 class="" style="color: gray" v-if="pessoa_perdida">{{ pessoa_perdida.nome }}</h2>
+                                                <h5 class="card-text" v-if="pessoa_perdida"> Idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
+                                                <h5 class="card-text"><i class="pe-7s-date"></i> Dias: {{ getDay(pessoa_perdida.created_at) }}</h5>
+                                                <h5 class="card-text" style="color: gray" v-if="pessoa_perdida">{{pessoa_perdida.nacionalidade}}</h5>
+                                                <h5 class="card-text" style="color: gray" v-if="pessoa_perdida">{{pessoa_perdida.naturalidade}}</h5>
                                             </div>
                                         </center>
                                     </div>
 
                                     <div class="clearfix"></div>
+                                </div>
+                                <div class="col-sm-8">
+
+
+
+                                    <form enctype="multipart/form-data">
+                                        <div class="col-md-12" style="top: -10px">
+                                            <div class="form-group">
+
+                                                <textarea rows="5" name="content" class="form-control" placeholder="adicione aqui qualquer informação que possa ajudar a localizar"></textarea>
+<!--                                                <input type="number" name="id" class="hidden" value="{{$pessoa_perdida->id_p_perdida}}">-->
+                                                <input type="number" name="id" class="hidden" value="">
+
+                                            </div>
+                                            <button type="submit" class="btn btn-info btn-fill pull-right" style="top:10px; bottom: 10px; position: relative; ">Comentar</button>
+
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="well form-group">
+                                                <h4></h4>
+                                                <small style="color: gray"></small>
+                                                <div class="card-body " >
+
+                                                    <div class="alert alert-success" role="alert">
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -88,42 +120,17 @@
 
         data: function (){
             return {
-                pessoa_perdida: ({
-                    adress: '',
-                    contacto_responsavel: '',
-                    created_at: '',
-                    data_nasc: '',
-                    designacao: '',
-                    estado: '',
-                    foto: '',
-                    id_foto: '',
-                    id_localizacao: '',
-                    id_p_perdida: '',
-                    lat: '',
-                    lng: '',
-                    nacionalidade: '',
-                    naturalidade: '',
-                    nome: '',
-                    nome_foto: '',
-                    nome_localizacao: '',
-                    nome_responsavel: '',
-                    sexo: '',
-                    type: '',
-                    updated_at: '',
-                    user_id: '',
-                }),
+                pessoa_perdida: [],
                 pessoasPerdidas:[],
-                next_page: null,
                 }
         },
-        methods:{
-            getContribuir(id_p_perdida){
+        methods: {
+            getContribuir(id_p_perdida) {
                 var app = this;
-                axios.get('/pessoa_perdidas/'+ id_p_perdida)
+                axios.get('/pessoa_perdidas/' + id_p_perdida)
                     .then(function (resp) {
-                        app.pessoa_perdida = resp.data;
-                        console.log(app.pessoa_perdida );
-                        //app.next_page = resp.data.next_page_url
+                        app.pessoa_perdida = resp.data[0];
+
 
                     })
                     .catch(function (resp) {
@@ -131,22 +138,32 @@
                         alert("Upsi não foi possivel carregar os dados!");
                     });
             },
-            getAge( dateString) {
+            getAge(dateString) {
                 var b = new Date();
                 let a = new Date(dateString)
                 return b.getFullYear() - a.getFullYear()
 
             },
-            getTime( dateString) {
+            getTime(dateString) {
 
                 var b = new Date();
                 let a = new Date(dateString)
-                return b.getMonth()  - a.getMonth()
+                return b.getMonth() - a.getMonth()
 
             },
+            getDay(dateString) {
+                moment().subtract(10, 'days').calendar();
+
+            },
+            //param: duration in milliseconds
+
+
         },
+
+
+
         mounted() {
-            console.log('Não é possivel.')
+
             this.getContribuir(this.$route.params.id_p_perdida);
         },
     }

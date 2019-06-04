@@ -17,9 +17,6 @@
                             <router-link to="/" class="btn btn-default"><i class="pe-7s-home"></i>Pagina Inicial</router-link>
                         </li>
                         <li class="nav-item active">
-                            <router-link to="/teste-arrastar" class="btn btn-default"><i class="pe-7s-home"></i>Teste</router-link>
-                        </li>
-                        <li class="nav-item active">
                             <router-link to="/pessoas-achadas" class="btn btn-default"><i class="pe-7s-home"></i>Pessoas Achadas</router-link>
                         </li>
                         <li class="nav-item">
@@ -62,7 +59,7 @@
                         <!--                              <p > idade : {{ // pessoa_perdida.age }}</p>-->
                         <!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
                         <hr>
-                        <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>
+<!--                        <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>-->
                         <router-link  :to="`/contribuir/${pessoa_perdida.id_p_perdida}`" class="btn btn-default">Contribuir</router-link>
 
 
@@ -142,19 +139,6 @@
 
         },
         methods: {
-            // deleteEntry(id, index) {
-            //     if (confirm("Do you really want to delete it?")) {
-            //         var app = this;
-            //         var app = this;
-            //         axios.delete('/api/v1/companies/' + id)
-            //             .then(function (resp) {
-            //                 app.companies.splice(index, 1);
-            //             })
-            //             .catch(function (resp) {
-            //                 alert("Could not delete company");
-            //             });
-            //     }
-            // }
             searchit(){
                 // console.log("Pesquisando ...");
                 Fire.$on('searching',() =>{

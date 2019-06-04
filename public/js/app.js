@@ -247,9 +247,13 @@ function trim(str) {
  *
  * react-native:
  *  navigator.product -> 'ReactNative'
+ * nativescript
+ *  navigator.product -> 'NativeScript' or 'NS'
  */
 function isStandardBrowserEnv() {
-  if (typeof navigator !== 'undefined' && navigator.product === 'ReactNative') {
+  if (typeof navigator !== 'undefined' && (navigator.product === 'ReactNative' ||
+                                           navigator.product === 'NativeScript' ||
+                                           navigator.product === 'NS')) {
     return false;
   }
   return (
@@ -331,6 +335,32 @@ function merge(/* obj1, obj2, obj3, ... */) {
 }
 
 /**
+ * Function equal to merge with the difference being that no reference
+ * to original objects is kept.
+ *
+ * @see merge
+ * @param {Object} obj1 Object to merge
+ * @returns {Object} Result of all merge properties
+ */
+function deepMerge(/* obj1, obj2, obj3, ... */) {
+  var result = {};
+  function assignValue(val, key) {
+    if (typeof result[key] === 'object' && typeof val === 'object') {
+      result[key] = deepMerge(result[key], val);
+    } else if (typeof val === 'object') {
+      result[key] = deepMerge({}, val);
+    } else {
+      result[key] = val;
+    }
+  }
+
+  for (var i = 0, l = arguments.length; i < l; i++) {
+    forEach(arguments[i], assignValue);
+  }
+  return result;
+}
+
+/**
  * Extends object a by mutably adding to it the properties of object b.
  *
  * @param {Object} a The object to be extended
@@ -368,6 +398,7 @@ module.exports = {
   isStandardBrowserEnv: isStandardBrowserEnv,
   forEach: forEach,
   merge: merge,
+  deepMerge: deepMerge,
   extend: extend,
   trim: trim
 };
@@ -531,11 +562,12 @@ function setContentTypeIfUnset(headers, value) {
 
 function getDefaultAdapter() {
   var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(10);
-  } else if (typeof process !== 'undefined') {
+  // Only Node.JS has a process variable that is of [[Class]] process
+  if (typeof process !== 'undefined' && Object.prototype.toString.call(process) === '[object process]') {
     // For node use HTTP adapter
+    adapter = __webpack_require__(10);
+  } else if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
     adapter = __webpack_require__(10);
   }
   return adapter;
@@ -545,6 +577,7 @@ var defaults = {
   adapter: getDefaultAdapter(),
 
   transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Accept');
     normalizeHeaderName(headers, 'Content-Type');
     if (utils.isFormData(data) ||
       utils.isArrayBuffer(data) ||
@@ -14292,7 +14325,6 @@ var buildURL = __webpack_require__(28);
 var parseHeaders = __webpack_require__(29);
 var isURLSameOrigin = __webpack_require__(30);
 var createError = __webpack_require__(11);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(31);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -14304,22 +14336,6 @@ module.exports = function xhrAdapter(config) {
     }
 
     var request = new XMLHttpRequest();
-    var loadEvent = 'onreadystatechange';
-    var xDomain = false;
-
-    // For IE 8/9 CORS support
-    // Only supports POST and GET calls and doesn't returns the response headers.
-    // DON'T do this for testing b/c XMLHttpRequest is mocked, not XDomainRequest.
-    if ("development" !== 'test' &&
-        typeof window !== 'undefined' &&
-        window.XDomainRequest && !('withCredentials' in request) &&
-        !isURLSameOrigin(config.url)) {
-      request = new window.XDomainRequest();
-      loadEvent = 'onload';
-      xDomain = true;
-      request.onprogress = function handleProgress() {};
-      request.ontimeout = function handleTimeout() {};
-    }
 
     // HTTP basic authentication
     if (config.auth) {
@@ -14334,8 +14350,8 @@ module.exports = function xhrAdapter(config) {
     request.timeout = config.timeout;
 
     // Listen for ready state
-    request[loadEvent] = function handleLoad() {
-      if (!request || (request.readyState !== 4 && !xDomain)) {
+    request.onreadystatechange = function handleLoad() {
+      if (!request || request.readyState !== 4) {
         return;
       }
 
@@ -14352,15 +14368,26 @@ module.exports = function xhrAdapter(config) {
       var responseData = !config.responseType || config.responseType === 'text' ? request.responseText : request.response;
       var response = {
         data: responseData,
-        // IE sends 1223 instead of 204 (https://github.com/axios/axios/issues/201)
-        status: request.status === 1223 ? 204 : request.status,
-        statusText: request.status === 1223 ? 'No Content' : request.statusText,
+        status: request.status,
+        statusText: request.statusText,
         headers: responseHeaders,
         config: config,
         request: request
       };
 
       settle(resolve, reject, response);
+
+      // Clean up request
+      request = null;
+    };
+
+    // Handle browser request cancellation (as opposed to a manual cancellation)
+    request.onabort = function handleAbort() {
+      if (!request) {
+        return;
+      }
+
+      reject(createError('Request aborted', config, 'ECONNABORTED', request));
 
       // Clean up request
       request = null;
@@ -14393,8 +14420,8 @@ module.exports = function xhrAdapter(config) {
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
-          cookies.read(config.xsrfCookieName) :
-          undefined;
+        cookies.read(config.xsrfCookieName) :
+        undefined;
 
       if (xsrfValue) {
         requestHeaders[config.xsrfHeaderName] = xsrfValue;
@@ -36324,6 +36351,7 @@ module.exports = __webpack_require__(22);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(8);
 var Axios = __webpack_require__(24);
+var mergeConfig = __webpack_require__(80);
 var defaults = __webpack_require__(3);
 
 /**
@@ -36353,7 +36381,7 @@ axios.Axios = Axios;
 
 // Factory for creating new instances
 axios.create = function create(instanceConfig) {
-  return createInstance(utils.merge(defaults, instanceConfig));
+  return createInstance(mergeConfig(axios.defaults, instanceConfig));
 };
 
 // Expose Cancel & CancelToken
@@ -36407,10 +36435,11 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(3);
 var utils = __webpack_require__(0);
+var buildURL = __webpack_require__(28);
 var InterceptorManager = __webpack_require__(33);
 var dispatchRequest = __webpack_require__(34);
+var mergeConfig = __webpack_require__(80);
 
 /**
  * Create a new instance of Axios
@@ -36434,13 +36463,14 @@ Axios.prototype.request = function request(config) {
   /*eslint no-param-reassign:0*/
   // Allow for axios('example/url'[, config]) a la fetch API
   if (typeof config === 'string') {
-    config = utils.merge({
-      url: arguments[0]
-    }, arguments[1]);
+    config = arguments[1] || {};
+    config.url = arguments[0];
+  } else {
+    config = config || {};
   }
 
-  config = utils.merge(defaults, {method: 'get'}, this.defaults, config);
-  config.method = config.method.toLowerCase();
+  config = mergeConfig(this.defaults, config);
+  config.method = config.method ? config.method.toLowerCase() : 'get';
 
   // Hook up interceptors middleware
   var chain = [dispatchRequest, undefined];
@@ -36459,6 +36489,11 @@ Axios.prototype.request = function request(config) {
   }
 
   return promise;
+};
+
+Axios.prototype.getUri = function getUri(config) {
+  config = mergeConfig(this.defaults, config);
+  return buildURL(config.url, config.params, config.paramsSerializer).replace(/^\?/, '');
 };
 
 // Provide aliases for supported request methods
@@ -36775,49 +36810,7 @@ module.exports = (
 
 
 /***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function E() {
-  this.message = 'String contains an invalid character';
-}
-E.prototype = new Error;
-E.prototype.code = 5;
-E.prototype.name = 'InvalidCharacterError';
-
-function btoa(input) {
-  var str = String(input);
-  var output = '';
-  for (
-    // initialize result and counter
-    var block, charCode, idx = 0, map = chars;
-    // if the next str index does not exist:
-    //   change the mapping table to "="
-    //   check if d has no fractional digits
-    str.charAt(idx | 0) || (map = '=', idx % 1);
-    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-  ) {
-    charCode = str.charCodeAt(idx += 3 / 4);
-    if (charCode > 0xFF) {
-      throw new E();
-    }
-    block = block << 8 | charCode;
-  }
-  return output;
-}
-
-module.exports = btoa;
-
-
-/***/ }),
+/* 31 */,
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -37409,9 +37402,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -37465,19 +37455,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     },
     methods: {
-        // deleteEntry(id, index) {
-        //     if (confirm("Do you really want to delete it?")) {
-        //         var app = this;
-        //         var app = this;
-        //         axios.delete('/api/v1/companies/' + id)
-        //             .then(function (resp) {
-        //                 app.companies.splice(index, 1);
-        //             })
-        //             .catch(function (resp) {
-        //                 alert("Could not delete company");
-        //             });
-        //     }
-        // }
         searchit: function searchit() {
             var _this2 = this;
 
@@ -37598,25 +37575,6 @@ var render = function() {
                         [
                           _c("i", { staticClass: "pe-7s-home" }),
                           _vm._v("Pagina Inicial")
-                        ]
-                      )
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "li",
-                    { staticClass: "nav-item active" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "btn btn-default",
-                          attrs: { to: "/teste-arrastar" }
-                        },
-                        [
-                          _c("i", { staticClass: "pe-7s-home" }),
-                          _vm._v("Teste")
                         ]
                       )
                     ],
@@ -37783,12 +37741,6 @@ var render = function() {
                 ),
                 _vm._v(" "),
                 _c("hr"),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  { staticClass: "btn btn-default", attrs: { to: "/modal" } },
-                  [_vm._v("Localizaçao")]
-                ),
                 _vm._v(" "),
                 _c(
                   "router-link",
@@ -39856,7 +39808,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -39952,46 +39904,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
     data: function data() {
         return {
-            pessoa_perdida: {
-                adress: '',
-                contacto_responsavel: '',
-                created_at: '',
-                data_nasc: '',
-                designacao: '',
-                estado: '',
-                foto: '',
-                id_foto: '',
-                id_localizacao: '',
-                id_p_perdida: '',
-                lat: '',
-                lng: '',
-                nacionalidade: '',
-                naturalidade: '',
-                nome: '',
-                nome_foto: '',
-                nome_localizacao: '',
-                nome_responsavel: '',
-                sexo: '',
-                type: '',
-                updated_at: '',
-                user_id: ''
-            },
-            pessoasPerdidas: [],
-            next_page: null
+            pessoa_perdida: [],
+            pessoasPerdidas: []
         };
     },
     methods: {
         getContribuir: function getContribuir(id_p_perdida) {
             var app = this;
             axios.get('/pessoa_perdidas/' + id_p_perdida).then(function (resp) {
-                app.pessoa_perdida = resp.data;
-                console.log(app.pessoa_perdida);
-                //app.next_page = resp.data.next_page_url
+                app.pessoa_perdida = resp.data[0];
             }).catch(function (resp) {
                 console.log(resp);
                 alert("Upsi não foi possivel carregar os dados!");
@@ -40007,10 +39965,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var b = new Date();
             var a = new Date(dateString);
             return b.getMonth() - a.getMonth();
+        },
+        getDay: function getDay(dateString) {
+            moment().subtract(10, 'days').calendar();
         }
     },
+
     mounted: function mounted() {
-        console.log('Não é possivel.');
+
         this.getContribuir(this.$route.params.id_p_perdida);
     }
 });
@@ -40080,8 +40042,7 @@ var render = function() {
                     ],
                     1
                   ),
-                  _vm._v("      \n                        "),
-                  _vm._m(1)
+                  _vm._v("      \n")
                 ]
               )
             ]
@@ -40090,7 +40051,7 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm._m(2),
+    _vm._m(1),
     _vm._v(" "),
     _c(
       "div",
@@ -40103,7 +40064,7 @@ var render = function() {
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "col-md-12" }, [
               _c("div", { staticClass: "card" }, [
-                _vm._m(3),
+                _vm._m(2),
                 _vm._v(" "),
                 _c("div", { staticClass: "content" }, [
                   _c("div", { staticClass: "row" }, [
@@ -40126,20 +40087,22 @@ var render = function() {
                           },
                           [
                             _c("center", [
-                              _c("img", {
-                                staticClass: "card-img-top rounded-circle",
-                                staticStyle: {
-                                  width: "180px",
-                                  height: "180px",
-                                  TOP: "10PX",
-                                  position: "relative"
-                                },
-                                attrs: {
-                                  src:
-                                    "/imgs_p_perdidas/" +
-                                    _vm.pessoa_perdida.nome_foto
-                                }
-                              }),
+                              _vm.pessoa_perdida
+                                ? _c("img", {
+                                    staticClass: "card-img-top rounded-circle",
+                                    staticStyle: {
+                                      width: "180px",
+                                      height: "180px",
+                                      TOP: "10PX",
+                                      position: "relative"
+                                    },
+                                    attrs: {
+                                      src:
+                                        "/imgs_p_perdidas/" +
+                                        _vm.pessoa_perdida.nome_foto
+                                    }
+                                  })
+                                : _vm._e(),
                               _vm._v(" "),
                               _c(
                                 "div",
@@ -40148,51 +40111,76 @@ var render = function() {
                                   attrs: { id: "pesquisar" }
                                 },
                                 [
-                                  _c("h2", { staticStyle: { color: "gray" } }, [
-                                    _vm._v(_vm._s(_vm.pessoa_perdida.nome))
-                                  ]),
+                                  _vm.pessoa_perdida
+                                    ? _c(
+                                        "h2",
+                                        { staticStyle: { color: "gray" } },
+                                        [
+                                          _vm._v(
+                                            _vm._s(_vm.pessoa_perdida.nome)
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  _vm.pessoa_perdida
+                                    ? _c("h5", { staticClass: "card-text" }, [
+                                        _vm._v(
+                                          " Idade : " +
+                                            _vm._s(
+                                              _vm.getAge(
+                                                _vm.pessoa_perdida.data_nasc
+                                              )
+                                            )
+                                        )
+                                      ])
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _c("h5", { staticClass: "card-text" }, [
+                                    _c("i", { staticClass: "pe-7s-date" }),
                                     _vm._v(
-                                      " idade : " +
+                                      " Dias: " +
                                         _vm._s(
-                                          _vm.getAge(
-                                            _vm.pessoa_perdida.data_nasc
+                                          _vm.getDay(
+                                            _vm.pessoa_perdida.created_at
                                           )
                                         )
                                     )
                                   ]),
                                   _vm._v(" "),
-                                  _c("h5", { staticClass: "card-text" }, [
-                                    _c("i", { staticClass: "pe-7s-date" }),
-                                    _vm._v(" Dias")
-                                  ]),
-                                  _vm._v(" "),
-                                  _c(
-                                    "h5",
-                                    {
-                                      staticClass: "card-text",
-                                      staticStyle: { color: "gray" }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(_vm.pessoa_perdida.nacionalidade)
+                                  _vm.pessoa_perdida
+                                    ? _c(
+                                        "h5",
+                                        {
+                                          staticClass: "card-text",
+                                          staticStyle: { color: "gray" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.pessoa_perdida.nacionalidade
+                                            )
+                                          )
+                                        ]
                                       )
-                                    ]
-                                  ),
+                                    : _vm._e(),
                                   _vm._v(" "),
-                                  _c(
-                                    "h5",
-                                    {
-                                      staticClass: "card-text",
-                                      staticStyle: { color: "gray" }
-                                    },
-                                    [
-                                      _vm._v(
-                                        _vm._s(_vm.pessoa_perdida.naturalidade)
+                                  _vm.pessoa_perdida
+                                    ? _c(
+                                        "h5",
+                                        {
+                                          staticClass: "card-text",
+                                          staticStyle: { color: "gray" }
+                                        },
+                                        [
+                                          _vm._v(
+                                            _vm._s(
+                                              _vm.pessoa_perdida.naturalidade
+                                            )
+                                          )
+                                        ]
                                       )
-                                    ]
-                                  )
+                                    : _vm._e()
                                 ]
                               )
                             ])
@@ -40202,7 +40190,9 @@ var render = function() {
                         _vm._v(" "),
                         _c("div", { staticClass: "clearfix" })
                       ]
-                    )
+                    ),
+                    _vm._v(" "),
+                    _vm._m(3)
                   ])
                 ])
               ])
@@ -40233,23 +40223,6 @@ var staticRenderFns = [
         )
       ]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("li", { staticClass: "nav-item" }, [
-      _c("input", {
-        staticClass: "form-control search-field placeholder-shown",
-        attrs: {
-          type: "text",
-          "aria-label": "Search",
-          placeholder: "Procure ...",
-          maxlength: "20",
-          size: "50"
-        }
-      })
-    ])
   },
   function() {
     var _vm = this
@@ -40286,6 +40259,62 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("div", { staticClass: "col-sm-6" }, [
         _c("h4", { staticClass: "title" }, [_vm._v("Dar um contributo")])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-sm-8" }, [
+      _c("form", { attrs: { enctype: "multipart/form-data" } }, [
+        _c("div", { staticClass: "col-md-12", staticStyle: { top: "-10px" } }, [
+          _c("div", { staticClass: "form-group" }, [
+            _c("textarea", {
+              staticClass: "form-control",
+              attrs: {
+                rows: "5",
+                name: "content",
+                placeholder:
+                  "adicione aqui qualquer informação que possa ajudar a localizar"
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "hidden",
+              attrs: { type: "number", name: "id", value: "" }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-info btn-fill pull-right",
+              staticStyle: {
+                top: "10px",
+                bottom: "10px",
+                position: "relative"
+              },
+              attrs: { type: "submit" }
+            },
+            [_vm._v("Comentar")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("div", { staticClass: "well form-group" }, [
+            _c("h4"),
+            _vm._v(" "),
+            _c("small", { staticStyle: { color: "gray" } }),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body " }, [
+              _c("div", {
+                staticClass: "alert alert-success",
+                attrs: { role: "alert" }
+              })
+            ])
+          ])
+        ])
       ])
     ])
   }
@@ -40548,12 +40577,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 alert("Upsi não foi possivel carregar os dados!");
             });
         },
-        getProfilePhoto: function getProfilePhoto() {
-
-            var f = "/imgs_p_perdidas/" + this.pessoa_perdidas.nome_foto;
-            return f;
-            // return "{{ asset('imgs_p_perdidas/') "+ this.nome_foto ;
-        },
         getAge: function getAge(dateString) {
             var b = new Date();
             var a = new Date(dateString);
@@ -40561,9 +40584,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         getTime: function getTime(dateString) {
 
-            var b = new Date();
-            var a = new Date(dateString);
-            return b.getMonth() - a.getMonth();
+            var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            var firstDate = new Date(dateString);
+            var secondDate = new Date();
+
+            return Math.round(Math.abs((secondDate.getTime() - firstDate.getTime()) / oneDay)) + " dias";
         },
         getMore: function getMore() {
             var app = this;
@@ -40764,10 +40789,14 @@ var render = function() {
                     staticStyle: { "text-align": "center" },
                     attrs: {
                       id: "testo_historia",
-                      title: "Centro Onde esta localizado"
+                      title: "Familiar que o encontrou"
                     }
                   },
-                  [_vm._v("Localiza-se: " + _vm._s(pessoa_perdida.designacao))]
+                  [
+                    _vm._v(
+                      "Achado por: " + _vm._s(pessoa_perdida.nome_responsavel)
+                    )
+                  ]
                 ),
                 _vm._v(" "),
                 _c("h5", { staticStyle: { "text-align": "center" } }, [
@@ -40778,49 +40807,13 @@ var render = function() {
                 _vm._v(" "),
                 _c("h5", { staticStyle: { "text-align": "center" } }, [
                   _vm._v(
-                    " Dias : " + _vm._s(_vm.getTime(pessoa_perdida.created_at))
+                    " Encontrado ha : " +
+                      _vm._s(_vm.getTime(pessoa_perdida.updated_at))
                   )
                 ]),
                 _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  { staticClass: "btn btn-default", attrs: { to: "/modal" } },
-                  [_vm._v("Localizaçao")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "router-link",
-                  {
-                    staticClass: "btn btn-default",
-                    attrs: { to: "/contribuir" }
-                  },
-                  [_vm._v("Contribuir")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "a",
-                  {
-                    staticClass: "btn btn-xs btn-danger",
-                    attrs: { href: "#" },
-                    on: {
-                      click: function($event) {
-                        _vm.getContribuir(
-                          _vm.pessoa_perdidas.id_p_perdida,
-                          _vm.index
-                        )
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                            Contribuir\n                        "
-                    )
-                  ]
-                )
-              ],
-              1
+                _c("hr")
+              ]
             )
           ])
         })
@@ -54965,6 +54958,67 @@ if (inBrowser && window.Vue) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(0);
+
+/**
+ * Config-specific merge-function which creates a new config-object
+ * by merging two configuration objects together.
+ *
+ * @param {Object} config1
+ * @param {Object} config2
+ * @returns {Object} New object resulting from merging config2 to config1
+ */
+module.exports = function mergeConfig(config1, config2) {
+  // eslint-disable-next-line no-param-reassign
+  config2 = config2 || {};
+  var config = {};
+
+  utils.forEach(['url', 'method', 'params', 'data'], function valueFromConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    }
+  });
+
+  utils.forEach(['headers', 'auth', 'proxy'], function mergeDeepProperties(prop) {
+    if (utils.isObject(config2[prop])) {
+      config[prop] = utils.deepMerge(config1[prop], config2[prop]);
+    } else if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (utils.isObject(config1[prop])) {
+      config[prop] = utils.deepMerge(config1[prop]);
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  utils.forEach([
+    'baseURL', 'transformRequest', 'transformResponse', 'paramsSerializer',
+    'timeout', 'withCredentials', 'adapter', 'responseType', 'xsrfCookieName',
+    'xsrfHeaderName', 'onUploadProgress', 'onDownloadProgress', 'maxContentLength',
+    'validateStatus', 'maxRedirects', 'httpAgent', 'httpsAgent', 'cancelToken',
+    'socketPath'
+  ], function defaultToConfig2(prop) {
+    if (typeof config2[prop] !== 'undefined') {
+      config[prop] = config2[prop];
+    } else if (typeof config1[prop] !== 'undefined') {
+      config[prop] = config1[prop];
+    }
+  });
+
+  return config;
+};
+
 
 /***/ })
 /******/ ]);
