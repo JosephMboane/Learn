@@ -40,32 +40,43 @@
 <!--            <div v-if="showSearch==true">-->
             <div class="row">
 <!--                <div class="col-lg-3" v-for="pessoa_perdida, index in pessoasPerdidas">-->
-                <div class="col-lg-3" v-for="pessoa_perdida in filtoPessoas">
+                <div class="col-sm-4" v-for="pessoa_perdida in filtoPessoas">
 
-                    <div class="box wow fadeInLeft" data-wow-delay="0.2s">
-                        <div class="icon"><i class="fa fa-shopping-bag"></i></div>
-
-
-
-<!--                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px ">-->
-                        <!--                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" style=" width: 80px; height: 80px; position: relative;margin-top: -20px">-->
-                        <img class="card-img-top rounded-circle ml-5" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" style=" width: 80px; height: 80px; TOP: 10PX; position: relative;margin-top: -20px; margin-bottom:20px">
-                        <!--{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}-->
-                        <h5 class="description"  style="text-align: center" >{{ pessoa_perdida.nome }}</h5>
-                        <!--                            <p class="description" style="margin-left: -40px" id="testo_historia">Sexo:{{ pessoa_perdida.sexo }}</p>-->
-                        <h5 class="description"  style="text-align: center"  id="testo_historia" title="Centro Onde esta localizado">Localiza-se: {{ pessoa_perdida.designacao }}</h5>
-                        <h5 style="text-align: center"> Idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
-                        <h5 style="text-align: center" title="Esta no sistema ha :"> {{ getDay(pessoa_perdida.created_at) }}</h5>
-                        <!--                              <p > idade : {{ // pessoa_perdida.age }}</p>-->
-                        <!--                                <a class="btn btn-default" href="" role="button">Ver Mais</a>-->
-                        <hr>
-<!--                        <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>-->
-                        <router-link  :to="`/contribuir/${pessoa_perdida.id_p_perdida}`" class="btn btn-default">Contribuir</router-link>
+<!--                    <div class="box wow fadeInLeft" data-wow-delay="0.2s">-->
+<!--                        <div class="icon"><i class="fa fa-shopping-bag"></i></div>-->
 
 
 
+<!--&lt;!&ndash;                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px ">&ndash;&gt;-->
+<!--                        &lt;!&ndash;                            <img class="card-img-top rounded-circle" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" style=" width: 80px; height: 80px; position: relative;margin-top: -20px">&ndash;&gt;-->
+<!--                        <img class="card-img-top rounded-circle ml-5" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" alt="Generic placeholder image" style=" width: 80px; height: 80px; TOP: 10PX; position: relative;margin-top: -20px; margin-bottom:20px">-->
+<!--                        &lt;!&ndash;{{&#45;&#45;<img id="imagem_historia" class="img-thumbnail" src="/imgs_historias/" alt="Generic placeholder image" width="100" height="100" style="margin-left: -40px; margin-top: -40px">&#45;&#45;}}&ndash;&gt;-->
+<!--                        <h5 class="description"  style="text-align: center" >{{ pessoa_perdida.nome }}</h5>-->
+<!--                        &lt;!&ndash;                            <p class="description" style="margin-left: -40px" id="testo_historia">Sexo:{{ pessoa_perdida.sexo }}</p>&ndash;&gt;-->
+<!--                        <h5 class="description"  style="text-align: center"  id="testo_historia" title="Centro Onde esta localizado">Localiza-se: {{ pessoa_perdida.designacao }}</h5>-->
+<!--                        <h5 style="text-align: center"> Idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>-->
+<!--                        <h5 style="text-align: center" title="Esta no sistema ha :"> {{ getDay(pessoa_perdida.created_at) }}</h5>-->
+<!--                        &lt;!&ndash;                              <p > idade : {{ // pessoa_perdida.age }}</p>&ndash;&gt;-->
+<!--                        &lt;!&ndash;                                <a class="btn btn-default" href="" role="button">Ver Mais</a>&ndash;&gt;-->
+<!--                        <hr>-->
+<!--&lt;!&ndash;                        <router-link to="/modal" class="btn btn-default">Localizaçao</router-link>&ndash;&gt;-->
+<!--                        <router-link  :to="`/contribuir/${pessoa_perdida.id_p_perdida}`" class="btn btn-default">Contribuir</router-link>-->
 
-                    </div>
+
+
+
+<!--                    </div>-->
+<!--                    <div class="col-sm-4">-->
+                        <div class="card" style="width: 18rem; height: 400px; border-radius: 15px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);">
+                            <img class="card-img-top rounded-circle"  :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto" style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
+                            <div class="card-body" id="pesquisar">
+                                <h2 class="">{{ pessoa_perdida.nome }}</h2>
+                                <h5 class="card-text">Idade: {{ getAge(pessoa_perdida.data_nasc) }}</h5>
+                                <h5 class="card-text" style="color: gray">{{ getDay(pessoa_perdida.created_at)}}</h5>
+                            </div>
+                            <p><a class="btn btn-info btn-fill" href="" role="button">Detalhes</a></p>
+                        </div>
+<!--                    </div>-->
                 </div>
 
 

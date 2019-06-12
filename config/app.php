@@ -221,6 +221,7 @@ return [
         'Charts'=>ConsoleTVs\Charts\ChartsServiceProvider::class,
 
 
+
     ],
 
 ];

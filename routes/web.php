@@ -36,10 +36,11 @@ Route::get('/create_centro', function () {
 
 
 
-//Route::get('/localizacao',function (){
-//    return \Laravel_Learn\Localizacao::all();
-//});
+Route::get('/localizacao',function (){
+    return [\Laravel_Learn\Localizacao::all()];
+});
 Route::resource('pessoa_perdida','pessoaPerdidaController')->middleware('auth');
+Route::get('pessoa-perdidas-Achados','pessoaPerdidaController@index_achado');
 
 Route::resource('pessoa_ajuda','pessoaAjudaController');
 
@@ -48,11 +49,15 @@ Route::resource('localizacao','LocalizacaoController');
 
 Route::resource('user','userController');
 
+//Route::get('localizacaoCentro','LocalizacaoController@index');
 
 Route::post('/search', 'pessoaPerdidaController@pesquisar');
 Route::post('/search', 'pessoaPerdidaController@pesquisar')->name('index');
 
-
+Route::get('/api/locations/',function () {
+    $location = \Laravel_Learn\Localizacao::all();
+    return view('localizacao1.index')->with('location', $location);
+});
 
 Route::get('/mapa',function () {
     return view('localizacao.index');
@@ -68,6 +73,7 @@ Route::get('locations/{id_localizacao}',function ($id_localizacao) {
          $location = \Laravel_Learn\Localizacao::find($id_localizacao);
          return view('localizacao.ver_pessoa_perdida')->with('location',$location);
      });
+
 Route::post('/search1', 'pessoaPerdidaController@pesquisar2');
 
 Route::resource('centro','centroAcolhimentoController')->middleware('auth');
@@ -129,4 +135,6 @@ Route::get('pessoa_perdidas/{id_p_perdida}','pessoaPerdidaController@update1')->
 Route::get('/contribuir','contributoController@store');
 Route::get('/contribuir/{{id_p_perdida}}','contributoController@edit');
 Route::get('pessoa_perdidas/search', 'pessoaPerdidaController@pesquisar2');
+Route::post('contribuir','contributoController@store');
+Route::get('contribuir','contributoController@getContribuir');
 

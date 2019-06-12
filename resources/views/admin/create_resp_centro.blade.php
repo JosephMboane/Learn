@@ -35,9 +35,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="icons.html">
-                        <i class="pe-7s-science"></i>
-                        <p>Estatístias</p>
+                    <a href="/chart-teste">
+                        <i class="pe-7s-users"></i>
+                        <p>Estatistica</p>
                     </a>
                 </li>
                 

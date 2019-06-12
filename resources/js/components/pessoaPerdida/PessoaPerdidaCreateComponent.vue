@@ -107,7 +107,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Informação adicional</label>
-                                        <textarea rows="7" name="obs" class="form-control" placeholder="informação adicional sobre a pessoa perdida"></textarea>
+                                        <textarea rows="7" name="obs" class="form-control" placeholder="Informação adicional sobre a pessoa perdida"></textarea>
                                     </div>
                                 </div>
 

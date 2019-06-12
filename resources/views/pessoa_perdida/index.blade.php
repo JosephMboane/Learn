@@ -1,7 +1,26 @@
 
-@extends('layouts.app')
+@extends('layouts.appMboane')
 @section('title','Pagina Inicial')
 @section('content')
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row" style="box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.2);">
     <div class="text-center d-flex justify-content-center">
@@ -10,20 +29,24 @@
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <ul class="navbar-nav navbar-nav-left header-links d-none d-md-flex">
           <li class="nav-item active">
-            <a href="#" class="nav-link">
+            <a href="/pessoa_perdida/" class="nav-link">
             <i class="pe-7s-home"></i>Pagina Inicial</a>
           </li>
           <li class="nav-item">
             <a href="/pessoa_perdida/create/" class="nav-link">
             <i class="pe-7s-add-user"></i>Pessoa Perdida</a>
           </li>
+            <li class="nav-item">
+                <a href="/pessoa-perdidas-Achados" class="nav-link">
+                    <i class="pe-7s-add-home"></i>Pessoas Achadas</a>
+            </li>
             <li>
                 <a><form  method="POST" action="{{URL::to('/search')}}"role="search">
                         @csrf
                         <div class="col-md-auto" >
                             <div class="form-group">
                                 <label>Pesquisar</label>
-                                <input type="text" id="entrada" onkeypress="pesquisar()" name="pesquisar" class="form-control" value="{{ isset($pesquisar) ? $pesquisar : '' }}" placeholder="pesquisar pelo nome" style="text-align: center"> <br>
+                                <input type="text" id="entrada" onkeypress="pesquisar()" name="pesquisar" class="form-control" value="{{ isset($pesquisar) ? $pesquisar : '' }}" placeholder="pesquisar pelo nome" style="text-align: center" maxlength="20" size="50"> <br>
                                 {{--<button type="submit" class="btn btn-fill">pesquisar</button>--}}
 
                             </div>
@@ -37,12 +60,37 @@
 
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item">
-            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-              {{--@if (session('status'))--}}
-                  {{--<div class="alert alert-success" role="alert">--}}
-                      {{--{{ session('status') }}--}}
-                  {{--</div>--}}
-              {{--@endif--}}
+
+
+              <ul class="navbar-nav ml-auto">
+                  <!-- Authentication Links -->
+                  @guest
+                      <li class="nav-item">
+                          <a class="nav-link" href="{{ route('login') }}">{{ __('Logout') }}</a>
+                      </li>
+
+                  @else
+                      <li class="nav-item dropdown">
+                          <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                              {{ Auth::user()->name }} <span class="caret"></span>
+                          </a>
+
+                          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                              <a class="dropdown-item" href="{{ route('logout') }}"
+                                 onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                  {{ __('Logout') }}
+                              </a>
+
+
+                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                  @csrf
+                              </form>
+                          </div>
+                      </li>
+                  @endguest
+              </ul>
+
 
           </li>
             {{--<small style="color: red">--}}
@@ -129,7 +177,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div>imgs_p_perdidas
+                        <div>
                             <img class="card-img-top" src="/imgs_p_perdidas/{{$p_perdida->nome_foto}}"
                                  style=" width: 200px; height: 200px;">
                         </div>
@@ -163,7 +211,7 @@
         </div>
     @endforeach
         <br>
-        <div style=" margin-left: 600px">
+        <div style=" margin-left: 550px" >
             {{$pessoa_perdida->links()}}
         </div>
 
@@ -199,6 +247,13 @@
             });
         });
     </script>
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
+
+    <script src="<?php echo asset('js/jquery.3.2.1.min.js')?>" type="text/javascript"></script>
+    <script src="<?php echo asset('js/bootstrap.min.js')?>" type="text/javascript"></script>
 
 </center>
 @endsection

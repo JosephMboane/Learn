@@ -14,10 +14,10 @@ class LocalizacaoContoller extends Controller
      */
     public function index()
     {
-//        $localizacao = Localizacao::all();;
+        $localizacao = Localizacao::all();
 //        $localizacao = Localizacao::all();;
 //        $dados = response()->json($localizacao);
-        return view('localizacao1.index', compact('localizacao'));
+        return view('localizacao.index', compact('localizacao'));
     }
 
     /**

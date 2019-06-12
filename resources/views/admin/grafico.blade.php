@@ -10,7 +10,7 @@
 
         <div class="sidebar-wrapper">
             <div class="logo">
-                <a href="{{ url('/') }}" class="simple-text">
+                <a href="{{ url('/pessoa_perdida') }}" class="simple-text">
                     PROCURA-SE
                 </a>
             </div>
@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href="#">
+                    <a href="/user">
                         <i class="pe-7s-menu"></i>
                         <p>Pessoas perdidas</p>
                     </a>
@@ -32,6 +32,12 @@
                     <a href="/centro">
                         <i class="pe-7s-map-marker"></i>
                         <p>Centros</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/chart-teste">
+                        <i class="pe-7s-users"></i>
+                        <p>Estatistica</p>
                     </a>
                 </li>
                 <li>

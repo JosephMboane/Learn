@@ -2,6 +2,7 @@
 
 namespace Laravel_Learn\Http\Controllers;
 
+use ConsoleTVs\Charts\Classes\C3\Chart;
 use Illuminate\Http\Request;
 //use Khill\Lavacharts\Charts\Chart;
 use Charts;
@@ -9,6 +10,7 @@ use Charts;
 //use ConsoleTVs\Charts;
 use Laravel_Learn\Charts\SampleChart;
 use Laravel_Learn\Pessoa_perdida;
+use DB;
 
 class HomeController extends Controller
 {

@@ -69,7 +69,7 @@
 
         function loadLocations() {
             $.ajax({
-                url: 'public/cod.php',
+                url: '/localizacao/{{$location}}',
                 success: function (data ) {
 
                     console.log(data);

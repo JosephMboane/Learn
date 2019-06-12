@@ -29,7 +29,7 @@
 
         <div class="sidebar-wrapper">
             <div class="logo">
-                <a href="{{ url('/') }}" class="simple-text">
+                <a href="{{ url('/pessoa_perdida') }}" class="simple-text">
                    PROCURA-SE
                 </a>
             </div>

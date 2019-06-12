@@ -46,7 +46,7 @@ class pessoaPerdidaController extends Controller
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
             ->orderBy('id_p_perdida','desc')
-            ->paginate(8);
+            ->paginate(9);
 //        $pessoa_perdida = DB::table('pessoa_perdida')->where('pessoa_perdida.estado', '=',1)
 //            ->orderBy('id_p_perdida','desc')
 //            ->paginate(6);
@@ -69,6 +69,23 @@ class pessoaPerdidaController extends Controller
 //            ->paginate(6);
 //        $pessoa_perdida = Pessoa_perdida::all();
         return $pessoa_perdida;
+    }
+    public function index_achado()
+    {
+        $pessoa_perdida = DB::table('pessoa_perdida')
+            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
+            ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
+            ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
+            ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
+            ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
+            ->where('pessoa_perdida.estado', '=',0)
+            ->orderBy('id_p_perdida','asc')
+            ->paginate(6);
+//        $pessoa_perdida = DB::table('pessoa_perdida')->where('pessoa_perdida.estado', '=',1)
+//            ->orderBy('id_p_perdida','desc')
+//            ->paginate(6);
+//        $pessoa_perdida = Pessoa_perdida::all();
+        return view('pessoa_perdida.achada', compact('pessoa_perdida'));
     }
 
 

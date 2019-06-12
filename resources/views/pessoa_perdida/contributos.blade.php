@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.appMboane')
 @section('title','Registo de pessoa perdida')
 
 <style type="text/css">
@@ -35,7 +35,7 @@
           
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-              <span class="profile-text">{{ Auth::user()->nome }}</span>
+              <span class="profile-text">{{ Auth::user()->name }}</span>
               <img class="img-xs rounded-circle" src="/imgs_p_perdidas/1538714846foto.jpg" alt="Profile image">
               <i class="pe-7s-edit"></i>
             </a>
@@ -146,11 +146,12 @@
                                                         <div class="card-body " >
                                                             @if (session('status'))
                                                                 <div class="alert alert-success" role="alert">
-                                                                    {{ session('status') }}
+{{--                                                                    {{ session('status') }}--}}
+                                                                    {{ session('user')->name }}
                                                                 </div>
                                                             @endif
 
-                                                            You are logged in!
+
                                                         </div>
                                                     </div>
                                                 @endforeach

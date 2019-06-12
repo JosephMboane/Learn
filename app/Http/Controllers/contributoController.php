@@ -61,6 +61,32 @@ class contributoController extends Controller
 
         return view('pessoa_perdida.contributos', compact('pessoa_perdida', 'contributos'));
     }
+    public function storeVue(Request $request)
+    {
+        $contributo = new contributo();
+
+        $contributo->content = $request->input('content');
+        $contributo->id_p_perdida = $request->input('id');
+        $id      = $request->input('id');
+        $contributo->save();
+
+        return $contributos;
+    }
+    public function getContribuir(){
+
+        $pessoa_perdida = DB::table('pessoa_perdida')
+            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
+            ->select('pessoa_perdida.*','foto.*')
+            ->where('pessoa_perdida.id_p_perdida', "$id")
+            ->first();
+
+        $contributos = DB::table('contributos')->where('contributos.id_p_perdida', "$id")
+            ->orderBy('created_at','desc')
+            ->get();
+
+        return $contributos;
+
+    }
 
     /**
      * Display the specified resource.

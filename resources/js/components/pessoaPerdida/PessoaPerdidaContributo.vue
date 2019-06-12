@@ -61,11 +61,17 @@
 
                                     <div class="card" style="width: 25rem; border-radius: 2px; box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0);">
                                         <center>
+<!--                                            <a href="/locations/{{$p_perdida->id_localizacao}}" class="nav-link">-->
+<!--                                                <button type="button" class="btn btn-primary">Ver no Mapa</button>-->
+<!--                                            </a>-->
+                                            <a href="/mapa" class="nav-link">
+                                                <button type="button" class="btn btn-primary">Ver no Mapa</button>
+                                            </a>
                                             <img class="card-img-top rounded-circle" v-if="pessoa_perdida" :src="'/imgs_p_perdidas/'+ pessoa_perdida.nome_foto"  style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
                                             <div class="card-body" id="pesquisar">
                                                 <h2 class="" style="color: gray" v-if="pessoa_perdida">{{ pessoa_perdida.nome }}</h2>
                                                 <h5 class="card-text" v-if="pessoa_perdida"> Idade : {{ getAge(pessoa_perdida.data_nasc) }}</h5>
-                                                <h5 class="card-text"><i class="pe-7s-date"></i> Dias: {{ getDay(pessoa_perdida.created_at) }}</h5>
+                                                <h5 class="card-text"><i class="pe-7s-date"></i> Dias: {{ getAge(pessoa_perdida.created_at) }}</h5>
                                                 <h5 class="card-text" style="color: gray" v-if="pessoa_perdida">{{pessoa_perdida.nacionalidade}}</h5>
                                                 <h5 class="card-text" style="color: gray" v-if="pessoa_perdida">{{pessoa_perdida.naturalidade}}</h5>
                                             </div>
@@ -78,22 +84,22 @@
 
 
 
-                                    <form enctype="multipart/form-data">
+                                    <form class="contribuir">
                                         <div class="col-md-12" style="top: -10px">
                                             <div class="form-group">
 
                                                 <textarea rows="5" name="content" class="form-control" placeholder="adicione aqui qualquer informação que possa ajudar a localizar"></textarea>
-<!--                                                <input type="number" name="id" class="hidden" value="{{$pessoa_perdida->id_p_perdida}}">-->
+                                                <input type="number" name="id" class="hidden" value="">
                                                 <input type="number" name="id" class="hidden" value="">
 
                                             </div>
-                                            <button type="submit" class="btn btn-info btn-fill pull-right" style="top:10px; bottom: 10px; position: relative; ">Comentar</button>
+                                            <button @click="saveForm()" class="btn btn-info btn-fill pull-right" style="top:10px; bottom: 10px; position: relative; ">Comentar</button>
 
                                         </div>
-                                        <div class="col-md-12">
+                                        <div class="col-md-12" v-for="contributo in contribuir">
                                             <div class="well form-group">
-                                                <h4></h4>
-                                                <small style="color: gray"></small>
+                                                <h4>{{contributo.content}}</h4>
+                                                <small style="color: gray">{{contributo.created_at}}</small>
                                                 <div class="card-body " >
 
                                                     <div class="alert alert-success" role="alert">
@@ -122,6 +128,7 @@
             return {
                 pessoa_perdida: [],
                 pessoasPerdidas:[],
+                contribuir:{},
                 }
         },
         methods: {
@@ -151,11 +158,42 @@
                 return b.getMonth() - a.getMonth()
 
             },
-            getDay(dateString) {
-                moment().subtract(10, 'days').calendar();
+            // getDay(dateString) {
+            //     moment().subtract(10, 'days').calendar();
+            //
+            // },
+            getContribos(){
+                axios.get('/contribuir')
+                    .then((response) => {
+                        this.contribuir = response.data
+                        console.log(this.contribuir );
 
+                    })
+                    .catch(function (response) {
+                        console.log(response);
+                        alert("Upsi não foi possivel carregar os dados!");
+                    });
             },
-            //param: duration in milliseconds
+            saveForm() {
+//                console.log('Não é possivel.')
+                let form = document.querySelector('.contribuir');
+                let formData = new FormData(form);
+
+                var app = this;
+                // var tmp = {'nome': app.pessoaPerdida.nome, 'sexo': app.pessoaPerdida.sexo, 'd_nasc': app.pessoaPerdida.data_nasc, 'naturalidade': app.pessoaPerdida.naturalidade, 'nacionalidade': app.pessoaPerdida.nacionalidade, 'foto': app.pessoaPerdida.foto};
+                axios.post('/contribuir', formData)
+                    .then(function (resp) {
+
+                        // window.location.href = '/'
+                        // app.$router.push({name: 'pessoaPerdidaComponent' });
+                        app.$router.push('/');
+                        // app.router.push({ name: 'pessoaPerdidaComponent' })
+                    })
+                    .catch(function (resp) {
+                        console.log(resp);
+                        alert("Não criou a Pessoa Perdida", resp);
+                    });
+            }
 
 
         },

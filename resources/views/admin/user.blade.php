@@ -1,4 +1,4 @@
-@extends('layouts.app') 
+@extends('layouts.app')
 @section('title','Procura-se (Administrativo)')
 @yield('content')
 
@@ -32,6 +32,12 @@
                     <a href="/centro">
                         <i class="pe-7s-map-marker"></i>
                         <p>Centros</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/chart-teste">
+                        <i class="pe-7s-users"></i>
+                        <p>Estatistica</p>
                     </a>
                 </li>
                 <li>

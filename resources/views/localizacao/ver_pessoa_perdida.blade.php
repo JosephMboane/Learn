@@ -26,7 +26,8 @@
 </head>
 
 <body>
-<div id="map"></div>
+
+    <div id="map"></div>
 
 <script>
     var customLabel = {
