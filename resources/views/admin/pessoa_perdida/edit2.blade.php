@@ -162,7 +162,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Foto</label>
-                                                <input type="file" name="foto" class="form-control" value="{{$pessoa_perdida->nome_foto}}" style="height: 43px">
+                                                <input type="file" name="foto" class="form-control" value="{{$pessoa_perdida->foto}}" style="height: 43px">
                                             </div>
                                         </div>  
                                     

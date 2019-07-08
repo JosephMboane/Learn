@@ -19,6 +19,7 @@ class CreateCasoTable extends Migration {
 			$table->integer('id_pessoa_perdida')->index('fk_caso_pessoa_perdida_idx');
 			$table->integer('id_pessoa_ajuda')->index('fk_caso_pessoa_ajuda1_idx');
 			$table->integer('id_localizacao')->index('fk_caso_Localizacao1_idx');
+			$table->integer('id_centro')->index('fk_caso_centro_acolhimento_idx');
 			$table->timestamps();
 			$table->primary(['id_caso','id_pessoa_perdida','id_pessoa_ajuda','id_localizacao']);
 		});

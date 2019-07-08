@@ -18,6 +18,7 @@ class Caso extends Model
         $caso->save();
         return $caso->id_caso;
     }
+//    protected $with =['pessoa_perdida'];
 
 
     public function pessoa_perdida(){
@@ -31,5 +32,10 @@ class Caso extends Model
         return $this->belongsTo(Localizacao::class);
 
     }
+
+    public function centroAcolhimento(){
+        return $this->belongsToMany(centro_acolhimento::class);
+    }
+
 
 }

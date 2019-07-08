@@ -14,10 +14,15 @@
 */
   
 Route::resource('/','pessoaPerdidaController');
+Route::resource('/','pessoaPerdidaController');
 
 Route::get('/front-admin','userController@contador');
+Route::get('/falecidos','userController@indexFacelidos');
 Route::get('/editar','pessoaPerdidaController@edit');
+Route::get('/editar2','pessoaPerdidaController@edit2');
 Route::resource('/caso','casoController');
+Route::get('/get-falecido','casoController@editFalecido');
+Route::get('/caso-mudar/{{id_p_perdida}}','casoController@edit2');
 
 
 Route::get('/create_perdida', function () {
@@ -33,7 +38,9 @@ Route::get('/create_centro', function () {
     return view('admin.centros.create_centro');
 });
 
-
+Route::get('/localizacao/{id_localizacao}/pessoas','LocalizacaoContoller@teste');
+Route::get('/centro/{id_centro}/pessoas','centroAcolhimentoController@teste');
+Route::get('/centro/casos','centroAcolhimentoController@teste2');
 
 
 Route::get('/localizacao',function (){

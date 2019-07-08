@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->string('remember_token', 150);
 			$table->timestamps();
 			$table->integer('foto_id_foto')->default(1)->index('fk_usuario_foto1_idx');
+			$table->boolean('admin')->default(0);
 			$table->primary(['id_usuario','foto_id_foto']);
 		});
 	}

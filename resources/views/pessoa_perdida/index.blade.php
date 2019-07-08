@@ -188,11 +188,11 @@
                                 {{$p_perdida->data_nasc}}
                             </h4>
                         </div>
-                    <h5 class=""><a href="">{{$p_perdida->designacao}}</a></h5>
+                        <h5 class=""><a href="">{{$p_perdida->designacao}}</a></h5>
 
                         <h4>
-                                {{ \Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->created_at) }}
-                            </h4>
+                            {{ \Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->created_at) }}
+                        </h4>
 
 
                     </div>
@@ -210,7 +210,7 @@
             </div>
         </div>
     @endforeach
-        <br>
+    <br>
         <div style=" margin-left: 550px" >
             {{$pessoa_perdida->links()}}
         </div>
@@ -218,7 +218,7 @@
 </div>
 </center>
 
-<script src="<?php echo asset('js/jquery-2.1.4.min.js')?>"></script>
+    <script src="<?php echo asset('js/jquery-2.1.4.min.js')?>"></script>
     <script>
         $(document).ready(function(){
 

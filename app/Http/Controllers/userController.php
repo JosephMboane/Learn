@@ -22,10 +22,25 @@ class userController extends Controller
             ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.nome_localizacao')
             ->where('pessoa_perdida.estado','=','1')
+            ->where('pessoa_perdida.situacao_vital','=','1')
             ->orderBy('id_p_perdida','asc')
             ->paginate(36);
         
         return view('admin.user', compact('pessoa_perdida'))->with('pessoa_perdida',$pessoa_perdida);
+    }
+    public function indexFacelidos()
+    {
+        $pessoa_perdida = DB::table('pessoa_perdida')
+            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
+            ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
+            ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
+            ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.nome_localizacao')
+            ->where('pessoa_perdida.estado','=','1')
+            ->where('pessoa_perdida.situacao_vital','=','0')
+            ->orderBy('id_p_perdida','asc')
+            ->paginate(36);
+
+        return view('admin.falecidos', compact('pessoa_perdida'))->with('pessoa_perdida',$pessoa_perdida);
     }
 
     /**

@@ -15,6 +15,7 @@ class AddForeignKeysToCasoTable extends Migration {
 		Schema::table('caso', function(Blueprint $table)
 		{
 			$table->foreign('id_localizacao', 'fk_caso_Localizacao1')->references('id_localizacao')->on('localizacao')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_centro', 'fk_caso_centro_acolhimento')->references('id_centro')->on('centro_acolhimento')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_pessoa_ajuda', 'fk_caso_pessoa_ajuda1')->references('id_pessoa_ajuda')->on('pessoa_ajuda')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_pessoa_perdida', 'fk_caso_pessoa_perdida')->references('id_p_perdida')->on('pessoa_perdida')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
@@ -31,6 +32,7 @@ class AddForeignKeysToCasoTable extends Migration {
 		Schema::table('caso', function(Blueprint $table)
 		{
 			$table->dropForeign('fk_caso_Localizacao1');
+			$table->dropForeign('fk_caso_centro_acolhimento');
 			$table->dropForeign('fk_caso_pessoa_ajuda1');
 			$table->dropForeign('fk_caso_pessoa_perdida');
 		});

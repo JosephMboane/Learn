@@ -24,7 +24,7 @@ class CreateCentroAcolhimentoTable extends Migration {
 			$table->string('avenida', 200);
 			$table->integer('numero');
 			$table->string('obs', 800)->nullable();
-			$table->string('foto', 100);
+			$table->string('foto_centro', 100);
 			$table->integer('id_localizacao')->index('fk_centro_acolhimento_Localizacao1_idx');
 			$table->timestamps();
 			$table->primary(['id_centro','id_localizacao']);

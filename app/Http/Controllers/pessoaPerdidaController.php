@@ -28,6 +28,7 @@ class pessoaPerdidaController extends Controller
             ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)
+            ->where('pessoa_perdida.situacao_vital','=','1')
             ->orderBy('id_p_perdida','desc')
             ->paginate(9);
 
@@ -182,6 +183,10 @@ class pessoaPerdidaController extends Controller
     {
         return view('admin.pessoa_perdida.edit', compact('pessoa_perdida'));
     }
+    public function edit2(Pessoa_perdida $pessoa_perdida)
+    {
+        return view('admin.pessoa_perdida.edit2', compact('pessoa_perdida'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -213,9 +218,9 @@ class pessoaPerdidaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Pessoa_perdida $pessoa_perdida)
     {
-        //
+        return view('admin.pessoa_perdida.edit2', compact('pessoa_perdida'));
     }
     public function pesquisar(Request $request)
     {

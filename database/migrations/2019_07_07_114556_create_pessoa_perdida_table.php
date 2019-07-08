@@ -23,10 +23,10 @@ class CreatePessoaPerdidaTable extends Migration {
 			$table->string('nacionalidade', 45)->nullable();
 			$table->string('naturalidade', 45);
 			$table->integer('estado')->nullable();
-			$table->string('foto', 45)->nullable();
+			$table->integer('situacao_vital')->nullable()->default(1);
 			$table->integer('id_foto')->index('fk_pessoa_perdida_foto1_idx');
 			$table->timestamps();
-			$table->integer('user_id')->index('pessoa_perdida_user_id_foreign');
+			$table->integer('user_id')->nullable()->index('pessoa_perdida_user_id_foreign');
 			$table->primary(['id_p_perdida','id_foto']);
 		});
 	}

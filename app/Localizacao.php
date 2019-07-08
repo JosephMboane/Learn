@@ -11,10 +11,11 @@ class Localizacao extends Model
     public $timestamps=false;
 
 
-    public function caso(){
-        return $this->hasOne(Caso::class);
+    public function casos(){
+        return $this->hasMany(Caso::class);
     }
     public function pessoaPerdida(){
         return $this->hasOne(Pessoa_perdida::class);
     }
+
 }

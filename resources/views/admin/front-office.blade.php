@@ -40,9 +40,9 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/falecidos">
                         <i class="pe-7s-user"></i>
-                        <p>Minha Conta</p>
+                        <p>Falecidos</p>
                     </a>
                 </li>
                 <li>
