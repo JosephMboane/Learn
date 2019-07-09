@@ -18,11 +18,11 @@ class Caso extends Model
         $caso->save();
         return $caso->id_caso;
     }
-//    protected $with =['pessoa_perdida'];
+    protected $with =['pessoa_perdida'];
 
 
     public function pessoa_perdida(){
-        return $this->belongsTo(Pessoa_perdida::class);
+        return $this->belongsTo('Laravel_Learn\Pessoa_perdida','id_pessoa_perdida','id_p_perdida');
     }
     public function pessoa_ajuda(){
         return $this->belongsTo(Pessoa_ajuda::class);
@@ -34,7 +34,7 @@ class Caso extends Model
     }
 
     public function centroAcolhimento(){
-        return $this->belongsToMany(centro_acolhimento::class);
+        return $this->belongsTo('Laravel_Learn\centro_acolhimento','id_centro','id_centro');
     }
 
 

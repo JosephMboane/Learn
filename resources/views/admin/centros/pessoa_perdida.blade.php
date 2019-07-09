@@ -120,19 +120,19 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($pessoa_perdida as $p_perdida)
+                                    @foreach($casos as $p_perdida)
                                         <tr>
                                             <td>{{$p_perdida->id_p_perdida}}</td>
-                                            <td class="py-1"><img src="/imgs_p_perdidas/{{$p_perdida->nome_foto}}" alt="image" /></td>
-                                            <td>{{$p_perdida->nome}}</td>
-                                            <td>{{$p_perdida->sexo}}</td>
-                                            <td>{{\Laravel_Learn\Pessoa_perdida::calcularIdade($p_perdida->data_nasc)}}</td>
-                                            <td>{{\Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->created_at)}}</td>
-                                            <td>{{$p_perdida->nome_localizacao}}</td>
-                                            <td><a class="btn btn-success" href="/caso/{{$p_perdida->id_p_perdida}}/edit">Encontrada</a></td>
-                                            <td><a class="btn btn-default" href="/caso/{{$p_perdida->id_p_perdida}}/update">Falecido</a></td>
-                                            <td><a class="btn btn-info btn-fill" href=""  data-toggle="modal"  data-target="#exampleModalCenter" >Transferencia</a></td>
-                                            <td><a class="btn btn-sucess" href="/pessoa_perdida/{{$p_perdida->id_p_perdida}}/edit">Editar</a></td>
+                                            <td class="py-1"><img src="/imgs_p_perdidas/{{$p_perdida->pessoa_perdida->foto->nome_foto}}" alt="image" /></td>
+                                            <td>{{$p_perdida->pessoa_perdida->nome}}</td>
+                                            <td>{{$p_perdida->pessoa_perdida->sexo}}</td>
+                                            <td>{{\Laravel_Learn\Pessoa_perdida::calcularIdade($p_perdida->pessoa_perdida->data_nasc)}}</td>
+                                            <td>{{\Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->pessoa_perdida->created_at)}}</td>
+                                            <td>{{$p_perdida->centroAcolhimento->designacao}}</td>
+                                            <td><a class="btn btn-success" href="/caso/{{$p_perdida->pessoa_perdida->id_p_perdida}}/edit">Encontrada</a></td>
+                                            <td><a class="btn btn-default" href="/caso/{{$p_perdida->pessoa_perdida->id_p_perdida}}/update">Falecido</a></td>
+                                            <td><a class="btn btn-info btn-fill" href="/centro/{{$p_perdida->id_caso}}/transferencia">Transferencia</a></td>
+                                            <td><a class="btn btn-sucess" href="/pessoa_perdida/{{$p_perdida->pessoa_perdida->id_p_perdida}}/edit">Editar</a></td>
 
 
                                         </tr>

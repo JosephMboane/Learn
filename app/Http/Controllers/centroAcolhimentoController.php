@@ -3,6 +3,7 @@
 namespace Laravel_Learn\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Laravel_Learn\Caso;
 use Laravel_Learn\pessoa_perdida;
 use Laravel_Learn\centro_acolhimento;
 use Illuminate\Support\Facades\DB;
@@ -28,45 +29,42 @@ class centroAcolhimentoController extends Controller
     }
     public function teste($id_centro)
     {
-        $centro = centro_acolhimento::findOrFail($id_centro);
-        dd($centro->casos());
 
-//        $localizacao = DB::table('localizacao')
-//            ->join('caso', 'caso.id_localizacao', '=', 'localizacao.id_localizacao')
-//            ->join('pessoa_perdida', 'pessoa_perdida.id_p_perdida', '=', 'caso.id_pessoa_perdida')
-//            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
-//
-//            //            ->join('users', 'users.id_usuario', '=', 'pessoa_perdida.user_id')
-//            ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
-//            ->select('localizacao.*', 'foto.nome_foto', 'pessoa_perdida.*', 'centro_acolhimento.designacao')
-//            ->where('pessoa_perdida.estado', '=',1)
-//            ->where('pessoa_perdida.situacao_vital','=','1')
-//            ->orderBy('id_p_perdida','desc')
-//            ->paginate();
-//        dd($localizacao);
-
-
-    }
-    public function teste2(){
-//        $centro = centro_acolhimento::with('localizacao')->get();
-//        $centro = centro_acolhimento::all();
+        $centro = centro_acolhimento::where('id_centro', $id_centro)->with('casos')->first();
+//        $centro = centro_acolhimento::findOrFail($id_centro)->get();
 //        dd($centro);
+//        foreach ($centro as $centros) {
+//            echo $centros->casos->pessoa_perdida;
+//        }
+//        $pessoa_perdida = Pessoa_perdida::whereIn('id_caso', $centro->with('casos')->get());
+        $casos = $centro->casos;
+//dd($casos);
+        return view('admin.centros.pessoa_perdida', compact('centro', 'casos'))->with('centro',$centro);
 
-        $localizacao = DB::table('centro_acolhimento')
-            ->join('caso', 'caso.id_centro', '=', 'centro_acolhimento.id_centro')
-            ->join('pessoa_perdida', 'pessoa_perdida.id_p_perdida', '=', 'caso.id_pessoa_perdida')
-            ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
-            ->get();
 
-//            //            ->join('users', 'users.id_usuario', '=', 'pessoa_perdida.user_id')
-//            ->join('centro_acolhimento', 'centro_acolhimento.id_localizacao', '=', 'localizacao.id_localizacao')
-//            ->select('centro_acolhimento.*', 'foto.nome_foto', 'pessoa_perdida.*')
-//            ->where('pessoa_perdida.estado', '=',1)
-//            ->where('pessoa_perdida.situacao_vital','=','1')
-//            ->orderBy('id_p_perdida','desc')
-//            ->paginate();
-        dd($localizacao);
+
+
     }
+    public function transferencia($id_caso){
+        $caso = Caso::where('id_caso',$id_caso)->first();
+//        dd($caso);
+        $centros = centro_acolhimento::where('id_centro', '<>', $caso->id_centro)->get();
+        return view('admin.centros.transferencia', compact('centros','caso'));
+
+    }
+
+    public function transfererir(Request $request){
+
+        $id_centro = $request->id_centro;
+        $id_caso = $request->id_caso;
+//            dd($request);
+        $caso = Caso::where('id_caso',$id_caso)->first();
+        $caso->id_centro = $id_centro;
+        $caso->save();
+        dd($caso);
+    }
+
+
 
 
     /**

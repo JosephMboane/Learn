@@ -130,7 +130,7 @@
                                             <td>{{\Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->created_at)}}</td>
                                             <td>{{$p_perdida->nome_localizacao}}</td>
                                             <td><a class="btn btn-success" href="/caso/{{$p_perdida->id_p_perdida}}/edit">Encontrada</a></td>
-                                            <td><a class="btn btn-default" href="/caso/{{$p_perdida->id_p_perdida}}/update">Falecido</a></td>
+                                            <td><a class="btn btn-default" href="/caso/{{$p_perdida->id_p_perdida}}/editFalecido">Falecido</a></td>
 {{--                                            <td><a class="btn btn-info btn-fill" href=""  data-toggle="modal"  data-target="#exampleModalCenter" >Transferencia</a></td>--}}
                                             <td><a class="btn btn-sucess" href="/pessoa_perdida/{{$p_perdida->id_p_perdida}}/edit">Editar</a></td>
 

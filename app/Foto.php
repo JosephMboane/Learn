@@ -12,7 +12,7 @@ class Foto extends Model
 
 
     public function pessoaPerdida(){
-        return $this->hasOne(Pessoa_perdida::class);
+        return $this->hasOne('Laravel_Learn\Pessoa_perdida','i_p_perdida','id_p_perdida');
     }
 
 }

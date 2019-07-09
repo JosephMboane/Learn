@@ -83,7 +83,11 @@
         <img class="card-img-top rounded-circle" src="/imgs_p_perdidas/{{$centro->foto_centro}}" style=" width: 180px; height: 180px; TOP: 10PX; position: relative;">
             <div class="card-body" id="pesquisar">
                 <h2 class="">{{$centro->designacao}}</h2>
-                
+
+                <a href="/centro/{{$centro->id_centro}}/pessoas">
+                    <button type="submit" class="btn btn-info btn-fill pull-right">Pessoa Perdida</button>
+                </a>
+
             </div>
 {{--            <p><a class="btn btn-info btn-fill" href="/mapa"  role="button">Mostrar no Mapa</a></p>--}}
         </div>

@@ -29,6 +29,9 @@ class Pessoa_perdida extends Model
     public function user(){
         return $this ->belongsTo(User::class);
     }
+    public function caso(){
+        return $this ->hasMany('Laravel_Learn\Caso','id_pessoa_perdida','id_p_perdida');
+    }
 
 
     public function getAgeAttribute()
@@ -76,12 +79,12 @@ class Pessoa_perdida extends Model
         return $date;
 
     }
-    public function caso()
-    {
-        return $this->hasOne(Caso::class);
-    }
+//    public function caso()
+//    {
+//        return $this->hasOne(Caso::class);
+//    }
     public function foto(){
-        return $this->belongsTo(Foto::class);
+        return $this->belongsTo('Laravel_Learn\Foto','id_foto','id_foto');
     }
     public function localizacao(){
         return $this->belongsTo(Localizacao::class);

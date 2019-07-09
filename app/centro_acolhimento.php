@@ -14,6 +14,6 @@ class centro_acolhimento extends Model
 
     }
     public function casos(){
-        return $this->belongsTo('Laravel_Learn\Caso');
+        return $this->hasMany('Laravel_Learn\Caso','id_centro','id_centro');
     }
 }

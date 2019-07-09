@@ -24,7 +24,6 @@ class pessoaPerdidaController extends Controller
             ->join('foto', 'foto.id_foto', '=', 'pessoa_perdida.id_foto')
             ->join('caso', 'caso.id_pessoa_perdida', '=', 'pessoa_perdida.id_p_perdida')
             ->join('localizacao', 'localizacao.id_localizacao', '=', 'caso.id_localizacao')
-//            ->join('users', 'users.id_usuario', '=', 'pessoa_perdida.user_id')
             ->join('centro_acolhimento', 'centro_acolhimento.id_centro', '=', 'localizacao.id_localizacao')
             ->select('pessoa_perdida.*', 'foto.nome_foto', 'localizacao.*', 'centro_acolhimento.designacao')
             ->where('pessoa_perdida.estado', '=',1)

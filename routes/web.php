@@ -35,12 +35,13 @@ Route::resource('/contribuir','contributoController');
 
 
 Route::get('/create_centro', function () {
-    return view('admin.centros.create_centro');
+    return view('admin.centros.transferencia');
 });
 
 Route::get('/localizacao/{id_localizacao}/pessoas','LocalizacaoContoller@teste');
 Route::get('/centro/{id_centro}/pessoas','centroAcolhimentoController@teste');
-Route::get('/centro/casos','centroAcolhimentoController@teste2');
+Route::get('/centro/{id_caso}/transferencia','centroAcolhimentoController@transferencia');
+Route::post('/transferencia-centros','centroAcolhimentoController@transfererir');
 
 
 Route::get('/localizacao',function (){
