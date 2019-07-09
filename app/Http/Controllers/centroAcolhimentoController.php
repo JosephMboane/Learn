@@ -45,6 +45,18 @@ class centroAcolhimentoController extends Controller
 
 
     }
+
+
+    public function listaTransferidos(){
+        $casos = Caso::where('observacao','<>','')->get();
+//        $centro = centro_acolhimento::
+
+        return view('admin.centros.lista_transferidos', compact('casos'));
+
+    }
+
+
+
     public function transferencia($id_caso){
         $caso = Caso::where('id_caso',$id_caso)->first();
 //        dd($caso);
@@ -60,8 +72,12 @@ class centroAcolhimentoController extends Controller
 //            dd($request);
         $caso = Caso::where('id_caso',$id_caso)->first();
         $caso->id_centro = $id_centro;
+        $caso->observacao = $request->input('observacao');
         $caso->save();
-        dd($caso);
+//        dd($caso);
+        return redirect('/centro/lista-transferidos')->with('sucess', 'created successfully!');
+
+
     }
 
 

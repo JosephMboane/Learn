@@ -41,6 +41,7 @@ Route::get('/create_centro', function () {
 Route::get('/localizacao/{id_localizacao}/pessoas','LocalizacaoContoller@teste');
 Route::get('/centro/{id_centro}/pessoas','centroAcolhimentoController@teste');
 Route::get('/centro/{id_caso}/transferencia','centroAcolhimentoController@transferencia');
+Route::get('/centro/lista-transferidos','centroAcolhimentoController@listaTransferidos');
 Route::post('/transferencia-centros','centroAcolhimentoController@transfererir');
 
 

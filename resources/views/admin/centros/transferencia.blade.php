@@ -76,7 +76,7 @@
                     <input type="hidden" name="id_caso" value="{{$caso->id_caso}}" >
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Sexo</label>
+                                <label>Transferecia</label>
                                 <select class="form-control" name="id_centro" style="height: 34px">
                                     @foreach($centros as $centro)
                                     <option value="{{$centro->id_centro}}">{{$centro->designacao}}</option>
@@ -84,7 +84,20 @@
                                 </select>
                             </div>
                         </div>
-                        <p></p>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Motivo</label>
+                            <select class="form-control" name="observacao" style="height: 34px">
+                                <option value="Doente">Doente</option>
+                                <option value="Dificiente">Dificiente</option>
+                                <option value="Melhorias">Melhorias</option>
+                                <option value="Morte">Morte</option>
+                                <option value="Velho">Velho</option>
+                                <option value="Menor de idade">Menor de idade</option>
+                            </select>
+                        </div>
+                    </div>
+
 
 
                     <div class="col-md-4" style="right: 20px">
