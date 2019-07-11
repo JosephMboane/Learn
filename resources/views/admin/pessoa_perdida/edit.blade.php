@@ -37,6 +37,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/transferencia-centros">
+                        <i class="pe-7s-science"></i>
+                        <p>Transferencias</p>
+                    </a>
+                </li>
+                <li>
                     <a href="#">
                         <i class="pe-7s-users"></i>
                         <p>Ususarios</p>
@@ -162,7 +168,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group">
                                                 <label>Foto</label>
-                                                <input type="file" name="foto" class="form-control" value="{{$pessoa_perdida->nome_foto}}" style="height: 43px">
+                                                <input type="file" name="foto" class="form-control" value="{{$pessoa_perdida->id_foto}}" style="height: 43px">
                                             </div>
                                         </div>  
                                     

@@ -76,7 +76,9 @@ class casoController extends Controller
             ->orderBy('id_p_perdida','asc')
             ->paginate(36);
 
-        return view('admin.user', compact('pessoa_perdida'))->with('pessoa_perdida',$pessoa_perdida);
+//        redirect()->route('pessoa_perdida.index')->with('sucess', ' created successfully!')
+
+        return  redirect()->route('user.index', compact('pessoa_perdida'))->with('pessoa_perdida',$pessoa_perdida);
     }
     public function editFalecido($id)
     {

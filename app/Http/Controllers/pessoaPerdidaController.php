@@ -201,7 +201,7 @@ class pessoaPerdidaController extends Controller
         $pessoa_perdida->data_nasc = $request->input('d_nasc');
         $pessoa_perdida->nacionalidade = $request->input('nacionalidade');
         $pessoa_perdida->naturalidade = $request->input('naturalidade');
-        $p_perdida->id_foto = $this->guardar_foto($request);
+        $pessoa_perdida->id_foto = $this->guardar_foto($request);
         $pessoa_perdida->save();
         return redirect('/editar')->with('sucess', 'created successfully!');
     }

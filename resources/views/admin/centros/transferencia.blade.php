@@ -41,6 +41,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/transferencia-centros">
+                        <i class="pe-7s-science"></i>
+                        <p>Transferencias</p>
+                    </a>
+                </li>
+                <li>
                     <a href="#">
                         <i class="pe-7s-news-paper"></i>
                         <p>Minha Conta</p>
@@ -67,6 +73,7 @@
     <div style="width: : 100%; height: 100px;">
         @include('inc.messages')
     </div>
+
     <div class="col-sm-10" style="left: 290px">
         <center>
 
@@ -76,7 +83,7 @@
                     <input type="hidden" name="id_caso" value="{{$caso->id_caso}}" >
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>Transferecia</label>
+                                <label>Selecione o Centro</label>
                                 <select class="form-control" name="id_centro" style="height: 34px">
                                     @foreach($centros as $centro)
                                     <option value="{{$centro->id_centro}}">{{$centro->designacao}}</option>
@@ -92,6 +99,7 @@
                                 <option value="Dificiente">Dificiente</option>
                                 <option value="Melhorias">Melhorias</option>
                                 <option value="Morte">Morte</option>
+                                <option value="Morte">Fuga</option>
                                 <option value="Velho">Velho</option>
                                 <option value="Menor de idade">Menor de idade</option>
                             </select>
@@ -102,7 +110,7 @@
 
                     <div class="col-md-4" style="right: 20px">
                         <a href="/create_centro">
-                            <button type="submit" class="btn btn-info btn-fill pull-right">Transferir</button>
+                            <button type="submit" class="btn btn-info btn-fill pull-right" id="destaque">Transferir</button>
                         </a>
                     </div>
 
@@ -119,6 +127,11 @@
     </main>
 
 </div>
+<script type="text/javascript">
+    document.querySelector('#destaque').onclick = function() {
+        alert("Transferido!");
+    };
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {

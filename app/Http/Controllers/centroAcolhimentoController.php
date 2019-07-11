@@ -31,22 +31,13 @@ class centroAcolhimentoController extends Controller
     {
 
         $centro = centro_acolhimento::where('id_centro', $id_centro)->with('casos')->first();
-//        $centro = centro_acolhimento::findOrFail($id_centro)->get();
-//        dd($centro);
-//        foreach ($centro as $centros) {
-//            echo $centros->casos->pessoa_perdida;
-//        }
-//        $pessoa_perdida = Pessoa_perdida::whereIn('id_caso', $centro->with('casos')->get());
         $casos = $centro->casos;
-//dd($casos);
         return view('admin.centros.pessoa_perdida', compact('centro', 'casos'))->with('centro',$centro);
-
-
-
-
     }
 
 
+
+//    Metodo retorna a lista de dados transferidos
     public function listaTransferidos(){
         $casos = Caso::where('observacao','<>','')->get();
 //        $centro = centro_acolhimento::
@@ -65,16 +56,34 @@ class centroAcolhimentoController extends Controller
 
     }
 
+//    retorna nome do centro actual
+    public function retornarNome($id_centro)
+    {
+
+//        $centro = centro_acolhimento::where('id_centro', $id_centro)->with('casos')->first();
+        $centro = centro_acolhimento::where('id_centro', $id_centro)->with('casos')->first();
+//        $casos = $centro->casos;
+//        dd($centro->designacao);
+        return $centro->designacao;
+//        return view('admin.centros.pessoa_perdida', compact('centro', 'casos'))->with('centro',$centro);
+    }
+//    Este metodo faz a transferencia
     public function transfererir(Request $request){
+
 
         $id_centro = $request->id_centro;
         $id_caso = $request->id_caso;
-//            dd($request);
         $caso = Caso::where('id_caso',$id_caso)->first();
+        $caso->proviencia = $this->retornarNome($caso->id_centro);
         $caso->id_centro = $id_centro;
         $caso->observacao = $request->input('observacao');
+
+//        $caso->proviencia = 'Maputo';
+//        dd($caso);
+//        dd($caso->centro_acolhimento->id_centro);
         $caso->save();
 //        dd($caso);
+
         return redirect('/centro/lista-transferidos')->with('sucess', 'created successfully!');
 
 

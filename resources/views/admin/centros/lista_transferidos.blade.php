@@ -87,14 +87,13 @@
                 <li class="breadcrumb-item current" aria-current="page">Pessoas perdidas</li>
             </ol>
         </nav>
-
-
-        <div class="col-md-4" style="left: -240px">
-            <a href="/create">
-                <button type="submit" class="btn btn-info btn-fill pull-right">Adicionar</button>
-            </a>
-        </div>
-
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
         <div class="content col-md-12" style="top: -190px;position: relative;">
             <div class="animated fadeIn">
                 <div class="row">
@@ -113,9 +112,10 @@
                                         <th>Nome</th>
                                         <th>Sexo</th>
                                         <th>Idade</th>
-                                        <th>Data de Registo</th>
+                                        <th>Data de Transferencia</th>
+                                        <th>Proviniente</th>
                                         <th>Localizacao actual</th>
-                                        <th>Operação</th>
+                                        <th>Motivo</th>
                                         <th>Mais</th>
                                     </tr>
                                     </thead>
@@ -127,10 +127,12 @@
                                             <td>{{$p_perdida->pessoa_perdida->nome}}</td>
                                             <td>{{$p_perdida->pessoa_perdida->sexo}}</td>
                                             <td>{{\Laravel_Learn\Pessoa_perdida::calcularIdade($p_perdida->pessoa_perdida->data_nasc)}}</td>
-                                            <td>{{\Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->pessoa_perdida->created_at)}}</td>
+{{--                                            <td>{{\Laravel_Learn\Pessoa_perdida::calcularDias($p_perdida->updated_at)}}</td>--}}
+                                            <td>{{$p_perdida->updated_at}}</td>
+                                            <td>{{$p_perdida->proviencia}}</td>
                                             <td>{{$p_perdida->centroAcolhimento->designacao}}</td>
-                                            <td><a class="btn btn-success" href="/caso/{{$p_perdida->pessoa_perdida->id_p_perdida}}/edit">Encontrada</a></td>
-                                            <td><a class="btn btn-default" href="/caso/{{$p_perdida->pessoa_perdida->id_p_perdida}}/update">Falecido</a></td>
+                                            <td>{{$p_perdida->observacao}}</td>
+{{--                                            <td><a class="btn btn-default" href="/caso/{{$p_perdida->pessoa_perdida->id_p_perdida}}/update">Falecido</a></td>--}}
                                             <td><a class="btn btn-info btn-fill" href="/centro/{{$p_perdida->id_caso}}/transferencia">Transferencia</a></td>
                                             <td><a class="btn btn-sucess" href="/pessoa_perdida/{{$p_perdida->pessoa_perdida->id_p_perdida}}/edit">Editar</a></td>
 

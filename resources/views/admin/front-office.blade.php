@@ -51,6 +51,12 @@
                         <p>Estatisticas</p>
                     </a>
                 </li>
+                <li>
+                    <a href="/transferencia-centros">
+                        <i class="pe-7s-science"></i>
+                        <p>Transferencias</p>
+                    </a>
+                </li>
             </ul>
         </div>
         <footer class="footer">
